@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isShopifyConfigured } from "../../../../lib/shopify.js";
-import { getVariantAudit } from "../../../../lib/shopify-catalog.js"; 
+import { getVariantAudit } from "../../../../lib/shopify-catalog.js";
 
 export async function GET() {
   if (!isShopifyConfigured) {
