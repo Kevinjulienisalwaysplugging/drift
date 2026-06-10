@@ -35,10 +35,24 @@ const colorClassByName = {
   Mocha: "swatch-mocha",
 };
 
+// Edit displayed storefront prices here. Shopify checkout prices still come from Shopify.
+const productPrices = {
+  "Satin Pillowcase": "$29.99",
+  "Satin Eyemask": "$10.99",
+  "Satin Scrunchie": "$7.99",
+  "Satin Bonnet": "$15.99",
+  "Satin Twin Bedding Set": "$30.99",
+  "Satin Full Bedding Set": "$49.99",
+  "Satin Queen Bedding Set": "$69.99",
+  "Satin King Bedding Set": "$75.99",
+  "Satin Blanket": "$89.99",
+  "Luxury Slippers": "$35.99",
+};
+
 const productDetails = {
   "Satin Pillowcase": {
     description: "A smooth satin pillowcase designed for a cooler, softer night.",
-    price: "$49.99",
+    price: productPrices["Satin Pillowcase"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: {
       Champagne: "assets/pillowcase-champagne.webp",
@@ -49,7 +63,7 @@ const productDetails = {
   },
   "Satin Eyemask": {
     description: "A soft blackout layer for deeper rest and a polished bedside ritual.",
-    price: "$19.99",
+    price: productPrices["Satin Eyemask"],
     colors: ["Champagne", "Black", "Rose"],
     images: {
       Champagne: "assets/eyemask-champagne.webp",
@@ -59,49 +73,49 @@ const productDetails = {
   },
   "Satin Scrunchie": {
     description: "Low tension, high gloss, made for all-day wear and low-crease styling.",
-    price: "$13.99",
+    price: productPrices["Satin Scrunchie"],
     colors: ["Champagne", "Blush", "Rose", "Ivory", "Mocha", "Black"],
     images: { Champagne: "assets/product-scrunchies-platter.webp" },
   },
   "Satin Bonnet": {
     description: "A polished silhouette with a secure satin band for overnight protection.",
-    price: "$24.99",
+    price: productPrices["Satin Bonnet"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: { Champagne: "assets/product-bonnet-blush.webp" },
   },
   "Satin Twin Bedding Set": {
     description: "A compact satin bedding set for a smooth, luminous sleep surface.",
-    price: "$59.99",
+    price: productPrices["Satin Twin Bedding Set"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: { Champagne: "assets/product-twin-bedding-set.webp" },
   },
   "Satin Full Bedding Set": {
     description: "A full-size satin bedding set with a refined, glossy hand-feel.",
-    price: "$69.99",
+    price: productPrices["Satin Full Bedding Set"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: { Champagne: "assets/product-full-bedding-set.webp" },
   },
   "Satin Queen Bedding Set": {
     description: "A queen satin set made for everyday luxury and a softer bedroom mood.",
-    price: "$79.99",
+    price: productPrices["Satin Queen Bedding Set"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: { Champagne: "assets/product-queen-bedding-set.webp" },
   },
   "Satin King Bedding Set": {
     description: "A generous king satin set with a smooth finish and elevated drape.",
-    price: "$89.99",
+    price: productPrices["Satin King Bedding Set"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: { Champagne: "assets/product-king-bedding-set.webp" },
   },
   "Satin Blanket": {
     description: "A luminous satin blanket for layered warmth and a finished bed.",
-    price: "$89.99",
+    price: productPrices["Satin Blanket"],
     colors: ["Champagne", "Black", "Blush", "Rose"],
     images: { Champagne: "assets/product-satin-blanket.webp" },
   },
   "Luxury Slippers": {
     description: "Soft house slippers made to complete the DRIFT evening ritual.",
-    price: "$35.99",
+    price: productPrices["Luxury Slippers"],
     colors: ["Champagne", "Blush"],
     images: { Champagne: "assets/product-slippers.webp" },
   },
@@ -112,6 +126,18 @@ let activeColor = "";
 let bag = JSON.parse(window.localStorage.getItem("driftBag") || "[]").map(({ image, ...item }) => item);
 
 document.body.classList.add("reveal-ready");
+
+const syncProductCardPrices = () => {
+  document.querySelectorAll(".product-card").forEach((card) => {
+    const productName = card.querySelector("h3")?.textContent;
+    const price = productPrices[productName];
+    const priceElement = card.querySelector("strong");
+
+    if (price && priceElement) {
+      priceElement.textContent = price;
+    }
+  });
+};
 
 const setHeaderState = () => {
   header.classList.toggle("is-scrolled", window.scrollY > 24);
@@ -432,6 +458,7 @@ bagCheckout.addEventListener("click", async () => {
 });
 
 renderBag();
+syncProductCardPrices();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
