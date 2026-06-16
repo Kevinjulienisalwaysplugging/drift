@@ -79,6 +79,7 @@ a {
 .brand-mark {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   width: max-content;
 }
 
@@ -107,6 +108,11 @@ a {
 .nav-links a,
 .header-action {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   padding: 8px 0;
 }
 
@@ -146,6 +152,7 @@ a {
 .bag-trigger {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 8px;
   border: 0;
   background: transparent;
@@ -1378,10 +1385,18 @@ body.has-bag {
 .site-footer nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 8px 18px;
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.site-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 body.reveal-ready [data-animate] {
@@ -1485,6 +1500,12 @@ body.reveal-ready [data-animate].is-visible {
   }
 }
 
+@media (min-width: 621px) and (max-width: 920px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 620px) {
   .site-header {
     padding: 14px 18px;
@@ -1498,6 +1519,10 @@ body.reveal-ready [data-animate].is-visible {
 
   .header-action {
     font-size: 0.72rem;
+  }
+
+  .header-actions {
+    gap: 12px;
   }
 
   .hero {
@@ -1528,11 +1553,12 @@ body.reveal-ready [data-animate].is-visible {
   }
 
   .product-card {
-    min-height: 470px;
+    min-height: auto;
   }
 
   .product-visual {
-    min-height: 320px;
+    width: 100%;
+    min-height: 0;
   }
 
   .product-detail {

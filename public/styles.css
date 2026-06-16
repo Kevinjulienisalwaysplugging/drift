@@ -79,6 +79,7 @@ a {
 .brand-mark {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   width: max-content;
 }
 
@@ -107,6 +108,11 @@ a {
 .nav-links a,
 .header-action {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   padding: 8px 0;
 }
 
@@ -143,9 +149,43 @@ a {
   gap: 18px;
 }
 
+.auth-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.auth-status[hidden] {
+  display: none;
+}
+
+.auth-status-email {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-logout {
+  min-height: 34px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .bag-trigger {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 8px;
   border: 0;
   background: transparent;
@@ -1049,6 +1089,181 @@ body.has-bag {
   overflow: hidden;
 }
 
+.join-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 5vw, 64px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+}
+
+.join-popup[hidden] {
+  display: none;
+}
+
+.join-popup.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.join-popup-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(32, 25, 21, 0.48);
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+}
+
+.join-popup-card {
+  position: relative;
+  width: min(560px, 100%);
+  padding: clamp(34px, 6vw, 58px);
+  border: 1px solid rgba(234, 217, 197, 0.5);
+  background:
+    linear-gradient(145deg, rgba(255, 253, 249, 0.96), rgba(246, 238, 229, 0.94)),
+    radial-gradient(circle at 78% 14%, rgba(234, 217, 197, 0.62), transparent 36%);
+  box-shadow: 0 32px 90px rgba(32, 25, 21, 0.28);
+  color: var(--ink);
+  transform: translateY(18px) scale(0.98);
+  transition: transform 320ms ease;
+}
+
+.join-popup.is-open .join-popup-card {
+  transform: translateY(0) scale(1);
+}
+
+.join-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 249, 0.84);
+  color: var(--espresso);
+  cursor: pointer;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.join-popup-card h2 {
+  margin-bottom: 18px;
+  padding-right: 42px;
+  color: var(--espresso);
+  font-size: clamp(3rem, 7vw, 5.2rem);
+}
+
+.join-popup-card p:not(.eyebrow) {
+  max-width: 420px;
+  margin-bottom: 30px;
+  color: rgba(32, 25, 21, 0.68);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.join-auth-form {
+  display: grid;
+  gap: 14px;
+}
+
+.join-auth-form label {
+  color: var(--bronze);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.join-auth-form input {
+  min-height: 54px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(75, 56, 43, 0.3);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+}
+
+.join-auth-form input::placeholder {
+  color: rgba(32, 25, 21, 0.42);
+}
+
+.join-popup-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.join-popup-action,
+.join-popup-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 24px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.join-popup-action {
+  border: 1px solid var(--espresso);
+  background: var(--espresso);
+  color: var(--ivory);
+}
+
+.join-popup-secondary {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--espresso);
+}
+
+.join-popup-action:hover,
+.join-popup-action:focus-visible,
+.join-popup-secondary:hover,
+.join-popup-secondary:focus-visible {
+  background: var(--ivory);
+  color: var(--espresso);
+  outline: 0;
+  transform: translateY(-2px);
+}
+
+.join-popup-action:disabled,
+.join-popup-secondary:disabled {
+  cursor: wait;
+  opacity: 0.58;
+  transform: none;
+}
+
+.join-popup-message {
+  min-height: 22px;
+  margin: 0;
+  color: rgba(32, 25, 21, 0.66);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.join-popup-message.is-success {
+  color: #536b45;
+}
+
+.join-popup-message.is-error {
+  color: #8d3f36;
+}
+
+body.has-join-popup {
+  overflow: hidden;
+}
+
 .proof {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1378,10 +1593,18 @@ body.has-bag {
 .site-footer nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 8px 18px;
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.site-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 body.reveal-ready [data-animate] {
@@ -1485,6 +1708,12 @@ body.reveal-ready [data-animate].is-visible {
   }
 }
 
+@media (min-width: 621px) and (max-width: 920px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 620px) {
   .site-header {
     padding: 14px 18px;
@@ -1498,6 +1727,20 @@ body.reveal-ready [data-animate].is-visible {
 
   .header-action {
     font-size: 0.72rem;
+  }
+
+  .header-actions {
+    gap: 12px;
+  }
+
+  .auth-status-email {
+    display: none;
+  }
+
+  .auth-logout {
+    min-height: 30px;
+    padding: 0 8px;
+    font-size: 0.62rem;
   }
 
   .hero {
@@ -1528,11 +1771,12 @@ body.reveal-ready [data-animate].is-visible {
   }
 
   .product-card {
-    min-height: 470px;
+    min-height: auto;
   }
 
   .product-visual {
-    min-height: 320px;
+    width: 100%;
+    min-height: 0;
   }
 
   .product-detail {
@@ -1557,6 +1801,30 @@ body.reveal-ready [data-animate].is-visible {
   .product-detail-image-wrap {
     min-height: 0;
     aspect-ratio: 1;
+  }
+
+  .join-popup {
+    padding: 18px;
+  }
+
+  .join-popup-card {
+    padding: 34px 24px 28px;
+  }
+
+  .join-popup-card h2 {
+    font-size: clamp(2.7rem, 15vw, 4.4rem);
+  }
+
+  .join-popup-action {
+    width: 100%;
+  }
+
+  .join-popup-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .join-popup-secondary {
+    width: 100%;
   }
 
   .product-detail-copy {

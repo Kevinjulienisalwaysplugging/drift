@@ -15,7 +15,7 @@
     <meta property="og:image" content="assets/drift-og.webp">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=join-popup">
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
@@ -33,6 +33,10 @@
         <a href="#care">Care</a>
       </nav>
       <div class="header-actions">
+        <div class="auth-status" hidden>
+          <span class="auth-status-email"></span>
+          <button class="auth-logout" type="button">Logout</button>
+        </div>
         <a class="header-action" href="#private-list">Reserve</a>
         <button class="bag-trigger" type="button" aria-label="Open shopping bag">
           Bag <span class="bag-count">0</span>
@@ -335,6 +339,27 @@
         </div>
       </aside>
 
+      <section class="join-popup" aria-labelledby="join-popup-title" hidden>
+        <button class="join-popup-backdrop" type="button" aria-label="Close Join DRIFT popup"></button>
+        <div class="join-popup-card" role="dialog" aria-modal="true" aria-describedby="join-popup-copy">
+          <button class="join-popup-close" type="button" aria-label="Close Join DRIFT popup">&times;</button>
+          <p class="eyebrow">Private release</p>
+          <h2 id="join-popup-title">Join DRIFT</h2>
+          <p id="join-popup-copy">
+            Step inside the first release list for satin sleep essentials, early access, and quiet launch notes.
+          </p>
+          <form class="join-auth-form">
+            <label for="join-popup-email">Email address</label>
+            <input id="join-popup-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            <div class="join-popup-actions">
+              <button class="join-popup-action" type="submit" data-auth-action="signup">Sign up</button>
+              <button class="join-popup-secondary" type="button" data-auth-action="login">Log in</button>
+            </div>
+            <p class="join-popup-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
       <section class="proof" aria-label="Product benefits">
         <article data-animate>
           <span>01</span>
@@ -483,12 +508,11 @@
 
     <script>
       window.DRIFT_SUPABASE = {
-        url: "https://rjzlvredvueprubxtple.supabase.co",
-        anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqemx2cmVkdnVlcHJ1Ynh0cGxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MTM2NDMsImV4cCI6MjA5NTQ4OTY0M30.7Q0-Z7wYZ0F_tr-0hhL8ZbmEXl8wqLpEEDEAk4RQxQQ",
         table: "waitlist_signups"
       };
     </script>
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js?v=supabase-auth"></script>
   </body>
 </html>
 

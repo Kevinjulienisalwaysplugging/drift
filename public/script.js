@@ -3,7 +3,7 @@ const animated = document.querySelectorAll("[data-animate]");
 const form = document.querySelector(".signup-form");
 const note = document.querySelector(".form-note");
 const submitButton = form.querySelector("button");
-const supabaseConfig = window.DRIFT_SUPABASE || {};
+let supabaseConfig = window.DRIFT_SUPABASE || {};
 const productDetail = document.querySelector(".product-detail");
 const productDetailClose = document.querySelector(".product-detail-close");
 const productDetailImage = document.querySelector(".product-detail-image");
@@ -25,6 +25,18 @@ const bagEmpty = document.querySelector(".bag-empty");
 const bagSubtotal = document.querySelector(".bag-subtotal");
 const bagCheckout = document.querySelector(".bag-checkout");
 const bagCheckoutNote = document.querySelector(".bag-checkout-note");
+const joinPopup = document.querySelector(".join-popup");
+const joinPopupClose = document.querySelector(".join-popup-close");
+const joinPopupBackdrop = document.querySelector(".join-popup-backdrop");
+const joinAuthForm = document.querySelector(".join-auth-form");
+const joinAuthEmail = document.querySelector("#join-popup-email");
+const joinAuthSignup = document.querySelector('[data-auth-action="signup"]');
+const joinAuthLogin = document.querySelector('[data-auth-action="login"]');
+const joinPopupMessage = document.querySelector(".join-popup-message");
+const joinPopupSessionKey = "driftJoinPopupClosed";
+const authStatus = document.querySelector(".auth-status");
+const authStatusEmail = document.querySelector(".auth-status-email");
+const authLogout = document.querySelector(".auth-logout");
 
 const colorClassByName = {
   Champagne: "swatch-champagne",
@@ -459,6 +471,187 @@ bagCheckout.addEventListener("click", async () => {
 
 renderBag();
 syncProductCardPrices();
+
+let joinPopupHasOpened = false;
+let supabaseAuthClient = null;
+let currentAuthUser = null;
+let authSessionChecked = false;
+
+const isJoinPopupDismissed = () => window.sessionStorage.getItem(joinPopupSessionKey) === "true";
+
+const setJoinPopupMessage = (message = "", mode = "") => {
+  joinPopupMessage.textContent = message;
+  joinPopupMessage.classList.toggle("is-success", mode === "success");
+  joinPopupMessage.classList.toggle("is-error", mode === "error");
+};
+
+const setAuthLoading = (isLoading) => {
+  joinAuthSignup.disabled = isLoading;
+  joinAuthLogin.disabled = isLoading;
+  authLogout.disabled = isLoading;
+};
+
+const updateAuthStatus = (user) => {
+  currentAuthUser = user;
+  authStatus.hidden = !user;
+  authStatusEmail.textContent = user?.email || "";
+};
+
+const loadSupabaseAuthClient = async () => {
+  if (supabaseAuthClient) {
+    return supabaseAuthClient;
+  }
+
+  if (!window.supabase?.createClient) {
+    throw new Error("Supabase Auth is still loading. Please try again.");
+  }
+
+  const response = await fetch("/api/supabase/config", { cache: "no-store" });
+  const config = await response.json();
+
+  if (!response.ok || !config.url || !config.anonKey) {
+    throw new Error("Supabase Auth is not configured yet.");
+  }
+
+  supabaseConfig = { ...supabaseConfig, url: config.url, anonKey: config.anonKey };
+  supabaseAuthClient = window.supabase.createClient(config.url, config.anonKey);
+  return supabaseAuthClient;
+};
+
+const refreshAuthSession = async () => {
+  try {
+    const client = await loadSupabaseAuthClient();
+    const { data, error } = await client.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    updateAuthStatus(data.session?.user || null);
+    client.auth.onAuthStateChange((_event, session) => {
+      updateAuthStatus(session?.user || null);
+    });
+  } catch (error) {
+    console.info("[DRIFT Auth] Supabase Auth unavailable", error.message);
+  } finally {
+    authSessionChecked = true;
+  }
+};
+
+const openJoinPopup = () => {
+  if (
+    !authSessionChecked ||
+    joinPopupHasOpened ||
+    isJoinPopupDismissed() ||
+    currentAuthUser ||
+    !bagPanel.hidden ||
+    !productDetail.hidden
+  ) {
+    return;
+  }
+
+  joinPopupHasOpened = true;
+  joinPopup.hidden = false;
+  document.body.classList.add("has-join-popup");
+  setJoinPopupMessage("");
+
+  window.requestAnimationFrame(() => {
+    joinPopup.classList.add("is-open");
+    joinAuthEmail.focus();
+  });
+};
+
+const closeJoinPopup = () => {
+  window.sessionStorage.setItem(joinPopupSessionKey, "true");
+  joinPopup.classList.remove("is-open");
+  document.body.classList.remove("has-join-popup");
+
+  window.setTimeout(() => {
+    joinPopup.hidden = true;
+  }, 280);
+};
+
+const handleJoinAuth = async (mode) => {
+  const email = joinAuthEmail.value.trim();
+
+  if (!email) {
+    setJoinPopupMessage("Enter your email to continue.", "error");
+    return;
+  }
+
+  setAuthLoading(true);
+  setJoinPopupMessage(mode === "signup" ? "Creating your DRIFT access..." : "Sending your login link...");
+
+  try {
+    const client = await loadSupabaseAuthClient();
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const { data, error } = await client.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: redirectTo,
+        shouldCreateUser: mode === "signup",
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (data.user && data.session) {
+      updateAuthStatus(data.user);
+      setJoinPopupMessage("You are signed in to DRIFT.", "success");
+      window.setTimeout(closeJoinPopup, 900);
+      return;
+    }
+
+    setJoinPopupMessage("Check your email for the DRIFT confirmation link.", "success");
+    window.sessionStorage.setItem(joinPopupSessionKey, "true");
+  } catch (error) {
+    setJoinPopupMessage(error.message || "Unable to connect right now. Please try again.", "error");
+  } finally {
+    setAuthLoading(false);
+  }
+};
+
+const maybeOpenJoinPopup = () => {
+  const scrollableDistance = document.documentElement.scrollHeight - window.innerHeight;
+
+  if (scrollableDistance <= 0) {
+    return;
+  }
+
+  if (window.scrollY / scrollableDistance >= 0.24) {
+    openJoinPopup();
+  }
+};
+
+window.addEventListener("scroll", maybeOpenJoinPopup, { passive: true });
+joinPopupClose.addEventListener("click", closeJoinPopup);
+joinPopupBackdrop.addEventListener("click", closeJoinPopup);
+joinAuthForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  handleJoinAuth("signup");
+});
+joinAuthLogin.addEventListener("click", () => handleJoinAuth("login"));
+authLogout.addEventListener("click", async () => {
+  setAuthLoading(true);
+
+  try {
+    const client = await loadSupabaseAuthClient();
+    await client.auth.signOut();
+    updateAuthStatus(null);
+  } catch (error) {
+    console.info("[DRIFT Auth] Logout failed", error.message);
+  } finally {
+    setAuthLoading(false);
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !joinPopup.hidden) {
+    closeJoinPopup();
+  }
+});
+refreshAuthSession();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
