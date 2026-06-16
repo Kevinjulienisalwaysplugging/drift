@@ -45,6 +45,7 @@ const colorClassByName = {
   Rose: "swatch-rose",
   Ivory: "swatch-ivory",
   Mocha: "swatch-mocha",
+  "Default Title": "swatch-bundle",
 };
 
 // Edit displayed storefront prices here. Shopify checkout prices still come from Shopify.
@@ -59,6 +60,10 @@ const productPrices = {
   "Satin King Bedding Set": "$75.99",
   "Satin Blanket": "$89.99",
   "Luxury Slippers": "$35.99",
+  "The Nightstand Essentials Trio": "$39.99",
+  "The Ultimate Hair Care Duo": "$19.99",
+  "The Beauty Sleep Bundle": "$44.99",
+  "The College / Dorm Starter": "$64.99",
 };
 
 const productDetails = {
@@ -131,7 +136,89 @@ const productDetails = {
     colors: ["Champagne", "Blush"],
     images: { Champagne: "assets/product-slippers.webp" },
   },
+  "The Nightstand Essentials Trio": {
+    description: "A curated bedside set for smoother hair, softer skin, and a quieter night routine.",
+    price: productPrices["The Nightstand Essentials Trio"],
+    colors: ["Default Title"],
+    // Bundle photos will be added in the next deployment.
+    images: { "Default Title": "assets/product-gift-set.webp" },
+  },
+  "The Ultimate Hair Care Duo": {
+    description: "A satin bonnet and scrunchie pairing made to protect texture and reduce overnight frizz.",
+    price: productPrices["The Ultimate Hair Care Duo"],
+    colors: ["Default Title"],
+    // Bundle photos will be added in the next deployment.
+    images: { "Default Title": "assets/product-scrunchies-box.webp" },
+  },
+  "The Beauty Sleep Bundle": {
+    description: "A polished sleep-care set built for a softer bedtime ritual.",
+    price: productPrices["The Beauty Sleep Bundle"],
+    colors: ["Default Title"],
+    // Bundle photos will be added in the next deployment.
+    images: { "Default Title": "assets/product-box-upright.webp" },
+  },
+  "The College / Dorm Starter": {
+    description: "A student-ready satin starter set for comfort, polish, and hair and skin protection.",
+    price: productPrices["The College / Dorm Starter"],
+    colors: ["Default Title"],
+    // Bundle photos will be added in the next deployment.
+    images: { "Default Title": "assets/product-drape-set.webp" },
+  },
 };
+
+const bundleDetails = [
+  {
+    id: "nightstand-essentials-trio",
+    name: "The Nightstand Essentials Trio",
+    items: [
+      { product: "Satin Pillowcase", price: "$29.99" },
+      { product: "Satin Eyemask", price: "$10.99" },
+      { product: "Satin Scrunchie", price: "$7.99" },
+    ],
+    retailValue: "$48.97",
+    bundlePrice: "$39.99",
+    focus: "Hair and skin protection while sleeping",
+    note: "",
+  },
+  {
+    id: "ultimate-hair-care-duo",
+    name: "The Ultimate Hair Care Duo",
+    items: [
+      { product: "Satin Bonnet", price: "$15.99" },
+      { product: "Satin Scrunchie", price: "$7.99" },
+    ],
+    retailValue: "$23.98",
+    bundlePrice: "$19.99",
+    focus: "Protecting hair texture and reducing frizz overnight",
+    note: "",
+  },
+  {
+    id: "beauty-sleep-bundle",
+    name: "The Beauty Sleep Bundle",
+    items: [
+      { product: "Satin Pillowcase", price: "$29.99" },
+      { product: "Satin Eyemask", price: "$10.99" },
+      { product: "Satin Scrunchie", price: "$7.99" },
+    ],
+    retailValue: "$48.97",
+    bundlePrice: "$44.99",
+    focus: "A polished sleep-care set built for a softer bedtime ritual",
+    note: "",
+  },
+  {
+    id: "college-dorm-starter",
+    name: "The College / Dorm Starter",
+    items: [
+      { product: "Satin Twin Bedding Set", price: "$30.99" },
+      { product: "Satin Bonnet", price: "$15.99" },
+      { product: "Satin Pillowcase", price: "$29.99" },
+    ],
+    retailValue: "$76.97",
+    bundlePrice: "$64.99",
+    focus: "Students heading to school who want comfort and hair/skin protection",
+    note: "",
+  },
+];
 
 let activeProductName = "";
 let activeColor = "";
@@ -215,12 +302,14 @@ setHeaderState();
 const getProductImage = (product, color) =>
   product.images[color] || product.images.Champagne || Object.values(product.images)[0];
 
+const getDisplayColor = (color) => (color === "Default Title" ? "Bundle" : color);
+
 const setProductDetailImage = (product, color) => {
   const image = getProductImage(product, color);
 
   productDetailImage.src = image;
-  productDetailImage.alt = `${activeProductName} in ${color}`;
-  productDetailSelection.textContent = color;
+  productDetailImage.alt = `${activeProductName} in ${getDisplayColor(color)}`;
+  productDetailSelection.textContent = getDisplayColor(color);
   activeColor = color;
 
   productDetailSwatches.querySelectorAll(".product-detail-swatch").forEach((swatch) => {
@@ -251,7 +340,7 @@ const openProductDetail = (productName) => {
     swatch.className = `product-detail-swatch ${colorClassByName[color]}`;
     swatch.dataset.color = color;
     swatch.title = color;
-    swatch.setAttribute("aria-label", `Select ${color}`);
+    swatch.setAttribute("aria-label", `Select ${getDisplayColor(color)}`);
     swatch.addEventListener("click", () => setProductDetailImage(product, color));
     productDetailSwatches.append(swatch);
   });
@@ -262,7 +351,7 @@ const openProductDetail = (productName) => {
     thumbnail.className = "product-detail-thumb";
     thumbnail.dataset.color = color;
     thumbnail.title = color;
-    thumbnail.setAttribute("aria-label", `View ${color}`);
+    thumbnail.setAttribute("aria-label", `View ${getDisplayColor(color)}`);
 
     const image = document.createElement("img");
     image.src = product.images[color];
@@ -308,11 +397,11 @@ const renderBag = () => {
 
     row.className = "bag-item";
     image.src = getProductImage(productDetails[item.product], item.color);
-    image.alt = `${item.product} in ${item.color}`;
+    image.alt = `${item.product} in ${getDisplayColor(item.color)}`;
     copy.className = "bag-item-copy";
     title.textContent = item.product;
     meta.className = "bag-item-meta";
-    meta.textContent = `${item.color} / $${item.price.toFixed(2)}`;
+    meta.textContent = `${getDisplayColor(item.color)} / $${item.price.toFixed(2)}`;
     controls.className = "bag-item-controls";
     quantity.className = "bag-item-quantity";
     decrease.type = "button";
@@ -362,6 +451,32 @@ const removeBagItem = (itemId) => {
   renderBag();
 };
 
+const addProductToBag = (productName, color, quantity = 1) => {
+  const product = productDetails[productName];
+
+  if (!product) {
+    return false;
+  }
+
+  const id = `${productName}::${color}`;
+  const existingItem = bag.find((item) => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    bag.push({
+      id,
+      product: productName,
+      color,
+      price: getProductPrice(productName),
+      quantity,
+    });
+  }
+
+  renderBag();
+  return true;
+};
+
 const openBag = () => {
   renderBag();
   bagPanel.hidden = false;
@@ -406,23 +521,23 @@ document.addEventListener("keydown", (event) => {
 
 productDetailAdd.addEventListener("click", () => {
   const quantity = Number(productDetailQuantity.value);
-  const id = `${activeProductName}::${activeColor}`;
-  const existingItem = bag.find((item) => item.id === id);
 
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    bag.push({
-      id,
-      product: activeProductName,
-      color: activeColor,
-      price: getProductPrice(activeProductName),
-      quantity,
-    });
+  if (addProductToBag(activeProductName, activeColor, quantity)) {
+    productDetailAdd.textContent = `Added ${quantity} to bag`;
   }
+});
 
-  renderBag();
-  productDetailAdd.textContent = `Added ${quantity} to bag`;
+document.querySelectorAll(".bundle-add").forEach((button) => {
+  button.addEventListener("click", () => {
+    const productName = button.dataset.bundleProduct;
+
+    if (addProductToBag(productName, "Default Title", 1)) {
+      button.textContent = "Added to Bag";
+      window.setTimeout(() => {
+        button.textContent = "Add to Bag";
+      }, 1600);
+    }
+  });
 });
 
 bagTrigger.addEventListener("click", openBag);
