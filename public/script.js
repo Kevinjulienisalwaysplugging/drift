@@ -11,10 +11,13 @@ const productDetailTitle = document.querySelector(".product-detail-title");
 const productDetailDescription = document.querySelector(".product-detail-description");
 const productDetailPrice = document.querySelector(".product-detail-price");
 const productDetailSelection = document.querySelector(".product-detail-selection");
+const productDetailOptions = document.querySelector(".product-detail-options");
 const productDetailSwatches = document.querySelector(".product-detail-swatches");
 const productDetailThumbnails = document.querySelector(".product-detail-thumbnails");
 const productDetailQuantity = document.querySelector(".product-detail-quantity");
 const productDetailAdd = document.querySelector(".product-detail-add");
+const productDetailNote = document.querySelector(".product-detail-note");
+const productDetailReviews = document.querySelector(".product-detail-reviews");
 const bagTrigger = document.querySelector(".bag-trigger");
 const bagCount = document.querySelector(".bag-count");
 const bagPanel = document.querySelector(".bag-panel");
@@ -43,6 +46,7 @@ const colorClassByName = {
   Black: "swatch-black",
   Blush: "swatch-blush",
   Rose: "swatch-rose",
+  Pink: "swatch-pink",
   Ivory: "swatch-ivory",
   Mocha: "swatch-mocha",
   "Default Title": "swatch-bundle",
@@ -70,100 +74,209 @@ const productDetails = {
   "Satin Pillowcase": {
     description: "A smooth satin pillowcase designed for a cooler, softer night.",
     price: productPrices["Satin Pillowcase"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
+    colors: ["Champagne", "Black", "Rose"],
     images: {
       Champagne: "assets/pillowcase-champagne.webp",
       Black: "assets/pillowcase-black.webp",
-      Blush: "assets/pillowcase-blush.webp",
       Rose: "assets/pillowcase-rose.webp",
     },
   },
   "Satin Eyemask": {
     description: "A soft blackout layer for deeper rest and a polished bedside ritual.",
     price: productPrices["Satin Eyemask"],
-    colors: ["Champagne", "Black", "Rose"],
+    colors: ["Champagne", "Rose"],
     images: {
       Champagne: "assets/eyemask-champagne.webp",
-      Black: "assets/eyemask-black.webp",
       Rose: "assets/eyemask-rose.webp",
     },
   },
   "Satin Scrunchie": {
     description: "Low tension, high gloss, made for all-day wear and low-crease styling.",
     price: productPrices["Satin Scrunchie"],
-    colors: ["Champagne", "Blush", "Rose", "Ivory", "Mocha", "Black"],
-    images: { Champagne: "assets/product-scrunchies-platter.webp" },
+    colors: ["Champagne", "Black"],
+    images: {
+      Champagne: "assets/product-scrunchies-platter.webp",
+      Black: "assets/product-scrunchies-platter.webp",
+    },
   },
   "Satin Bonnet": {
     description: "A polished silhouette with a secure satin band for overnight protection.",
     price: productPrices["Satin Bonnet"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
-    images: { Champagne: "assets/product-bonnet-blush.webp" },
+    colors: ["Champagne", "Black"],
+    images: {
+      Champagne: "assets/product-bonnet-blush.webp",
+      Black: "assets/product-bonnet-blush.webp",
+    },
   },
   "Satin Twin Bedding Set": {
     description: "A compact satin bedding set for a smooth, luminous sleep surface.",
     price: productPrices["Satin Twin Bedding Set"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
-    images: { Champagne: "assets/product-twin-bedding-set.webp" },
+    colors: ["Champagne", "Black"],
+    images: {
+      Champagne: "assets/product-twin-bedding-set.webp",
+      Black: "assets/product-twin-bedding-set.webp",
+    },
   },
   "Satin Full Bedding Set": {
     description: "A full-size satin bedding set with a refined, glossy hand-feel.",
     price: productPrices["Satin Full Bedding Set"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
+    colors: ["Champagne"],
     images: { Champagne: "assets/product-full-bedding-set.webp" },
+    shopifyAvailable: false,
+    unavailableMessage: "Add Satin Full Bedding Set in Shopify before enabling checkout.",
   },
   "Satin Queen Bedding Set": {
     description: "A queen satin set made for everyday luxury and a softer bedroom mood.",
     price: productPrices["Satin Queen Bedding Set"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
-    images: { Champagne: "assets/product-queen-bedding-set.webp" },
+    colors: ["Champagne", "Black"],
+    images: {
+      Champagne: "assets/product-queen-bedding-set.webp",
+      Black: "assets/product-queen-bedding-set.webp",
+    },
   },
   "Satin King Bedding Set": {
     description: "A generous king satin set with a smooth finish and elevated drape.",
     price: productPrices["Satin King Bedding Set"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
-    images: { Champagne: "assets/product-king-bedding-set.webp" },
+    colors: ["Champagne", "Black"],
+    images: {
+      Champagne: "assets/product-king-bedding-set.webp",
+      Black: "assets/product-king-bedding-set.webp",
+    },
   },
   "Satin Blanket": {
     description: "A luminous satin blanket for layered warmth and a finished bed.",
     price: productPrices["Satin Blanket"],
-    colors: ["Champagne", "Black", "Blush", "Rose"],
-    images: { Champagne: "assets/product-satin-blanket.webp" },
+    colors: ["Black"],
+    images: { Black: "assets/product-satin-blanket.webp" },
   },
   "Luxury Slippers": {
     description: "Soft house slippers made to complete the DRIFT evening ritual.",
     price: productPrices["Luxury Slippers"],
-    colors: ["Champagne", "Blush"],
+    colors: ["Champagne"],
     images: { Champagne: "assets/product-slippers.webp" },
+    shopifyAvailable: false,
+    unavailableMessage: "Add Luxury Slippers in Shopify before enabling checkout.",
   },
   "The Nightstand Essentials Trio": {
     description: "A curated bedside set for smoother hair, softer skin, and a quieter night routine.",
     price: productPrices["The Nightstand Essentials Trio"],
-    colors: ["Default Title"],
+    colors: ["Champagne", "Black", "Rose"],
     // Bundle photos will be added in the next deployment.
-    images: { "Default Title": "assets/product-gift-set.webp" },
+    images: {
+      Champagne: "assets/product-gift-set.webp",
+      Black: "assets/product-gift-set.webp",
+      Rose: "assets/product-gift-set.webp",
+    },
   },
   "The Ultimate Hair Care Duo": {
     description: "A satin bonnet and scrunchie pairing made to protect texture and reduce overnight frizz.",
     price: productPrices["The Ultimate Hair Care Duo"],
-    colors: ["Default Title"],
+    colors: ["Champagne"],
     // Bundle photos will be added in the next deployment.
-    images: { "Default Title": "assets/product-scrunchies-box.webp" },
+    images: { Champagne: "assets/product-scrunchies-box.webp" },
+    shopifyAvailable: false,
+    unavailableMessage: "Create The Ultimate Hair Care Duo in Shopify before enabling checkout.",
   },
   "The Beauty Sleep Bundle": {
     description: "A polished sleep-care set built for a softer bedtime ritual.",
     price: productPrices["The Beauty Sleep Bundle"],
-    colors: ["Default Title"],
+    colors: ["Champagne", "Black"],
     // Bundle photos will be added in the next deployment.
-    images: { "Default Title": "assets/product-box-upright.webp" },
+    images: {
+      Champagne: "assets/product-box-upright.webp",
+      Black: "assets/product-box-upright.webp",
+    },
   },
   "The College / Dorm Starter": {
     description: "A student-ready satin starter set for comfort, polish, and hair and skin protection.",
     price: productPrices["The College / Dorm Starter"],
-    colors: ["Default Title"],
+    colors: ["Champagne"],
     // Bundle photos will be added in the next deployment.
-    images: { "Default Title": "assets/product-drape-set.webp" },
+    images: { Champagne: "assets/product-drape-set.webp" },
+    shopifyAvailable: false,
+    unavailableMessage: "Create The College / Dorm Starter in Shopify before enabling checkout.",
   },
+};
+
+const productReviews = {
+  "Satin Pillowcase": [
+    { rating: "5.0", text: "Super soft and smooth. My hair feels way less tangled in the morning compared to my old cotton pillowcase." },
+    { rating: "4.8", text: "The champagne color looks really nice on my bed, and the fabric feels cool and gentle. Definitely makes my night routine feel more luxurious." },
+    { rating: "4.7", text: "I bought this because my hair was always frizzy when I woke up. It feels much smoother now, and the pillowcase looks beautiful." },
+    { rating: "5.0", text: "Feels way more expensive than I expected. It is soft, shiny, and makes my bed look so much cleaner." },
+  ],
+  "Satin Bonnet": [
+    { rating: "5.0", text: "This bonnet is comfortable and stays on better than others I have tried. My hair feels more protected overnight." },
+    { rating: "4.8", text: "Really soft inside and not too tight. I like wearing it with the pillowcase for extra hair protection." },
+    { rating: "4.7", text: "My curls look less messy in the morning. It feels gentle and looks cute too." },
+    { rating: "5.0", text: "Perfect for sleeping. It is lightweight, soft, and does not feel annoying while I'm trying to relax." },
+  ],
+  "Satin Eyemask": [
+    { rating: "5.0", text: "Very soft and comfortable. It blocks enough light for me and feels much nicer than cheaper eye masks." },
+    { rating: "4.8", text: "I love how smooth this feels on my face. It does not pull at my skin, and the color looks really pretty." },
+    { rating: "4.7", text: "Great for naps and sleeping in later. It feels soft, lightweight, and not too tight." },
+    { rating: "5.0", text: "This makes my bedtime routine feel so much more relaxing. Simple product, but it feels premium." },
+  ],
+  "Satin Scrunchie": [
+    { rating: "5.0", text: "Way gentler than regular hair ties. It does not pull my hair as much, and it looks cute on my wrist too." },
+    { rating: "4.8", text: "I use this at night and during the day. It holds my hair without leaving a harsh dent." },
+    { rating: "4.7", text: "Soft, pretty, and easy to wear. I like that it matches the pillowcase and bonnet." },
+    { rating: "5.0", text: "Exactly what I wanted. Gentle hold, nice shine, and feels better than normal elastics." },
+  ],
+  "Satin Blanket": [
+    { rating: "5.0", text: "This blanket feels so smooth and cozy. It instantly makes my bed look more expensive." },
+    { rating: "4.8", text: "Soft, lightweight, and really pretty. I like using it while watching TV or relaxing before bed." },
+    { rating: "4.7", text: "The fabric feels luxurious and cool. It is not too heavy, which I like." },
+    { rating: "5.0", text: "Beautiful blanket. The color matches my room perfectly, and it feels very soft." },
+  ],
+  "Satin Twin Bedding Set": [
+    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
+    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
+    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
+    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
+  ],
+  "Satin Queen Bedding Set": [
+    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
+    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
+    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
+    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
+  ],
+  "Satin King Bedding Set": [
+    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
+    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
+    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
+    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
+  ],
+  "Satin Full Bedding Set": [
+    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
+    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
+    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
+    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
+  ],
+  "The Nightstand Essentials Trio": [
+    { rating: "5.0", text: "This bundle is perfect if you want to upgrade your sleep routine without buying a full bedding set." },
+    { rating: "4.8", text: "The pillowcase and eye mask feel really soft together. It is a simple upgrade but feels luxurious." },
+    { rating: "4.7", text: "Great value for the two items. The eye mask is comfortable and the pillowcase feels smooth on my hair." },
+    { rating: "5.0", text: "Bought this as a self-care gift for myself. It looks pretty and feels amazing." },
+  ],
+  "The Ultimate Hair Care Duo": [
+    { rating: "5.0", text: "This is the best bundle for hair care. Everything feels gentle, and my hair is less messy in the morning." },
+    { rating: "4.8", text: "I like that all three products match. The pillowcase, bonnet, and scrunchie make my night routine feel complete." },
+    { rating: "4.7", text: "Good bundle if you care about frizz and breakage. Everything feels soft and comfortable." },
+    { rating: "5.0", text: "This is the bundle I would recommend first. It feels like a full overnight hair protection set." },
+  ],
+  "The Beauty Sleep Bundle": [
+    { rating: "5.0", text: "This bundle feels like a full sleep upgrade. The pillowcase is smooth, the eye mask is soft, and the bonnet is comfortable." },
+    { rating: "4.8", text: "Really good for a self-care night routine. Everything feels premium and looks beautiful together." },
+    { rating: "4.7", text: "I bought this because I wanted matching sleep accessories. It looks cute and feels very soft." },
+    { rating: "5.0", text: "Perfect set. It makes bedtime feel more relaxing and put together." },
+  ],
+  "The College / Dorm Starter": [
+    { rating: "5.0", text: "This bundle makes the whole bed feel upgraded. Everything matches and looks really clean." },
+    { rating: "4.8", text: "Great if you want the full Drift setup. The colors are beautiful and the fabric feels smooth." },
+    { rating: "4.7", text: "I like having the pillowcase, mask, bonnet, and accessories all together. It feels premium without being too much." },
+    { rating: "5.0", text: "Honestly my favorite purchase for my room. It makes my bed look more luxurious and feels really comfortable." },
+  ],
 };
 
 const bundleDetails = [
@@ -222,7 +335,12 @@ const bundleDetails = [
 
 let activeProductName = "";
 let activeColor = "";
-let bag = JSON.parse(window.localStorage.getItem("driftBag") || "[]").map(({ image, ...item }) => item);
+let bag = JSON.parse(window.localStorage.getItem("driftBag") || "[]")
+  .map(({ image, ...item }) => item)
+  .filter((item) => {
+    const product = productDetails[item.product];
+    return product?.shopifyAvailable !== false && product?.colors.includes(item.color);
+  });
 
 document.body.classList.add("reveal-ready");
 
@@ -235,6 +353,48 @@ const syncProductCardPrices = () => {
     if (price && priceElement) {
       priceElement.textContent = price;
     }
+  });
+};
+
+const getReviewMarkup = (productName, compact = false) => {
+  const reviews = productReviews[productName] || [];
+
+  if (reviews.length === 0) {
+    return '<p class="review-empty">No reviews yet.</p>';
+  }
+
+  const visibleReviews = compact ? reviews.slice(0, 2) : reviews;
+  return visibleReviews
+    .map(
+      (review) => `
+        <article class="product-review">
+          <div class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★ <span>${review.rating}</span></div>
+          <p>"${review.text}"</p>
+          <span>Verified Customer</span>
+        </article>
+      `
+    )
+    .join("");
+};
+
+const attachProductCardReviews = () => {
+  document.querySelectorAll(".product-card").forEach((card) => {
+    const productName = card.querySelector("h3")?.textContent;
+    const copy = card.querySelector(".product-copy");
+
+    if (!productName || !copy || copy.querySelector(".card-reviews")) {
+      return;
+    }
+
+    const details = document.createElement("details");
+    details.className = "card-reviews";
+    details.innerHTML = `
+      <summary>Reviews</summary>
+      <div class="card-review-list">${getReviewMarkup(productName, true)}</div>
+    `;
+    details.addEventListener("click", (event) => event.stopPropagation());
+    details.addEventListener("keydown", (event) => event.stopPropagation());
+    copy.append(details);
   });
 };
 
@@ -324,6 +484,7 @@ const setProductDetailImage = (product, color) => {
 const openProductDetail = (productName) => {
   const product = productDetails[productName];
   const imageColors = Object.keys(product.images);
+  const isAvailable = product.shopifyAvailable !== false;
 
   activeProductName = productName;
   productDetailTitle.textContent = productName;
@@ -333,6 +494,16 @@ const openProductDetail = (productName) => {
   productDetailThumbnails.innerHTML = "";
   productDetailQuantity.value = "1";
   productDetailAdd.textContent = "Add to bag";
+  productDetailAdd.disabled = !isAvailable;
+  productDetailAdd.textContent = isAvailable ? "Add to bag" : "Unavailable";
+  productDetailNote.textContent = isAvailable
+    ? "Your selections are saved in your DRIFT bag."
+    : product.unavailableMessage || "This product needs to be added in Shopify before checkout is enabled.";
+  productDetailReviews.innerHTML = `
+    <summary>Reviews</summary>
+    <div class="product-detail-review-list">${getReviewMarkup(productName)}</div>
+  `;
+  productDetailOptions.hidden = product.colors.length === 1 && product.colors[0] === "Default Title";
 
   product.colors.forEach((color) => {
     const swatch = document.createElement("button");
@@ -454,7 +625,7 @@ const removeBagItem = (itemId) => {
 const addProductToBag = (productName, color, quantity = 1) => {
   const product = productDetails[productName];
 
-  if (!product) {
+  if (!product || product.shopifyAvailable === false || !product.colors.includes(color)) {
     return false;
   }
 
@@ -528,10 +699,19 @@ productDetailAdd.addEventListener("click", () => {
 });
 
 document.querySelectorAll(".bundle-add").forEach((button) => {
-  button.addEventListener("click", () => {
-    const productName = button.dataset.bundleProduct;
+  const productName = button.dataset.bundleProduct;
+  const product = productDetails[productName];
 
-    if (addProductToBag(productName, "Default Title", 1)) {
+  if (!product || product.shopifyAvailable === false) {
+    button.disabled = true;
+    button.textContent = "Add in Shopify";
+    return;
+  }
+
+  button.addEventListener("click", () => {
+    const color = product.colors[0];
+
+    if (addProductToBag(productName, color, 1)) {
       button.textContent = "Added to Bag";
       window.setTimeout(() => {
         button.textContent = "Add to Bag";
@@ -545,8 +725,6 @@ bagClose.addEventListener("click", closeBag);
 bagBackdrop.addEventListener("click", closeBag);
 bagCheckout.addEventListener("click", async () => {
   if (window.location.protocol === "file:") {
-    bagCheckoutNote.textContent =
-      "Your bag is ready. Shopify checkout activates on the deployed site after your store products and variants are added.";
     return;
   }
 
@@ -586,6 +764,7 @@ bagCheckout.addEventListener("click", async () => {
 
 renderBag();
 syncProductCardPrices();
+attachProductCardReviews();
 
 let joinPopupHasOpened = false;
 let supabaseAuthClient = null;
@@ -780,7 +959,7 @@ form.addEventListener("submit", async (event) => {
     const result = await saveWaitlistSignup(email);
     note.textContent =
       result.mode === "supabase"
-        ? `${email} has been added to the private DRIFT release list.`
+        ? `${email} has been added to the DRIFT updates list.`
         : `${email} has been saved for this demo. Add Supabase keys to collect live signups.`;
     form.reset();
   } catch (error) {
@@ -788,7 +967,7 @@ form.addEventListener("submit", async (event) => {
     console.error(error);
   } finally {
     submitButton.disabled = false;
-    submitButton.textContent = "Request access";
+    submitButton.textContent = "Join the list";
   }
 });
 

@@ -19,7 +19,7 @@ export default function PrivacyPolicyPage() {
         <h2>Information We Collect</h2>
         <p>
           DRIFT may collect information you provide directly, including your email address when you join the
-          private release list, your name, shipping address, billing details, and order information when you
+          DRIFT updates list, your name, shipping address, billing details, and order information when you
           purchase products through Shopify checkout.
         </p>
         <p>
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
         <h2>How We Use Information</h2>
         <p>
           We use information to operate the DRIFT storefront, process orders, communicate about purchases,
-          manage the private release list, respond to customer support requests, detect abuse, and improve the
+          manage the DRIFT updates list, respond to customer support requests, detect abuse, and improve the
           customer experience.
         </p>
       </article>
@@ -90,4 +90,3 @@ export default function PrivacyPolicyPage() {
     </LegalShell>
   );
 }
-

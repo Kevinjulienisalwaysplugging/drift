@@ -37,7 +37,7 @@ export default function DataDeletionPage() {
       <article>
         <h2>What We Can Delete</h2>
         <p>
-          We can delete or anonymize personal information submitted through the DRIFT private release list,
+          We can delete or anonymize personal information submitted through the DRIFT updates list,
           customer support messages, and other site forms where deletion is legally and technically possible.
         </p>
       </article>
@@ -69,4 +69,3 @@ export default function DataDeletionPage() {
     </LegalShell>
   );
 }
-

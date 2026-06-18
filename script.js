@@ -480,7 +480,7 @@ form.addEventListener("submit", async (event) => {
     console.error(error);
   } finally {
     submitButton.disabled = false;
-    submitButton.textContent = "Request access";
+    submitButton.textContent = "Join the list";
   }
 });
 

@@ -40,7 +40,7 @@ This is what still needs your decision or real business information before DRIFT
 - Material/craft section
 - Care guide section
 - FAQ section
-- Private release signup interaction
+- DRIFT updates signup interaction
 - SEO description and social preview tags
 - Favicon
 - Sendable single-file HTML version
