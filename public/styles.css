@@ -1066,12 +1066,32 @@ h3 {
   background: #df9fa2;
 }
 
+.swatch-light-pink {
+  background: #f2c8cf;
+}
+
 .swatch-white {
   background: #f8f2e8;
 }
 
 .swatch-navy {
   background: #101833;
+}
+
+.swatch-red {
+  background: #8f2024;
+}
+
+.swatch-light-green {
+  background: #b9c7a1;
+}
+
+.swatch-coffee-brown {
+  background: #5a3928;
+}
+
+.swatch-light-champagne {
+  background: #ead6b8;
 }
 
 .swatch-ivory {
