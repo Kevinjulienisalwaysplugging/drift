@@ -37,6 +37,7 @@ const joinAuthSignup = document.querySelector('[data-auth-action="signup"]');
 const joinAuthLogin = document.querySelector('[data-auth-action="login"]');
 const joinPopupMessage = document.querySelector(".join-popup-message");
 const joinPopupSessionKey = "driftJoinPopupClosed";
+const joinPopupCompletedKey = "driftJoinAuthCompleted";
 const authStatus = document.querySelector(".auth-status");
 const authStatusEmail = document.querySelector(".auth-status-email");
 const authLogout = document.querySelector(".auth-logout");
@@ -47,6 +48,8 @@ const colorClassByName = {
   Blush: "swatch-blush",
   Rose: "swatch-rose",
   Pink: "swatch-pink",
+  White: "swatch-white",
+  "Navy Blue": "swatch-navy",
   Ivory: "swatch-ivory",
   Mocha: "swatch-mocha",
   "Default Title": "swatch-bundle",
@@ -74,20 +77,29 @@ const productDetails = {
   "Satin Pillowcase": {
     description: "A smooth satin pillowcase designed for a cooler, softer night.",
     price: productPrices["Satin Pillowcase"],
-    colors: ["Champagne", "Black", "Rose"],
+    colors: ["Champagne", "Black", "Pink", "Rose", "White", "Navy Blue"],
+    checkoutColors: ["Champagne", "Black", "Pink", "Rose"],
     images: {
-      Champagne: "assets/pillowcase-champagne.webp",
-      Black: "assets/pillowcase-black.webp",
-      Rose: "assets/pillowcase-rose.webp",
+      Champagne: "assets/product-pillowcase-new.png",
+      Black: "assets/product-pillowcase-new.png",
+      Pink: "assets/product-pillowcase-new.png",
+      Rose: "assets/product-pillowcase-new.png",
+      White: "assets/product-pillowcase-new.png",
+      "Navy Blue": "assets/product-pillowcase-new.png",
     },
   },
   "Satin Eyemask": {
     description: "A soft blackout layer for deeper rest and a polished bedside ritual.",
     price: productPrices["Satin Eyemask"],
-    colors: ["Champagne", "Rose"],
+    colors: ["Champagne", "Black", "Pink", "Rose", "White", "Navy Blue"],
+    checkoutColors: ["Champagne", "Pink", "Rose"],
     images: {
-      Champagne: "assets/eyemask-champagne.webp",
-      Rose: "assets/eyemask-rose.webp",
+      Champagne: "assets/product-eyemask-new.png",
+      Black: "assets/product-eyemask-new.png",
+      Pink: "assets/product-eyemask-new.png",
+      Rose: "assets/product-eyemask-new.png",
+      White: "assets/product-eyemask-new.png",
+      "Navy Blue": "assets/product-eyemask-new.png",
     },
   },
   "Satin Scrunchie": {
@@ -339,7 +351,7 @@ let bag = JSON.parse(window.localStorage.getItem("driftBag") || "[]")
   .map(({ image, ...item }) => item)
   .filter((item) => {
     const product = productDetails[item.product];
-    return product?.shopifyAvailable !== false && product?.colors.includes(item.color);
+    return product?.shopifyAvailable !== false && (product.checkoutColors || product.colors).includes(item.color);
   });
 
 document.body.classList.add("reveal-ready");
@@ -375,27 +387,6 @@ const getReviewMarkup = (productName, compact = false) => {
       `
     )
     .join("");
-};
-
-const attachProductCardReviews = () => {
-  document.querySelectorAll(".product-card").forEach((card) => {
-    const productName = card.querySelector("h3")?.textContent;
-    const copy = card.querySelector(".product-copy");
-
-    if (!productName || !copy || copy.querySelector(".card-reviews")) {
-      return;
-    }
-
-    const details = document.createElement("details");
-    details.className = "card-reviews";
-    details.innerHTML = `
-      <summary>Reviews</summary>
-      <div class="card-review-list">${getReviewMarkup(productName, true)}</div>
-    `;
-    details.addEventListener("click", (event) => event.stopPropagation());
-    details.addEventListener("keydown", (event) => event.stopPropagation());
-    copy.append(details);
-  });
 };
 
 const setHeaderState = () => {
@@ -466,11 +457,20 @@ const getDisplayColor = (color) => (color === "Default Title" ? "Bundle" : color
 
 const setProductDetailImage = (product, color) => {
   const image = getProductImage(product, color);
+  const canCheckoutColor = (product.checkoutColors || product.colors).includes(color);
 
   productDetailImage.src = image;
   productDetailImage.alt = `${activeProductName} in ${getDisplayColor(color)}`;
   productDetailSelection.textContent = getDisplayColor(color);
   activeColor = color;
+  productDetailAdd.disabled = product.shopifyAvailable === false || !canCheckoutColor;
+  productDetailAdd.textContent = canCheckoutColor ? "Add to bag" : "Color unavailable";
+  productDetailNote.textContent =
+    product.shopifyAvailable === false
+      ? product.unavailableMessage || "This product needs to be added in Shopify before checkout is enabled."
+      : canCheckoutColor
+        ? "Your selections are saved in your DRIFT bag."
+        : `${getDisplayColor(color)} needs to be added in Shopify before checkout is enabled.`;
 
   productDetailSwatches.querySelectorAll(".product-detail-swatch").forEach((swatch) => {
     swatch.classList.toggle("is-active", swatch.dataset.color === color);
@@ -624,8 +624,9 @@ const removeBagItem = (itemId) => {
 
 const addProductToBag = (productName, color, quantity = 1) => {
   const product = productDetails[productName];
+  const checkoutColors = product?.checkoutColors || product?.colors || [];
 
-  if (!product || product.shopifyAvailable === false || !product.colors.includes(color)) {
+  if (!product || product.shopifyAvailable === false || !checkoutColors.includes(color)) {
     return false;
   }
 
@@ -764,7 +765,6 @@ bagCheckout.addEventListener("click", async () => {
 
 renderBag();
 syncProductCardPrices();
-attachProductCardReviews();
 
 let joinPopupHasOpened = false;
 let supabaseAuthClient = null;
@@ -772,6 +772,22 @@ let currentAuthUser = null;
 let authSessionChecked = false;
 
 const isJoinPopupDismissed = () => window.sessionStorage.getItem(joinPopupSessionKey) === "true";
+const hasCompletedJoinAuth = () => window.localStorage.getItem(joinPopupCompletedKey) === "true";
+
+const getCustomerDisplayName = (user) => {
+  const metadata = user?.user_metadata || {};
+  const name = metadata.full_name || metadata.name || metadata.first_name;
+
+  if (name) {
+    return `[${String(name).trim().split(/\s+/)[0]}]`;
+  }
+
+  if (user?.email) {
+    return `[${user.email.split("@")[0]}]`;
+  }
+
+  return "Login";
+};
 
 const setJoinPopupMessage = (message = "", mode = "") => {
   joinPopupMessage.textContent = message;
@@ -787,8 +803,14 @@ const setAuthLoading = (isLoading) => {
 
 const updateAuthStatus = (user) => {
   currentAuthUser = user;
-  authStatus.hidden = !user;
-  authStatusEmail.textContent = user?.email || "";
+  authStatus.classList.toggle("is-logged-in", Boolean(user));
+  authStatusEmail.textContent = getCustomerDisplayName(user);
+  authLogout.hidden = !user;
+
+  if (user) {
+    window.localStorage.setItem(joinPopupCompletedKey, "true");
+    closeJoinPopup();
+  }
 };
 
 const loadSupabaseAuthClient = async () => {
@@ -837,6 +859,7 @@ const openJoinPopup = () => {
     !authSessionChecked ||
     joinPopupHasOpened ||
     isJoinPopupDismissed() ||
+    hasCompletedJoinAuth() ||
     currentAuthUser ||
     !bagPanel.hidden ||
     !productDetail.hidden
@@ -892,6 +915,7 @@ const handleJoinAuth = async (mode) => {
     }
 
     if (data.user && data.session) {
+      window.localStorage.setItem(joinPopupCompletedKey, "true");
       updateAuthStatus(data.user);
       setJoinPopupMessage("You are signed in to DRIFT.", "success");
       window.setTimeout(closeJoinPopup, 900);
@@ -899,6 +923,7 @@ const handleJoinAuth = async (mode) => {
     }
 
     setJoinPopupMessage("Check your email for the DRIFT confirmation link.", "success");
+    window.localStorage.setItem(joinPopupCompletedKey, "true");
     window.sessionStorage.setItem(joinPopupSessionKey, "true");
   } catch (error) {
     setJoinPopupMessage(error.message || "Unable to connect right now. Please try again.", "error");
@@ -933,12 +958,21 @@ authLogout.addEventListener("click", async () => {
   try {
     const client = await loadSupabaseAuthClient();
     await client.auth.signOut();
+    window.localStorage.removeItem(joinPopupCompletedKey);
     updateAuthStatus(null);
   } catch (error) {
     console.info("[DRIFT Auth] Logout failed", error.message);
   } finally {
     setAuthLoading(false);
   }
+});
+authStatus.addEventListener("click", (event) => {
+  if (event.target.closest(".auth-logout") || currentAuthUser) {
+    return;
+  }
+
+  joinPopupHasOpened = false;
+  openJoinPopup();
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !joinPopup.hidden) {

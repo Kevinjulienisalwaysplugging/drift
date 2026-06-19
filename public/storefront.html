@@ -33,9 +33,15 @@
         <a href="#care">Care</a>
       </nav>
       <div class="header-actions">
-        <div class="auth-status" hidden>
-          <span class="auth-status-email"></span>
-          <button class="auth-logout" type="button">Logout</button>
+        <div class="auth-status" aria-label="Customer profile">
+          <span class="profile-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20 21a8 8 0 0 0-16 0" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </span>
+          <span class="auth-status-email">Login</span>
+          <button class="auth-logout" type="button" hidden>Logout</button>
         </div>
         <a class="header-action" href="#drift-list">Join</a>
         <button class="bag-trigger" type="button" aria-label="Open shopping bag">
@@ -46,7 +52,9 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <img class="hero-image" src="assets/drift-satin-hero.webp" alt="Champagne satin pillowcases and sleep accessories arranged in soft light.">
+        <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="assets/drift-satin-hero.webp" aria-label="DRIFT satin sleep essentials in motion.">
+          <source src="assets/drift-header.mp4" type="video/mp4">
+        </video>
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="hero-content" data-animate>
           <p class="eyebrow">Luxury satin essentials</p>
@@ -225,7 +233,7 @@
         <div class="product-grid main-product-grid">
           <article class="product-card" data-animate>
             <div class="product-visual pillow" aria-hidden="true">
-              <img class="product-photo" src="assets/pillowcase-champagne.webp" alt="">
+              <img class="product-photo" src="assets/product-pillowcase-new.png" alt="">
             </div>
             <div class="product-copy">
               <span class="best-seller-tag">Best Seller</span>
@@ -236,14 +244,17 @@
               <div class="colorway-line" aria-label="Satin Pillowcase colorways">
                 <span class="swatch-champagne" title="Champagne"></span>
                 <span class="swatch-black" title="Black"></span>
+                <span class="swatch-pink" title="Pink"></span>
                 <span class="swatch-rose" title="Rose"></span>
+                <span class="swatch-white" title="White"></span>
+                <span class="swatch-navy" title="Navy Blue"></span>
               </div>
-              <span class="colorway-names">Champagne / Black / Rose</span>
+              <span class="colorway-names">Champagne / Black / Pink / Rose / White / Navy Blue</span>
             </div>
           </article>
           <article class="product-card" data-animate>
             <div class="product-visual eyemask" aria-hidden="true">
-              <img class="product-photo" src="assets/eyemask-champagne.webp" alt="">
+              <img class="product-photo" src="assets/product-eyemask-new.png" alt="">
             </div>
             <div class="product-copy">
               <span class="best-seller-tag">Best Seller</span>
@@ -253,9 +264,13 @@
               <strong>$10.99</strong>
               <div class="colorway-line" aria-label="Satin Eyemask colorways">
                 <span class="swatch-champagne" title="Champagne"></span>
+                <span class="swatch-black" title="Black"></span>
+                <span class="swatch-pink" title="Pink"></span>
                 <span class="swatch-rose" title="Rose"></span>
+                <span class="swatch-white" title="White"></span>
+                <span class="swatch-navy" title="Navy Blue"></span>
               </div>
-              <span class="colorway-names">Champagne / Rose</span>
+              <span class="colorway-names">Champagne / Black / Pink / Rose / White / Navy Blue</span>
             </div>
           </article>
           <article class="product-card" data-animate>
@@ -458,7 +473,7 @@
           <div class="product-detail-gallery">
             <div class="product-detail-thumbnails" aria-label="Product images"></div>
             <div class="product-detail-image-wrap">
-              <img class="product-detail-image" src="assets/pillowcase-champagne.webp" alt="">
+              <img class="product-detail-image" src="assets/product-pillowcase-new.png" alt="">
             </div>
           </div>
           <div class="product-detail-copy">
@@ -648,24 +663,28 @@
       <section class="faq" aria-labelledby="faq-title">
         <div data-animate>
           <p class="eyebrow">Questions</p>
-          <h2 id="faq-title">Before the first drop.</h2>
+          <h2 id="faq-title">Questions before you drift in.</h2>
         </div>
         <div class="faq-list">
           <details data-animate>
             <summary>Is DRIFT silk or satin?</summary>
-            <p>DRIFT is currently positioned as a satin brand. Add the exact fabric composition from your supplier before selling.</p>
+            <p>DRIFT pieces are made with smooth satin, designed to give you a soft, silk-like feel while staying easy to care for.</p>
+          </details>
+          <details data-animate>
+            <summary>What makes satin better for sleep?</summary>
+            <p>Satin creates a smoother surface than cotton, which can help reduce friction against your hair and skin while you rest.</p>
           </details>
           <details data-animate>
             <summary>When does the first collection launch?</summary>
-            <p>The first DRIFT collection is now available through the storefront.</p>
+            <p>The first DRIFT collection is available now.</p>
           </details>
           <details data-animate>
             <summary>What colors will be available?</summary>
-            <p>The initial palette is designed around champagne, pearl, mocha, warm taupe, bronze, and espresso.</p>
+            <p>Select pieces are available in Champagne, Black, Pink, Rose, White, and Navy Blue.</p>
           </details>
           <details data-animate>
-            <summary>Can this become a full store?</summary>
-            <p>Yes. This preview can move into the deployed DRIFT storefront with Shopify Checkout when payment collection is ready.</p>
+            <summary>Where is DRIFT based?</summary>
+            <p>DRIFT is based in the United States and created around everyday luxury, calm routines, and better rest.</p>
           </details>
         </div>
       </section>

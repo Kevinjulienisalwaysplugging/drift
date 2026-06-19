@@ -153,7 +153,11 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 38px;
+  border: 0;
+  background: transparent;
   color: inherit;
+  cursor: pointer;
   font-size: 0.68rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -168,6 +172,25 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.profile-icon {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.profile-icon svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
 }
 
 .auth-logout {
@@ -219,11 +242,17 @@ a {
 }
 
 .hero-image,
+.hero-video,
 .hero-shade {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+.hero-video {
+  object-fit: cover;
+  object-position: center center;
 }
 
 .hero-image {
@@ -235,8 +264,8 @@ a {
 
 .hero-shade {
   background:
-    linear-gradient(90deg, rgba(32, 25, 21, 0.78), rgba(32, 25, 21, 0.34) 48%, rgba(32, 25, 21, 0.08)),
-    linear-gradient(0deg, rgba(32, 25, 21, 0.46), transparent 38%);
+    linear-gradient(90deg, rgba(32, 25, 21, 0.56), rgba(32, 25, 21, 0.22) 48%, rgba(32, 25, 21, 0.04)),
+    linear-gradient(0deg, rgba(32, 25, 21, 0.34), transparent 38%);
 }
 
 .hero-content {
@@ -679,7 +708,8 @@ h3 {
   width: 100%;
   height: 100%;
   max-width: none;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   transition: transform 520ms ease;
 }
 
@@ -947,13 +977,11 @@ h3 {
   padding-top: 8px;
 }
 
-.card-reviews,
 .product-detail-reviews {
   margin-top: 18px;
   border-top: 1px solid rgba(75, 56, 43, 0.14);
 }
 
-.card-reviews summary,
 .product-detail-reviews summary {
   padding: 14px 0 0;
   color: var(--espresso);
@@ -965,16 +993,17 @@ h3 {
   text-transform: uppercase;
 }
 
-.card-reviews summary::-webkit-details-marker,
 .product-detail-reviews summary::-webkit-details-marker {
   display: none;
 }
 
-.card-review-list,
 .product-detail-review-list {
   display: grid;
   gap: 12px;
   padding-top: 14px;
+  max-height: min(42vh, 380px);
+  overflow: auto;
+  padding-right: 4px;
 }
 
 .product-review {
@@ -990,6 +1019,7 @@ h3 {
   font-weight: 400;
   line-height: 1.45;
   text-transform: none;
+  overflow-wrap: anywhere;
 }
 
 .product-review > span,
@@ -1034,6 +1064,14 @@ h3 {
 
 .swatch-pink {
   background: #df9fa2;
+}
+
+.swatch-white {
+  background: #f8f2e8;
+}
+
+.swatch-navy {
+  background: #101833;
 }
 
 .swatch-ivory {
@@ -2169,6 +2207,11 @@ body.reveal-ready [data-animate].is-visible {
     display: none;
   }
 
+  .profile-icon {
+    width: 28px;
+    height: 28px;
+  }
+
   .auth-logout {
     min-height: 30px;
     padding: 0 8px;
@@ -2182,8 +2225,8 @@ body.reveal-ready [data-animate].is-visible {
 
   .hero-shade {
     background:
-      linear-gradient(90deg, rgba(32, 25, 21, 0.82), rgba(32, 25, 21, 0.38)),
-      linear-gradient(0deg, rgba(32, 25, 21, 0.56), transparent 46%);
+      linear-gradient(90deg, rgba(32, 25, 21, 0.66), rgba(32, 25, 21, 0.28)),
+      linear-gradient(0deg, rgba(32, 25, 21, 0.42), transparent 46%);
   }
 
   h1 {
