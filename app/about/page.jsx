@@ -14,6 +14,8 @@ export default function AboutPage() {
       eyebrow="About DRIFT"
       title="Everyday luxury for your night routine."
       intro="DRIFT creates smooth satin essentials for softer rest, calmer routines, and a more polished bedroom ritual."
+      heroImage="/assets/about-nightgown-ritual.png"
+      heroImageAlt="A satin nightgown hanging in warm evening light beside a quiet bedside ritual."
     >
       <article>
         <h2>What DRIFT Makes</h2>
@@ -29,6 +31,20 @@ export default function AboutPage() {
           Satin creates a smoother surface than cotton, helping reduce friction against hair and skin
           while keeping the experience easy to care for and approachable.
         </p>
+      </article>
+
+      <article className="about-material-feature">
+        <div>
+          <h2>Material Language</h2>
+          <p>
+            DRIFT uses satin for its soft sheen, fluid drape, and smooth hand feel. The material is
+            chosen to make everyday sleep pieces feel calm, polished, and easy to return to night
+            after night.
+          </p>
+        </div>
+        <figure>
+          <img src="/assets/about-material-satin.png" alt="Blush satin fabric catching warm window light on a bed." />
+        </figure>
       </article>
 
       <article>
