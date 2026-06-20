@@ -991,15 +991,6 @@ h3 {
   text-transform: uppercase;
 }
 
-.product-setup-note {
-  display: block;
-  margin-top: 14px;
-  color: rgba(32, 25, 21, 0.56);
-  font-size: 0.74rem;
-  font-weight: 800;
-  line-height: 1.45;
-}
-
 .collection-group {
   margin-top: 18px;
   border-top: 1px solid var(--line);

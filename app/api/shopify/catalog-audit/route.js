@@ -13,7 +13,10 @@ export async function GET() {
       ok:
         audit.missingProducts.length === 0 &&
         audit.missingSiteColors.length === 0 &&
-        audit.extraShopifyColors.length === 0,
+        audit.missingSiteSizes.length === 0 &&
+        audit.missingSiteVariants.length === 0 &&
+        audit.extraShopifyColors.length === 0 &&
+        audit.extraShopifyVariants.length === 0,
       ...audit
     });
   } catch (error) {

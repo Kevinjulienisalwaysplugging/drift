@@ -66,6 +66,7 @@ const colorClassByName = {
   Navy: "swatch-navy",
   "Navy Blue": "swatch-navy",
   Red: "swatch-red",
+  Green: "swatch-light-green",
   "Light Green": "swatch-light-green",
   "Coffee Brown": "swatch-coffee-brown",
   "Light Champagne": "swatch-light-champagne",
@@ -86,7 +87,10 @@ const productPrices = {
   "Satin King Bedding Set": "$75.99",
   "Satin Blanket": "$89.99",
   "Luxury Slippers": "$35.99",
-  "Satin Nightgown": "Price coming soon",
+  "Satin Nightgown": "Price loading",
+  "Pillowcase + Eyemask": "Price loading",
+  "Pillowcase + Bonnet": "Price loading",
+  "Complete Sleep Set": "Price loading",
   "The Nightstand Essentials Trio": "$39.99",
   "The Ultimate Hair Care Duo": "$19.99",
   "The Beauty Sleep Bundle": "$44.99",
@@ -98,7 +102,6 @@ const productDetails = {
     description: "A smooth satin pillowcase designed for a cooler, softer night.",
     price: productPrices["Satin Pillowcase"],
     colors: ["Champagne", "Black", "Pink", "Rose", "White", "Navy Blue"],
-    checkoutColors: ["Champagne", "Black", "Pink", "Rose"],
     images: {
       Champagne: "assets/product-pillowcase-new.png",
       Black: "assets/product-pillowcase-new.png",
@@ -112,7 +115,6 @@ const productDetails = {
     description: "A soft blackout layer for deeper rest and a polished bedside ritual.",
     price: productPrices["Satin Eyemask"],
     colors: ["Champagne", "Black", "Pink", "Rose", "White", "Navy Blue"],
-    checkoutColors: ["Champagne", "Pink", "Rose"],
     images: {
       Champagne: "assets/product-eyemask-new.png",
       Black: "assets/product-eyemask-new.png",
@@ -126,7 +128,6 @@ const productDetails = {
     description: "Low tension, high gloss, made for all-day wear and low-crease styling.",
     price: productPrices["Satin Scrunchie"],
     colors: ["Navy", "Black", "Light Green", "Red"],
-    checkoutColors: ["Black"],
     images: {
       Navy: "assets/product-scrunchies-platter.webp",
       Black: "assets/product-scrunchies-platter.webp",
@@ -138,7 +139,6 @@ const productDetails = {
     description: "A polished silhouette with a secure satin band for overnight protection.",
     price: productPrices["Satin Bonnet"],
     colors: ["Light Pink", "Black", "Coffee Brown", "Navy Blue", "Red"],
-    checkoutColors: ["Black"],
     images: {
       "Light Pink": "assets/product-bonnet-blush.webp",
       Black: "assets/product-bonnet-blush.webp",
@@ -150,36 +150,45 @@ const productDetails = {
   "Satin Twin Bedding Set": {
     description: "A compact satin bedding set for a smooth, luminous sleep surface.",
     price: productPrices["Satin Twin Bedding Set"],
-    colors: ["Champagne", "Black"],
+    colors: ["Light Champagne", "Black", "Green", "Pink"],
     images: {
-      Champagne: "assets/product-twin-bedding-set.webp",
+      "Light Champagne": "assets/product-twin-bedding-set.webp",
       Black: "assets/product-twin-bedding-set.webp",
+      Green: "assets/product-twin-bedding-set.webp",
+      Pink: "assets/product-twin-bedding-set.webp",
     },
   },
   "Satin Full Bedding Set": {
     description: "A full-size satin bedding set with a refined, glossy hand-feel.",
     price: productPrices["Satin Full Bedding Set"],
-    colors: ["Champagne"],
-    images: { Champagne: "assets/product-full-bedding-set.webp" },
-    shopifyAvailable: false,
-    unavailableMessage: "Add Satin Full Bedding Set in Shopify before enabling checkout.",
+    colors: ["Light Champagne", "Black", "Green", "Pink"],
+    images: {
+      "Light Champagne": "assets/product-full-bedding-set.webp",
+      Black: "assets/product-full-bedding-set.webp",
+      Green: "assets/product-full-bedding-set.webp",
+      Pink: "assets/product-full-bedding-set.webp",
+    },
   },
   "Satin Queen Bedding Set": {
     description: "A queen satin set made for everyday luxury and a softer bedroom mood.",
     price: productPrices["Satin Queen Bedding Set"],
-    colors: ["Champagne", "Black"],
+    colors: ["Light Champagne", "Black", "Green", "Pink"],
     images: {
-      Champagne: "assets/product-queen-bedding-set.webp",
+      "Light Champagne": "assets/product-queen-bedding-set.webp",
       Black: "assets/product-queen-bedding-set.webp",
+      Green: "assets/product-queen-bedding-set.webp",
+      Pink: "assets/product-queen-bedding-set.webp",
     },
   },
   "Satin King Bedding Set": {
     description: "A generous king satin set with a smooth finish and elevated drape.",
     price: productPrices["Satin King Bedding Set"],
-    colors: ["Champagne", "Black"],
+    colors: ["Light Champagne", "Black", "Green", "Pink"],
     images: {
-      Champagne: "assets/product-king-bedding-set.webp",
+      "Light Champagne": "assets/product-king-bedding-set.webp",
       Black: "assets/product-king-bedding-set.webp",
+      Green: "assets/product-king-bedding-set.webp",
+      Pink: "assets/product-king-bedding-set.webp",
     },
   },
   "Satin Blanket": {
@@ -199,13 +208,13 @@ const productDetails = {
       "Light Champagne": "assets/product-slippers-new.png",
     },
     shopifyAvailable: false,
-    unavailableMessage: "Add Luxury Slippers in Shopify before enabling checkout.",
+    unavailableMessage: "Luxury Slippers are not available for checkout yet.",
   },
   "Satin Nightgown": {
     description: "A fluid satin nightgown with adjustable straps, a soft lace neckline, and an easy midi drape for elevated sleepwear.",
     price: productPrices["Satin Nightgown"],
     colors: ["Black", "Pink", "Navy", "Champagne", "Red"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["Small", "Medium", "Large", "Extra Large"],
     features: [
       "Smooth satin finish with a soft, cool hand-feel",
       "Adjustable straps for a more comfortable fit",
@@ -219,46 +228,101 @@ const productDetails = {
       Red: "assets/nightgown-red.png",
     },
     shopifyAvailable: false,
-    unavailableMessage: "Create Satin Nightgown in Shopify before enabling checkout.",
+    unavailableMessage: "Satin Nightgown variants are being verified.",
   },
   "The Nightstand Essentials Trio": {
     description: "A curated bedside set for smoother hair, softer skin, and a quieter night routine.",
     price: productPrices["The Nightstand Essentials Trio"],
-    colors: ["Champagne", "Black", "Rose"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
     // Bundle photos will be added in the next deployment.
     images: {
-      Champagne: "assets/product-gift-set.webp",
+      "Light Champagne": "assets/product-gift-set.webp",
+      Pink: "assets/product-gift-set.webp",
       Black: "assets/product-gift-set.webp",
       Rose: "assets/product-gift-set.webp",
     },
   },
+  "Pillowcase + Eyemask": {
+    description: "A soft starter set for smoother hair, softer skin, and darker rest.",
+    price: productPrices["Pillowcase + Eyemask"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
+    // Bundle photos will be added in the next deployment.
+    images: {
+      "Light Champagne": "assets/product-gift-set.webp",
+      Pink: "assets/product-gift-set.webp",
+      Rose: "assets/product-gift-set.webp",
+      Black: "assets/product-gift-set.webp",
+    },
+    shopifyAvailable: false,
+    unavailableMessage: "This bundle is not available for checkout yet.",
+  },
+  "Pillowcase + Bonnet": {
+    description: "A low-friction hair protection set for overnight care.",
+    price: productPrices["Pillowcase + Bonnet"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
+    // Bundle photos will be added in the next deployment.
+    images: {
+      "Light Champagne": "assets/product-box-upright.webp",
+      Pink: "assets/product-box-upright.webp",
+      Rose: "assets/product-box-upright.webp",
+      Black: "assets/product-box-upright.webp",
+    },
+    shopifyAvailable: false,
+    unavailableMessage: "This bundle is not available for checkout yet.",
+  },
+  "Complete Sleep Set": {
+    description: "A fuller satin routine with pillowcase, eyemask, bonnet, and scrunchie.",
+    price: productPrices["Complete Sleep Set"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
+    // Bundle photos will be added in the next deployment.
+    images: {
+      "Light Champagne": "assets/product-drape-set.webp",
+      Pink: "assets/product-drape-set.webp",
+      Rose: "assets/product-drape-set.webp",
+      Black: "assets/product-drape-set.webp",
+    },
+    shopifyAvailable: false,
+    unavailableMessage: "This bundle is not available for checkout yet.",
+  },
   "The Ultimate Hair Care Duo": {
     description: "A satin bonnet and scrunchie pairing made to protect texture and reduce overnight frizz.",
     price: productPrices["The Ultimate Hair Care Duo"],
-    colors: ["Champagne"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
     // Bundle photos will be added in the next deployment.
-    images: { Champagne: "assets/product-scrunchies-box.webp" },
+    images: {
+      "Light Champagne": "assets/product-scrunchies-box.webp",
+      Pink: "assets/product-scrunchies-box.webp",
+      Rose: "assets/product-scrunchies-box.webp",
+      Black: "assets/product-scrunchies-box.webp",
+    },
     shopifyAvailable: false,
-    unavailableMessage: "Create The Ultimate Hair Care Duo in Shopify before enabling checkout.",
+    unavailableMessage: "This bundle is not available for checkout yet.",
   },
   "The Beauty Sleep Bundle": {
     description: "A polished sleep-care set built for a softer bedtime ritual.",
     price: productPrices["The Beauty Sleep Bundle"],
-    colors: ["Champagne", "Black"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
     // Bundle photos will be added in the next deployment.
     images: {
-      Champagne: "assets/product-box-upright.webp",
+      "Light Champagne": "assets/product-box-upright.webp",
+      Pink: "assets/product-box-upright.webp",
+      Rose: "assets/product-box-upright.webp",
       Black: "assets/product-box-upright.webp",
     },
   },
   "The College / Dorm Starter": {
     description: "A student-ready satin starter set for comfort, polish, and hair and skin protection.",
     price: productPrices["The College / Dorm Starter"],
-    colors: ["Champagne"],
+    colors: ["Light Champagne", "Pink", "Rose", "Black"],
     // Bundle photos will be added in the next deployment.
-    images: { Champagne: "assets/product-drape-set.webp" },
+    images: {
+      "Light Champagne": "assets/product-drape-set.webp",
+      Pink: "assets/product-drape-set.webp",
+      Rose: "assets/product-drape-set.webp",
+      Black: "assets/product-drape-set.webp",
+    },
     shopifyAvailable: false,
-    unavailableMessage: "Create The College / Dorm Starter in Shopify before enabling checkout.",
+    unavailableMessage: "This bundle is not available for checkout yet.",
   },
 };
 
@@ -399,11 +463,14 @@ const bundleDetails = [
 
 let activeProductName = "";
 let activeColor = "";
+let activeSize = "";
 let bag = JSON.parse(window.localStorage.getItem("driftBag") || "[]")
   .map(({ image, ...item }) => item)
   .filter((item) => {
     const product = productDetails[item.product];
-    return product?.shopifyAvailable !== false && (product.checkoutColors || product.colors).includes(item.color);
+    const variantKey = getVariantKey(product, item.color, item.size);
+    const hasVariant = product?.availableVariantKeys ? product.availableVariantKeys.includes(variantKey) : (product?.colors || []).includes(item.color);
+    return product?.shopifyAvailable !== false && hasVariant;
   });
 
 document.body.classList.add("reveal-ready");
@@ -418,6 +485,80 @@ const syncProductCardPrices = () => {
       priceElement.textContent = price;
     }
   });
+};
+
+const syncProductCardAvailability = () => {
+  document.querySelectorAll(".product-card").forEach((card) => {
+    const productName = card.querySelector("h3")?.textContent;
+    const product = productDetails[productName];
+    card.classList.toggle("product-card-unavailable", product?.shopifyAvailable === false);
+  });
+};
+
+const applyShopifyCatalogAudit = (audit) => {
+  if (!audit?.products) return;
+
+  Object.entries(productDetails).forEach(([productName, product]) => {
+    const shopifyProduct = audit.products[productName];
+    const variantMap = audit.variantIds?.[productName] || {};
+
+    if (!shopifyProduct) {
+      product.shopifyAvailable = false;
+      product.unavailableMessage = `${productName} is not available for checkout yet.`;
+      return;
+    }
+
+    product.shopifyAvailable = true;
+    product.availableVariantKeys = Object.keys(variantMap);
+
+    const firstVariant = shopifyProduct.variants?.find((variant) => variant.price);
+    if (firstVariant?.price) {
+      product.price = firstVariant.price;
+      productPrices[productName] = firstVariant.price;
+    }
+
+    shopifyProduct.variants?.forEach((variant) => {
+      if (variant.color && variant.image) {
+        product.images[variant.color] = variant.image;
+      }
+    });
+
+    if (product.availableVariantKeys.length === 0) {
+      product.shopifyAvailable = false;
+      product.unavailableMessage = `${productName} is missing matching Shopify variants.`;
+    }
+  });
+
+  if (
+    audit.missingProducts?.length ||
+    audit.missingSiteVariants?.length ||
+    audit.missingSiteColors?.length ||
+    audit.missingSiteSizes?.length
+  ) {
+    console.warn("[DRIFT Shopify] Catalog needs attention", {
+      missingProducts: audit.missingProducts,
+      missingSiteVariants: audit.missingSiteVariants,
+      missingSiteColors: audit.missingSiteColors,
+      missingSiteSizes: audit.missingSiteSizes,
+      titleMappings: audit.titleMappings,
+    });
+  }
+
+  syncProductCardPrices();
+  syncProductCardAvailability();
+  renderBag();
+};
+
+const hydrateShopifyCatalog = async () => {
+  if (window.location.protocol === "file:") return;
+
+  try {
+    const response = await fetch("/api/shopify/catalog-audit", { cache: "no-store" });
+    if (!response.ok) return;
+    applyShopifyCatalogAudit(await response.json());
+  } catch (error) {
+    console.warn("[DRIFT Shopify] Catalog audit unavailable", error);
+  }
 };
 
 const getReviewMarkup = (productName, compact = false) => {
@@ -507,6 +648,18 @@ const getProductImage = (product, color) =>
 
 const getDisplayColor = (color) => (color === "Default Title" ? "Bundle" : color);
 
+function getVariantKey(product, color, size = "") {
+  return product?.sizes?.length ? [color, size].filter(Boolean).join(" / ") : color;
+}
+
+const getSelectedVariantKey = (product, color) => getVariantKey(product, color, activeSize);
+
+const isVariantAvailable = (product, color, size = activeSize) => {
+  if (!product || product.shopifyAvailable === false) return false;
+  const key = getVariantKey(product, color, size);
+  return product.availableVariantKeys ? product.availableVariantKeys.includes(key) : product.colors.includes(color);
+};
+
 const getUniqueProductImages = (product) => {
   const seen = new Set();
 
@@ -522,20 +675,21 @@ const getUniqueProductImages = (product) => {
 
 const setProductDetailImage = (product, color) => {
   const image = getProductImage(product, color);
-  const canCheckoutColor = (product.checkoutColors || product.colors).includes(color);
+  const canCheckoutVariant = isVariantAvailable(product, color);
+  const variantLabel = getSelectedVariantKey(product, color);
 
   productDetailImage.src = image;
   productDetailImage.alt = `${activeProductName} in ${getDisplayColor(color)}`;
   productDetailSelection.textContent = getDisplayColor(color);
   activeColor = color;
-  productDetailAdd.disabled = product.shopifyAvailable === false || !canCheckoutColor;
-  productDetailAdd.textContent = canCheckoutColor ? "Add to bag" : "Color unavailable";
+  productDetailAdd.disabled = !canCheckoutVariant;
+  productDetailAdd.textContent = canCheckoutVariant ? "Add to bag" : "Unavailable";
   productDetailNote.textContent =
     product.shopifyAvailable === false
-      ? product.unavailableMessage || "This product needs to be added in Shopify before checkout is enabled."
-      : canCheckoutColor
+      ? product.unavailableMessage || "This product is not available for checkout yet."
+      : canCheckoutVariant
         ? "Your selections are saved in your DRIFT bag."
-        : `${getDisplayColor(color)} needs to be added in Shopify before checkout is enabled.`;
+        : `${variantLabel} is not available for checkout yet.`;
 
   productDetailSwatches.querySelectorAll(".product-detail-swatch").forEach((swatch) => {
     swatch.classList.toggle("is-active", swatch.dataset.color === color);
@@ -552,6 +706,7 @@ const openProductDetail = (productName) => {
   const isAvailable = product.shopifyAvailable !== false;
 
   activeProductName = productName;
+  activeSize = product.sizes?.[0] || "";
   productDetailTitle.textContent = productName;
   productDetailDescription.textContent = product.description;
   productDetailFeatures.innerHTML = "";
@@ -566,7 +721,7 @@ const openProductDetail = (productName) => {
   productDetailAdd.textContent = isAvailable ? "Add to bag" : "Unavailable";
   productDetailNote.textContent = isAvailable
     ? "Your selections are saved in your DRIFT bag."
-    : product.unavailableMessage || "This product needs to be added in Shopify before checkout is enabled.";
+    : product.unavailableMessage || "This product is not available for checkout yet.";
   productDetailReviews.innerHTML = `
     <summary>Reviews</summary>
     <div class="product-detail-review-list">${getReviewMarkup(productName)}</div>
@@ -591,7 +746,9 @@ const openProductDetail = (productName) => {
       productDetailSizes.querySelectorAll(".product-detail-size").forEach((sizeButton) => {
         sizeButton.classList.toggle("is-active", sizeButton.dataset.size === size);
       });
+      activeSize = size;
       productDetailSizeSelection.textContent = `Size ${size}`;
+      setProductDetailImage(product, activeColor || product.colors[0]);
     });
     productDetailSizes.append(button);
 
@@ -644,7 +801,7 @@ const closeProductDetail = () => {
 };
 
 const getProductPrice = (productName) =>
-  Number(productDetails[productName].price.replace(/[^0-9.]/g, ""));
+  Number(productDetails[productName].price.replace(/[^0-9.]/g, "")) || 0;
 
 const saveBag = () => {
   window.localStorage.setItem("driftBag", JSON.stringify(bag));
@@ -672,7 +829,7 @@ const renderBag = () => {
     copy.className = "bag-item-copy";
     title.textContent = item.product;
     meta.className = "bag-item-meta";
-    meta.textContent = `${getDisplayColor(item.color)} / $${item.price.toFixed(2)}`;
+    meta.textContent = `${[getDisplayColor(item.color), item.size].filter(Boolean).join(" / ")} / $${item.price.toFixed(2)}`;
     controls.className = "bag-item-controls";
     quantity.className = "bag-item-quantity";
     decrease.type = "button";
@@ -722,15 +879,15 @@ const removeBagItem = (itemId) => {
   renderBag();
 };
 
-const addProductToBag = (productName, color, quantity = 1) => {
+const addProductToBag = (productName, color, quantity = 1, size = "") => {
   const product = productDetails[productName];
-  const checkoutColors = product?.checkoutColors || product?.colors || [];
+  const variantKey = getVariantKey(product, color, size);
 
-  if (!product || product.shopifyAvailable === false || !checkoutColors.includes(color)) {
+  if (!product || !isVariantAvailable(product, color, size)) {
     return false;
   }
 
-  const id = `${productName}::${color}`;
+  const id = `${productName}::${variantKey}`;
   const existingItem = bag.find((item) => item.id === id);
 
   if (existingItem) {
@@ -740,6 +897,8 @@ const addProductToBag = (productName, color, quantity = 1) => {
       id,
       product: productName,
       color,
+      size,
+      variantKey,
       price: getProductPrice(productName),
       quantity,
     });
@@ -794,7 +953,7 @@ document.addEventListener("keydown", (event) => {
 productDetailAdd.addEventListener("click", () => {
   const quantity = Number(productDetailQuantity.value);
 
-  if (addProductToBag(activeProductName, activeColor, quantity)) {
+  if (addProductToBag(activeProductName, activeColor, quantity, activeSize)) {
     productDetailAdd.textContent = `Added ${quantity} to bag`;
   }
 });
@@ -805,7 +964,7 @@ document.querySelectorAll(".bundle-add").forEach((button) => {
 
   if (!product || product.shopifyAvailable === false) {
     button.disabled = true;
-    button.textContent = "Add in Shopify";
+    button.textContent = "Unavailable";
     return;
   }
 
@@ -865,6 +1024,8 @@ bagCheckout.addEventListener("click", async () => {
 
 renderBag();
 syncProductCardPrices();
+syncProductCardAvailability();
+hydrateShopifyCatalog();
 
 let joinPopupHasOpened = false;
 let supabaseAuthClient = null;
