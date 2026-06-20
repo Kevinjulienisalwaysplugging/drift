@@ -88,9 +88,6 @@ const productPrices = {
   "Satin Blanket": "$89.99",
   "Luxury Slippers": "$35.99",
   "Satin Nightgown": "Price loading",
-  "Pillowcase + Eyemask": "Price loading",
-  "Pillowcase + Bonnet": "Price loading",
-  "Complete Sleep Set": "Price loading",
   "The Nightstand Essentials Trio": "$39.99",
   "The Ultimate Hair Care Duo": "$19.99",
   "The Beauty Sleep Bundle": "$44.99",
@@ -241,48 +238,6 @@ const productDetails = {
       Black: "assets/product-gift-set.webp",
       Rose: "assets/product-gift-set.webp",
     },
-  },
-  "Pillowcase + Eyemask": {
-    description: "A soft starter set for smoother hair, softer skin, and darker rest.",
-    price: productPrices["Pillowcase + Eyemask"],
-    colors: ["Light Champagne", "Pink", "Rose", "Black"],
-    // Bundle photos will be added in the next deployment.
-    images: {
-      "Light Champagne": "assets/product-gift-set.webp",
-      Pink: "assets/product-gift-set.webp",
-      Rose: "assets/product-gift-set.webp",
-      Black: "assets/product-gift-set.webp",
-    },
-    shopifyAvailable: false,
-    unavailableMessage: "This bundle is not available for checkout yet.",
-  },
-  "Pillowcase + Bonnet": {
-    description: "A low-friction hair protection set for overnight care.",
-    price: productPrices["Pillowcase + Bonnet"],
-    colors: ["Light Champagne", "Pink", "Rose", "Black"],
-    // Bundle photos will be added in the next deployment.
-    images: {
-      "Light Champagne": "assets/product-box-upright.webp",
-      Pink: "assets/product-box-upright.webp",
-      Rose: "assets/product-box-upright.webp",
-      Black: "assets/product-box-upright.webp",
-    },
-    shopifyAvailable: false,
-    unavailableMessage: "This bundle is not available for checkout yet.",
-  },
-  "Complete Sleep Set": {
-    description: "A fuller satin routine with pillowcase, eyemask, bonnet, and scrunchie.",
-    price: productPrices["Complete Sleep Set"],
-    colors: ["Light Champagne", "Pink", "Rose", "Black"],
-    // Bundle photos will be added in the next deployment.
-    images: {
-      "Light Champagne": "assets/product-drape-set.webp",
-      Pink: "assets/product-drape-set.webp",
-      Rose: "assets/product-drape-set.webp",
-      Black: "assets/product-drape-set.webp",
-    },
-    shopifyAvailable: false,
-    unavailableMessage: "This bundle is not available for checkout yet.",
   },
   "The Ultimate Hair Care Duo": {
     description: "A satin bonnet and scrunchie pairing made to protect texture and reduce overnight frizz.",
@@ -495,6 +450,22 @@ const syncProductCardAvailability = () => {
   });
 };
 
+const syncProductCardImages = () => {
+  document.querySelectorAll(".product-card").forEach((card) => {
+    const productName = card.querySelector("h3")?.textContent;
+    const product = productDetails[productName];
+    const image = card.querySelector(".product-photo");
+
+    if (!product || !image) return;
+
+    const cardImage = product.cardImage || getProductImage(product, product.colors[0]);
+    if (cardImage) {
+      image.src = cardImage;
+      image.alt = "";
+    }
+  });
+};
+
 const applyShopifyCatalogAudit = (audit) => {
   if (!audit?.products) return;
 
@@ -510,6 +481,10 @@ const applyShopifyCatalogAudit = (audit) => {
 
     product.shopifyAvailable = true;
     product.availableVariantKeys = Object.keys(variantMap);
+    product.cardImage =
+      shopifyProduct.image ||
+      shopifyProduct.variants?.find((variant) => variant.image)?.image ||
+      product.cardImage;
 
     const firstVariant = shopifyProduct.variants?.find((variant) => variant.price);
     if (firstVariant?.price) {
@@ -545,6 +520,7 @@ const applyShopifyCatalogAudit = (audit) => {
   }
 
   syncProductCardPrices();
+  syncProductCardImages();
   syncProductCardAvailability();
   renderBag();
 };
@@ -1024,6 +1000,7 @@ bagCheckout.addEventListener("click", async () => {
 
 renderBag();
 syncProductCardPrices();
+syncProductCardImages();
 syncProductCardAvailability();
 hydrateShopifyCatalog();
 

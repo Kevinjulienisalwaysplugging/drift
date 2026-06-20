@@ -2,7 +2,7 @@ import { LegalShell } from "../legal-page";
 
 export const metadata = {
   title: "Bundles | DRIFT",
-  description: "DRIFT satin bundle ideas and Shopify bundle setup guidance.",
+  description: "DRIFT satin bundles for softer sleep routines and everyday luxury.",
   alternates: {
     canonical: "/bundles"
   }
@@ -10,19 +10,24 @@ export const metadata = {
 
 const bundles = [
   {
-    name: "Pillowcase + Eyemask",
-    items: "Satin Pillowcase and Satin Eyemask",
-    purpose: "A simple sleep upgrade for smoother hair contact and softer light blocking."
+    name: "The Nightstand Essentials Trio",
+    items: "Satin Pillowcase, Satin Eyemask, and Satin Scrunchie",
+    purpose: "A bedside set for smoother hair, softer skin contact, and a quieter night routine."
   },
   {
-    name: "Pillowcase + Bonnet",
-    items: "Satin Pillowcase and Satin Bonnet",
-    purpose: "A low-friction hair care pairing for overnight protection."
+    name: "The Ultimate Hair Care Duo",
+    items: "Satin Bonnet and Satin Scrunchie",
+    purpose: "A focused hair-care pairing for texture protection and reduced overnight friction."
   },
   {
-    name: "Complete Sleep Set",
-    items: "Pillowcase, Eyemask, Bonnet, and Scrunchie",
-    purpose: "A fuller DRIFT routine for gifting or a complete bedroom refresh."
+    name: "The Beauty Sleep Bundle",
+    items: "Satin Pillowcase, Satin Eyemask, and Satin Scrunchie",
+    purpose: "A polished sleep-care set for a softer bedtime ritual."
+  },
+  {
+    name: "The College / Dorm Starter",
+    items: "Satin Twin Bedding Set, Satin Bonnet, and Satin Pillowcase",
+    purpose: "A student-ready satin starter set for comfort, polish, and hair and skin protection."
   }
 ];
 
