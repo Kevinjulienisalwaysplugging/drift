@@ -8,8 +8,12 @@ export function LegalShell({ eyebrow, title, intro, children }) {
           DRIFT
         </a>
         <nav className="legal-nav" aria-label="Legal navigation">
+          <a href="/about">About</a>
+          <a href="/shipping">Shipping</a>
+          <a href="/returns">Returns</a>
+          <a href="/reviews">Reviews</a>
+          <a href="/bundles">Bundles</a>
           <a href="/privacy">Privacy</a>
-          <a href="/data-deletion">Data deletion</a>
           <a href="/storefront.html">Shop</a>
         </nav>
       </header>
@@ -35,4 +39,3 @@ export function LegalShell({ eyebrow, title, intro, children }) {
 }
 
 export { contactEmail };
-

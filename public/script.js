@@ -41,6 +41,14 @@ const joinPopupCompletedKey = "driftJoinAuthCompleted";
 const authStatus = document.querySelector(".auth-status");
 const authStatusEmail = document.querySelector(".auth-status-email");
 const authLogout = document.querySelector(".auth-logout");
+const namePopup = document.querySelector(".name-popup");
+const namePopupClose = document.querySelector(".name-popup-close");
+const namePopupBackdrop = document.querySelector(".name-popup-backdrop");
+const profileNameForm = document.querySelector(".profile-name-form");
+const profileNameInput = document.querySelector("#profile-name");
+const profileNameMessage = document.querySelector(".profile-name-message");
+const profileNameStorageKey = "driftCustomerName";
+const profileNamePromptSessionKey = "driftProfileNamePromptClosed";
 
 const colorClassByName = {
   Champagne: "swatch-champagne",
@@ -179,10 +187,10 @@ const productDetails = {
     price: productPrices["Luxury Slippers"],
     colors: ["Red", "Black", "Light Pink", "Light Champagne"],
     images: {
-      Red: "assets/product-slippers.webp",
-      Black: "assets/product-slippers.webp",
-      "Light Pink": "assets/product-slippers.webp",
-      "Light Champagne": "assets/product-slippers.webp",
+      Red: "assets/product-slippers-new.png",
+      Black: "assets/product-slippers-new.png",
+      "Light Pink": "assets/product-slippers-new.png",
+      "Light Champagne": "assets/product-slippers-new.png",
     },
     shopifyAvailable: false,
     unavailableMessage: "Add Luxury Slippers in Shopify before enabling checkout.",
@@ -794,7 +802,8 @@ const hasCompletedJoinAuth = () => window.localStorage.getItem(joinPopupComplete
 
 const getCustomerDisplayName = (user) => {
   const metadata = user?.user_metadata || {};
-  const name = metadata.full_name || metadata.name || metadata.first_name;
+  const savedName = window.localStorage.getItem(profileNameStorageKey);
+  const name = metadata.full_name || metadata.name || metadata.first_name || savedName;
 
   if (name) {
     return `[${String(name).trim().split(/\s+/)[0]}]`;
@@ -805,6 +814,11 @@ const getCustomerDisplayName = (user) => {
   }
 
   return "Login";
+};
+
+const userHasProfileName = (user) => {
+  const metadata = user?.user_metadata || {};
+  return Boolean(metadata.full_name || metadata.name || metadata.first_name || window.localStorage.getItem(profileNameStorageKey));
 };
 
 const setJoinPopupMessage = (message = "", mode = "") => {
@@ -828,7 +842,52 @@ const updateAuthStatus = (user) => {
   if (user) {
     window.localStorage.setItem(joinPopupCompletedKey, "true");
     closeJoinPopup();
+    maybeOpenNamePopup(user);
   }
+};
+
+const openNamePopup = () => {
+  if (!namePopup || !currentAuthUser) {
+    return;
+  }
+
+  namePopup.hidden = false;
+  document.body.classList.add("has-name-popup");
+  profileNameMessage.textContent = "";
+
+  window.requestAnimationFrame(() => {
+    namePopup.classList.add("is-open");
+    profileNameInput.focus();
+  });
+};
+
+const closeNamePopup = () => {
+  if (!namePopup) {
+    return;
+  }
+
+  window.sessionStorage.setItem(profileNamePromptSessionKey, "true");
+  namePopup.classList.remove("is-open");
+  document.body.classList.remove("has-name-popup");
+
+  window.setTimeout(() => {
+    namePopup.hidden = true;
+  }, 280);
+};
+
+const maybeOpenNamePopup = (user) => {
+  if (
+    !namePopup ||
+    !user ||
+    userHasProfileName(user) ||
+    window.sessionStorage.getItem(profileNamePromptSessionKey) === "true" ||
+    !bagPanel.hidden ||
+    !productDetail.hidden
+  ) {
+    return;
+  }
+
+  window.setTimeout(openNamePopup, 500);
 };
 
 const loadSupabaseAuthClient = async () => {
@@ -992,9 +1051,48 @@ authStatus.addEventListener("click", (event) => {
   joinPopupHasOpened = false;
   openJoinPopup();
 });
+namePopupClose?.addEventListener("click", closeNamePopup);
+namePopupBackdrop?.addEventListener("click", closeNamePopup);
+profileNameForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const name = profileNameInput.value.trim();
+
+  if (!name) {
+    profileNameMessage.textContent = "Add a name to save your profile.";
+    profileNameMessage.classList.add("is-error");
+    return;
+  }
+
+  profileNameForm.querySelector("button").disabled = true;
+  profileNameMessage.textContent = "Saving your name...";
+  profileNameMessage.classList.remove("is-error");
+
+  try {
+    const client = await loadSupabaseAuthClient();
+    const { data, error } = await client.auth.updateUser({ data: { name, first_name: name } });
+
+    if (error) {
+      throw error;
+    }
+
+    window.localStorage.setItem(profileNameStorageKey, name);
+    updateAuthStatus(data.user || currentAuthUser);
+    profileNameMessage.textContent = "Saved.";
+    window.setTimeout(closeNamePopup, 600);
+  } catch (error) {
+    window.localStorage.setItem(profileNameStorageKey, name);
+    updateAuthStatus(currentAuthUser);
+    profileNameMessage.textContent = "Saved on this device.";
+    window.setTimeout(closeNamePopup, 800);
+  } finally {
+    profileNameForm.querySelector("button").disabled = false;
+  }
+});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !joinPopup.hidden) {
     closeJoinPopup();
+  } else if (event.key === "Escape" && namePopup && !namePopup.hidden) {
+    closeNamePopup();
   }
 });
 refreshAuthSession();

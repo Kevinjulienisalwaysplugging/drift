@@ -15,7 +15,7 @@
     <meta property="og:image" content="assets/drift-og.webp">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css?v=join-popup">
+    <link rel="stylesheet" href="styles.css?v=conversion-update">
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
@@ -27,10 +27,11 @@
         </span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#collection">Collection</a>
-        <a href="#craft">Craft</a>
-        <a href="#ritual">Ritual</a>
-        <a href="#care">Care</a>
+        <a href="#collection">Shop</a>
+        <a href="#benefits">Benefits</a>
+        <a href="/reviews">Reviews</a>
+        <a href="/bundles">Bundles</a>
+        <a href="/about">About</a>
       </nav>
       <div class="header-actions">
         <div class="auth-status" aria-label="Customer profile">
@@ -51,184 +52,68 @@
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <video class="hero-video" autoplay loop muted playsinline preload="metadata" poster="assets/drift-satin-hero.webp" aria-label="DRIFT satin sleep essentials in motion.">
-          <source src="assets/drift-header.mp4" type="video/mp4">
-        </video>
-        <div class="hero-shade" aria-hidden="true"></div>
+      <section class="hero hero-clean" aria-labelledby="hero-title">
         <div class="hero-content" data-animate>
-          <p class="eyebrow">Luxury satin essentials</p>
-          <h1 id="hero-title">DRIFT</h1>
+          <p class="eyebrow">Luxury satin sleep essentials</p>
+          <h1 id="hero-title">Better nights start with softer satin.</h1>
           <p class="hero-copy">
-            Satin sleep pieces cut for cool touch, low friction, and an evening ritual that feels quietly immaculate.
+            DRIFT makes smooth satin pillowcases, bonnets, eyemasks, scrunchies, bedding, and slippers for calmer routines and lower-friction rest.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#collection">Explore the edit</a>
-            <a class="button ghost" href="#drift-list">Join DRIFT updates</a>
+            <a class="button primary" href="#collection">Shop best sellers</a>
+            <a class="button ghost" href="/bundles">Build a satin set</a>
           </div>
+          <ul class="hero-trust" aria-label="Store promises">
+            <li>Secure Shopify checkout</li>
+            <li>Tracked shipping</li>
+            <li>Easy return support</li>
+          </ul>
         </div>
-        <a class="scroll-cue" href="#collection" aria-label="Scroll to collection">
-          <span></span>
-        </a>
+        <div class="hero-shop-panel" data-animate>
+          <p class="eyebrow">Start here</p>
+          <h2>Most-shopped pieces</h2>
+          <a href="#collection">
+            <span>Satin Pillowcase</span>
+            <strong>$29.99</strong>
+          </a>
+          <a href="#collection">
+            <span>Satin Bonnet</span>
+            <strong>$15.99</strong>
+          </a>
+          <a href="#collection">
+            <span>Satin Eyemask</span>
+            <strong>$10.99</strong>
+          </a>
+        </div>
       </section>
 
       <section class="intro-band" aria-label="Brand statement">
         <p data-animate>
-          DRIFT is made for the hours after the world gets quiet: satin pillowcases, bonnets, scrunchies, and sleep sets with a luminous hand-feel and a collector's level of finish.
+          Everyday luxury for the part of your day that should feel quiet, soft, and considered.
         </p>
       </section>
 
       <section class="section collection" id="collection" aria-labelledby="collection-title">
         <div class="section-heading" data-animate>
           <p class="eyebrow">The collection</p>
-          <h2 id="collection-title">A complete satin sleep wardrobe.</h2>
+          <h2 id="collection-title">Shop the pieces people come back for.</h2>
         </div>
-        <div class="bundle-carousel-wrap" aria-labelledby="bundle-title" data-animate>
-          <div class="bundle-heading">
-            <p class="eyebrow">Curated bundles</p>
-            <h3 id="bundle-title">Sets built around the way you actually unwind.</h3>
-          </div>
-          <div class="bundle-carousel" aria-label="DRIFT bundles">
-            <article class="bundle-card">
-              <div class="bundle-image">
-                <!-- Bundle photos will be added in the next deployment. -->
-                <img src="assets/product-gift-set.webp" alt="">
-              </div>
-              <div class="bundle-card-body">
-                <div class="bundle-card-top">
-                  <p>01</p>
-                  <h4>The Nightstand Essentials Trio</h4>
-                  <span>Hair and skin protection while sleeping.</span>
-                </div>
-                <ul>
-                  <li>Satin Pillowcase - $29.99</li>
-                  <li>Satin Eyemask - $10.99</li>
-                  <li>Satin Scrunchie - $7.99</li>
-                </ul>
-                <dl class="bundle-pricing">
-                  <div>
-                    <dt>Retail value</dt>
-                    <dd>$48.97</dd>
-                  </div>
-                  <div>
-                    <dt>Bundle price</dt>
-                    <dd>$39.99</dd>
-                  </div>
-                  <div>
-                    <dt>Savings</dt>
-                    <dd>Save 18%</dd>
-                  </div>
-                </dl>
-                <button class="bundle-add" type="button" data-bundle-product="The Nightstand Essentials Trio">
-                  Add to Bag
-                </button>
-              </div>
-            </article>
-            <article class="bundle-card">
-              <div class="bundle-image">
-                <!-- Bundle photos will be added in the next deployment. -->
-                <img src="assets/product-scrunchies-box.webp" alt="">
-              </div>
-              <div class="bundle-card-body">
-                <div class="bundle-card-top">
-                  <p>02</p>
-                  <h4>The Ultimate Hair Care Duo</h4>
-                  <span>Protecting hair texture and reducing frizz overnight.</span>
-                </div>
-                <ul>
-                  <li>Satin Bonnet - $15.99</li>
-                  <li>Satin Scrunchie - $7.99</li>
-                </ul>
-                <dl class="bundle-pricing">
-                  <div>
-                    <dt>Retail value</dt>
-                    <dd>$23.98</dd>
-                  </div>
-                  <div>
-                    <dt>Bundle price</dt>
-                    <dd>$19.99</dd>
-                  </div>
-                  <div>
-                    <dt>Savings</dt>
-                    <dd>Save 17%</dd>
-                  </div>
-                </dl>
-                <button class="bundle-add" type="button" data-bundle-product="The Ultimate Hair Care Duo">
-                  Add to Bag
-                </button>
-              </div>
-            </article>
-            <article class="bundle-card featured-bundle">
-              <div class="bundle-image">
-                <!-- Bundle photos will be added in the next deployment. -->
-                <img src="assets/product-box-upright.webp" alt="">
-              </div>
-              <div class="bundle-card-body">
-                <div class="bundle-card-top">
-                  <p>03</p>
-                  <h4>The Beauty Sleep Bundle</h4>
-                  <span>A polished sleep-care set built for a softer bedtime ritual.</span>
-                </div>
-                <ul>
-                  <li>Satin Pillowcase - $29.99</li>
-                  <li>Satin Eyemask - $10.99</li>
-                  <li>Satin Scrunchie - $7.99</li>
-                </ul>
-                <dl class="bundle-pricing">
-                  <div>
-                    <dt>Retail value</dt>
-                    <dd>$48.97</dd>
-                  </div>
-                  <div>
-                    <dt>Bundle price</dt>
-                    <dd>$44.99</dd>
-                  </div>
-                  <div>
-                    <dt>Savings</dt>
-                    <dd>Save 8%</dd>
-                  </div>
-                </dl>
-                <button class="bundle-add" type="button" data-bundle-product="The Beauty Sleep Bundle">
-                  Add to Bag
-                </button>
-              </div>
-            </article>
-            <article class="bundle-card">
-              <div class="bundle-image">
-                <!-- Bundle photos will be added in the next deployment. -->
-                <img src="assets/product-drape-set.webp" alt="">
-              </div>
-              <div class="bundle-card-body">
-                <div class="bundle-card-top">
-                  <p>04</p>
-                  <h4>The College / Dorm Starter</h4>
-                  <span>Comfort and hair/skin protection for students heading to school.</span>
-                </div>
-                <ul>
-                  <li>Satin Twin Bedding Set - $30.99</li>
-                  <li>Satin Bonnet - $15.99</li>
-                  <li>Satin Pillowcase - $29.99</li>
-                </ul>
-                <dl class="bundle-pricing">
-                  <div>
-                    <dt>Retail value</dt>
-                    <dd>$76.97</dd>
-                  </div>
-                  <div>
-                    <dt>Bundle price</dt>
-                    <dd>$64.99</dd>
-                  </div>
-                  <div>
-                    <dt>Savings</dt>
-                    <dd>Save 16%</dd>
-                  </div>
-                </dl>
-                <button class="bundle-add" type="button" data-bundle-product="The College / Dorm Starter">
-                  Add to Bag
-                </button>
-              </div>
-            </article>
-          </div>
+        <div class="collection-conversion" data-animate>
+          <article>
+            <span>01</span>
+            <h3>Choose your satin essential</h3>
+            <p>Open any product for color, reviews, trust notes, and add-to-bag.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Checkout stays secure</h3>
+            <p>Your bag moves into Shopify checkout for payment and order completion.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Need a set?</h3>
+            <p><a href="/bundles">Compare bundle ideas</a> before you buy.</p>
+          </article>
         </div>
         <div class="product-grid main-product-grid">
           <article class="product-card" data-animate>
@@ -293,7 +178,7 @@
           </article>
           <article class="product-card product-card-unavailable" data-animate>
             <div class="product-visual slippers" aria-hidden="true">
-              <img class="product-photo" src="assets/product-slippers.webp" alt="">
+              <img class="product-photo" src="assets/product-slippers-new.png" alt="">
             </div>
             <div class="product-copy">
               <p>04</p>
@@ -516,18 +401,23 @@
             <button class="product-detail-add" type="button">Add to bag</button>
             <p class="product-detail-note">Your selections are saved in your DRIFT bag.</p>
             <details class="product-detail-reviews"></details>
+            <div class="product-detail-trust">
+              <a href="/shipping">Tracked shipping</a>
+              <a href="/returns">Easy returns</a>
+              <a href="/reviews">Customer reviews</a>
+            </div>
             <dl class="product-detail-promises">
               <div>
-                <dt>Finish</dt>
-                <dd>Gloss satin sheen</dd>
+                <dt>Secure checkout</dt>
+                <dd>Payment handled by Shopify</dd>
               </div>
               <div>
-                <dt>Care</dt>
-                <dd>Cold wash, mild detergent</dd>
+                <dt>Returns</dt>
+                <dd>Support for eligible unopened items</dd>
               </div>
               <div>
                 <dt>Shipping</dt>
-                <dd>Tracked delivery</dd>
+                <dd>Tracked delivery updates</dd>
               </div>
             </dl>
           </div>
@@ -581,7 +471,23 @@
         </div>
       </section>
 
-      <section class="proof" aria-label="Product benefits">
+      <section class="name-popup" aria-labelledby="name-popup-title" hidden>
+        <button class="name-popup-backdrop" type="button" aria-label="Close profile name prompt"></button>
+        <div class="name-popup-card" role="dialog" aria-modal="true">
+          <button class="name-popup-close" type="button" aria-label="Close profile name prompt">&times;</button>
+          <p class="eyebrow">Your profile</p>
+          <h2 id="name-popup-title">What would you like to be called?</h2>
+          <p>Add a first name so DRIFT can greet you cleanly when you return.</p>
+          <form class="profile-name-form">
+            <label for="profile-name">Name</label>
+            <input id="profile-name" name="name" type="text" autocomplete="given-name" maxlength="32" placeholder="Your name" required>
+            <button class="join-popup-action" type="submit">Save name</button>
+            <p class="profile-name-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="proof" id="benefits" aria-label="Product benefits">
         <article data-animate>
           <span>01</span>
           <h2>Low-friction finish</h2>
@@ -600,14 +506,20 @@
       </section>
 
       <section class="craft" id="craft" aria-labelledby="craft-title">
-        <div class="craft-media" data-animate>
-          <img src="assets/drift-satin-hero.webp" alt="Close view of champagne satin folds.">
+        <div class="craft-media trust-card" data-animate>
+          <p class="eyebrow">Why shoppers trust DRIFT</p>
+          <h3>Simple products, clear checkout, and calm support.</h3>
+          <ul>
+            <li>Product pages show reviews and purchase details before checkout.</li>
+            <li>Cart sends shoppers into Shopify's secure checkout flow.</li>
+            <li>Shipping, returns, reviews, and brand pages are separated for easy scanning.</li>
+          </ul>
         </div>
         <div class="craft-copy" data-animate>
           <p class="eyebrow">Material language</p>
-          <h2 id="craft-title">A light-brown signature with a satin finish.</h2>
+          <h2 id="craft-title">A warm, minimal satin routine without the noise.</h2>
           <p>
-            The palette trades classic green for warm taupe, soft bronze, ivory, and deep espresso typography. The result feels collectible without becoming loud.
+            DRIFT is built around smooth satin, quiet colors, and product pages that answer the practical questions shoppers ask before buying.
           </p>
           <dl class="spec-list">
             <div>
@@ -659,11 +571,11 @@
           </article>
           <article data-animate>
             <h3>Shipping Promise</h3>
-            <p>Launch orders can be positioned with tracked shipping, careful packing, and clear delivery communication once fulfillment is connected.</p>
+            <p>Orders should ship with tracking and clear delivery communication. See the dedicated <a href="/shipping">shipping page</a> for the policy shoppers need before checkout.</p>
           </article>
           <article data-animate>
             <h3>Returns</h3>
-            <p>Because sleep products touch hair and skin, final policy language should be confirmed before launch. A common approach is unopened returns within a set window.</p>
+            <p>Keep return rules easy to find. See the <a href="/returns">returns page</a> for eligible item guidance and support contact details.</p>
           </article>
           <article data-animate>
             <h3>Materials</h3>
@@ -723,8 +635,12 @@
         <p>Sleep beautifully.</p>
       </div>
       <nav aria-label="Footer navigation">
-        <a href="#collection">Collection</a>
-        <a href="#care">Care</a>
+        <a href="#collection">Shop</a>
+        <a href="/about">About</a>
+        <a href="/shipping">Shipping</a>
+        <a href="/returns">Returns</a>
+        <a href="/reviews">Reviews</a>
+        <a href="/bundles">Bundles</a>
         <a href="#drift-list">Updates</a>
         <a href="/privacy">Privacy</a>
         <a href="/data-deletion">Data deletion</a>

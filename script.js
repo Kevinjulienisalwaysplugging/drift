@@ -117,7 +117,7 @@ const productDetails = {
     description: "Soft house slippers made to complete the DRIFT evening ritual.",
     price: productPrices["Luxury Slippers"],
     colors: ["Champagne", "Blush"],
-    images: { Champagne: "assets/product-slippers.webp" },
+    images: { Champagne: "assets/product-slippers-new.png" },
   },
 };
 
