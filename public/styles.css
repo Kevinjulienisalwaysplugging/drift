@@ -1185,10 +1185,18 @@ h3 {
   background: var(--pearl);
 }
 
+.product-detail-gallery.has-single-image {
+  grid-template-columns: 1fr;
+}
+
 .product-detail-thumbnails {
   display: grid;
   align-content: start;
   gap: 10px;
+}
+
+.product-detail-thumbnails[hidden] {
+  display: none;
 }
 
 .product-detail-thumb {
@@ -1243,18 +1251,57 @@ h3 {
   line-height: 1.75;
 }
 
+.product-detail-features,
+.product-card-features {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 16px 0 0;
+  list-style: none;
+}
+
+.product-detail-features:empty,
+.product-card-features:empty {
+  display: none;
+}
+
+.product-detail-features li,
+.product-card-features li {
+  color: rgba(32, 25, 21, 0.62);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.product-detail-features li::before,
+.product-card-features li::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: var(--bronze);
+  vertical-align: middle;
+}
+
 .product-detail-divider {
   margin: 30px 0;
   border-top: 1px solid var(--line);
 }
 
-.product-detail-options {
+.product-detail-options,
+.product-detail-size-options {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.product-detail-options legend {
+.product-detail-size-options {
+  margin-top: 22px;
+}
+
+.product-detail-options legend,
+.product-detail-size-options legend {
   margin-bottom: 14px;
   color: var(--espresso);
   font-size: 0.86rem;
@@ -1266,6 +1313,12 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.product-detail-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .product-detail-swatch {
@@ -1280,7 +1333,26 @@ h3 {
   outline: 2px solid var(--espresso);
 }
 
-.product-detail-selection {
+.product-detail-size {
+  min-width: 46px;
+  min-height: 38px;
+  border: 1px solid rgba(75, 56, 43, 0.22);
+  background: rgba(255, 248, 238, 0.78);
+  color: var(--espresso);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.product-detail-size.is-active {
+  border-color: var(--espresso);
+  background: var(--espresso);
+  color: var(--ivory);
+}
+
+.product-detail-selection,
+.product-detail-size-selection {
   margin: 14px 0 0;
   color: rgba(32, 25, 21, 0.6);
   font-size: 0.78rem;
@@ -2274,6 +2346,11 @@ body.reveal-ready [data-animate].is-visible {
 
 .product-visual.slippers .product-photo {
   object-position: center center;
+}
+
+.product-visual.nightgown .product-photo {
+  object-fit: cover;
+  object-position: center top;
 }
 
 .product-detail-trust {

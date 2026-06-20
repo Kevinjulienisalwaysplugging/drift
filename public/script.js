@@ -6,13 +6,18 @@ const submitButton = form.querySelector("button");
 let supabaseConfig = window.DRIFT_SUPABASE || {};
 const productDetail = document.querySelector(".product-detail");
 const productDetailClose = document.querySelector(".product-detail-close");
+const productDetailGallery = document.querySelector(".product-detail-gallery");
 const productDetailImage = document.querySelector(".product-detail-image");
 const productDetailTitle = document.querySelector(".product-detail-title");
 const productDetailDescription = document.querySelector(".product-detail-description");
+const productDetailFeatures = document.querySelector(".product-detail-features");
 const productDetailPrice = document.querySelector(".product-detail-price");
 const productDetailSelection = document.querySelector(".product-detail-selection");
 const productDetailOptions = document.querySelector(".product-detail-options");
 const productDetailSwatches = document.querySelector(".product-detail-swatches");
+const productDetailSizeOptions = document.querySelector(".product-detail-size-options");
+const productDetailSizes = document.querySelector(".product-detail-sizes");
+const productDetailSizeSelection = document.querySelector(".product-detail-size-selection");
 const productDetailThumbnails = document.querySelector(".product-detail-thumbnails");
 const productDetailQuantity = document.querySelector(".product-detail-quantity");
 const productDetailAdd = document.querySelector(".product-detail-add");
@@ -81,6 +86,7 @@ const productPrices = {
   "Satin King Bedding Set": "$75.99",
   "Satin Blanket": "$89.99",
   "Luxury Slippers": "$35.99",
+  "Satin Nightgown": "Price coming soon",
   "The Nightstand Essentials Trio": "$39.99",
   "The Ultimate Hair Care Duo": "$19.99",
   "The Beauty Sleep Bundle": "$44.99",
@@ -194,6 +200,26 @@ const productDetails = {
     },
     shopifyAvailable: false,
     unavailableMessage: "Add Luxury Slippers in Shopify before enabling checkout.",
+  },
+  "Satin Nightgown": {
+    description: "A fluid satin nightgown with adjustable straps, a soft lace neckline, and an easy midi drape for elevated sleepwear.",
+    price: productPrices["Satin Nightgown"],
+    colors: ["Black", "Pink", "Navy", "Champagne", "Red"],
+    sizes: ["S", "M", "L", "XL"],
+    features: [
+      "Smooth satin finish with a soft, cool hand-feel",
+      "Adjustable straps for a more comfortable fit",
+      "Midi length with a relaxed, elegant drape",
+    ],
+    images: {
+      Black: "assets/nightgown-black.png",
+      Pink: "assets/nightgown-pink.png",
+      Navy: "assets/nightgown-navy.png",
+      Champagne: "assets/nightgown-champagne.png",
+      Red: "assets/nightgown-red.png",
+    },
+    shopifyAvailable: false,
+    unavailableMessage: "Create Satin Nightgown in Shopify before enabling checkout.",
   },
   "The Nightstand Essentials Trio": {
     description: "A curated bedside set for smoother hair, softer skin, and a quieter night routine.",
@@ -481,6 +507,19 @@ const getProductImage = (product, color) =>
 
 const getDisplayColor = (color) => (color === "Default Title" ? "Bundle" : color);
 
+const getUniqueProductImages = (product) => {
+  const seen = new Set();
+
+  return Object.entries(product.images).reduce((images, [color, image]) => {
+    if (!seen.has(image)) {
+      seen.add(image);
+      images.push({ color, image });
+    }
+
+    return images;
+  }, []);
+};
+
 const setProductDetailImage = (product, color) => {
   const image = getProductImage(product, color);
   const canCheckoutColor = (product.checkoutColors || product.colors).includes(color);
@@ -503,20 +542,23 @@ const setProductDetailImage = (product, color) => {
   });
 
   productDetailThumbnails.querySelectorAll(".product-detail-thumb").forEach((thumbnail) => {
-    thumbnail.classList.toggle("is-active", thumbnail.dataset.color === color);
+    thumbnail.classList.toggle("is-active", thumbnail.dataset.color === color || thumbnail.dataset.image === image);
   });
 };
 
 const openProductDetail = (productName) => {
   const product = productDetails[productName];
-  const imageColors = Object.keys(product.images);
+  const uniqueImages = getUniqueProductImages(product);
   const isAvailable = product.shopifyAvailable !== false;
 
   activeProductName = productName;
   productDetailTitle.textContent = productName;
   productDetailDescription.textContent = product.description;
+  productDetailFeatures.innerHTML = "";
   productDetailPrice.textContent = product.price;
   productDetailSwatches.innerHTML = "";
+  productDetailSizes.innerHTML = "";
+  productDetailSizeSelection.textContent = "";
   productDetailThumbnails.innerHTML = "";
   productDetailQuantity.value = "1";
   productDetailAdd.textContent = "Add to bag";
@@ -530,6 +572,34 @@ const openProductDetail = (productName) => {
     <div class="product-detail-review-list">${getReviewMarkup(productName)}</div>
   `;
   productDetailOptions.hidden = product.colors.length === 1 && product.colors[0] === "Default Title";
+  productDetailSizeOptions.hidden = !product.sizes?.length;
+
+  (product.features || []).forEach((feature) => {
+    const item = document.createElement("li");
+    item.textContent = feature;
+    productDetailFeatures.append(item);
+  });
+
+  (product.sizes || []).forEach((size, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "product-detail-size";
+    button.dataset.size = size;
+    button.textContent = size;
+    button.setAttribute("aria-label", `Select size ${size}`);
+    button.addEventListener("click", () => {
+      productDetailSizes.querySelectorAll(".product-detail-size").forEach((sizeButton) => {
+        sizeButton.classList.toggle("is-active", sizeButton.dataset.size === size);
+      });
+      productDetailSizeSelection.textContent = `Size ${size}`;
+    });
+    productDetailSizes.append(button);
+
+    if (index === 0) {
+      button.classList.add("is-active");
+      productDetailSizeSelection.textContent = `Size ${size}`;
+    }
+  });
 
   product.colors.forEach((color) => {
     const swatch = document.createElement("button");
@@ -542,16 +612,20 @@ const openProductDetail = (productName) => {
     productDetailSwatches.append(swatch);
   });
 
-  imageColors.forEach((color) => {
+  productDetailGallery.classList.toggle("has-single-image", uniqueImages.length <= 1);
+  productDetailThumbnails.hidden = uniqueImages.length <= 1;
+
+  uniqueImages.forEach(({ color, image: imageSrc }) => {
     const thumbnail = document.createElement("button");
     thumbnail.type = "button";
     thumbnail.className = "product-detail-thumb";
     thumbnail.dataset.color = color;
+    thumbnail.dataset.image = imageSrc;
     thumbnail.title = color;
     thumbnail.setAttribute("aria-label", `View ${getDisplayColor(color)}`);
 
     const image = document.createElement("img");
-    image.src = product.images[color];
+    image.src = imageSrc;
     image.alt = "";
     thumbnail.append(image);
     thumbnail.addEventListener("click", () => setProductDetailImage(product, color));
