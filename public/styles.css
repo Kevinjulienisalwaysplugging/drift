@@ -2402,6 +2402,7 @@ body.reveal-ready [data-animate].is-visible {
 }
 
 .trust-card {
+  position: relative;
   display: grid;
   min-height: auto;
   align-content: center;
@@ -2409,6 +2410,33 @@ body.reveal-ready [data-animate].is-visible {
   padding: clamp(26px, 5vw, 54px);
   border: 1px solid var(--line);
   background: linear-gradient(135deg, rgba(255, 248, 238, 0.92), rgba(235, 216, 192, 0.72));
+}
+
+.trust-card > img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(0.92) contrast(1.02);
+}
+
+.trust-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(255, 250, 244, 0.92), rgba(255, 250, 244, 0.72) 48%, rgba(255, 250, 244, 0.28)),
+    linear-gradient(0deg, rgba(42, 33, 29, 0.18), transparent 42%);
+}
+
+.trust-card-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
 }
 
 .trust-card h3 {
