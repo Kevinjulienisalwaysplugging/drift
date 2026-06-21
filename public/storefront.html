@@ -28,21 +28,32 @@
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="#collection">Shop</a>
+        <a href="/products">Shop All</a>
         <a href="#benefits">Benefits</a>
         <a href="/reviews">Reviews</a>
         <a href="/bundles">Bundles</a>
         <a href="/about">About</a>
       </nav>
       <div class="header-actions">
-        <div class="auth-status" aria-label="Customer profile">
-          <span class="profile-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" focusable="false">
-              <path d="M20 21a8 8 0 0 0-16 0" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </span>
-          <span class="auth-status-email">Login</span>
-          <button class="auth-logout" type="button" hidden>Logout</button>
+        <div class="profile-menu auth-status" aria-label="Customer profile">
+          <button class="profile-trigger" type="button" aria-label="Open profile menu" aria-expanded="false">
+            <span class="profile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M20 21a8 8 0 0 0-16 0" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </span>
+          </button>
+          <div class="profile-dropdown" hidden>
+            <div class="profile-dropdown-heading">
+              <span class="auth-status-email">Sign in</span>
+              <button class="profile-menu-close" type="button" aria-label="Close profile menu">&times;</button>
+            </div>
+            <button class="profile-menu-auth" type="button">Sign in / create account</button>
+            <button class="profile-menu-profile" type="button">Profile</button>
+            <button class="profile-menu-orders" type="button">Orders</button>
+            <button class="auth-logout" type="button" hidden>Logout</button>
+          </div>
         </div>
         <a class="header-action" href="#drift-list">Join</a>
         <button class="bag-trigger" type="button" aria-label="Open shopping bag">
@@ -50,6 +61,12 @@
         </button>
       </div>
     </header>
+    <div class="sale-marquee" aria-label="Summer sale">
+      <div class="sale-marquee-track">
+        <span>SUMMER SALE • Free shipping on orders over $45 • Limited-time DRIFT pricing • Smooth satin essentials for better rest •</span>
+        <span>SUMMER SALE • Free shipping on orders over $45 • Limited-time DRIFT pricing • Smooth satin essentials for better rest •</span>
+      </div>
+    </div>
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
@@ -122,7 +139,7 @@
               <p>01</p>
               <h3>Satin Pillowcase</h3>
               <span>A smooth satin pillowcase designed for a cooler, softer night.</span>
-              <strong>$29.99</strong>
+              <strong><span class="price-row"><span class="price-market">$19.99</span><span class="price-current">$12.99</span></span><span class="sale-badge">Summer Sale</span></strong>
               <div class="colorway-line" aria-label="Satin Pillowcase colorways">
                 <span class="swatch-champagne" title="Champagne"></span>
                 <span class="swatch-black" title="Black"></span>
@@ -143,7 +160,7 @@
               <p>02</p>
               <h3>Satin Eyemask</h3>
               <span>A soft blackout layer for deeper rest and a polished bedside ritual.</span>
-              <strong>$10.99</strong>
+              <strong><span class="price-row"><span class="price-market">$14.99</span><span class="price-current">$9.99</span></span><span class="sale-badge">Summer Sale</span></strong>
               <div class="colorway-line" aria-label="Satin Eyemask colorways">
                 <span class="swatch-champagne" title="Champagne"></span>
                 <span class="swatch-black" title="Black"></span>
@@ -164,7 +181,7 @@
               <p>03</p>
               <h3>Satin Nightgown</h3>
               <span>A fluid satin nightgown with adjustable straps, a soft lace neckline, and an easy midi drape.</span>
-              <strong>Price loading</strong>
+              <strong><span class="price-row"><span class="price-market">$44.99</span><span class="price-current">$32.99</span></span><span class="sale-badge">Summer Sale</span></strong>
               <div class="colorway-line" aria-label="Satin Nightgown colorways">
                 <span class="swatch-black" title="Black"></span>
                 <span class="swatch-pink" title="Pink"></span>
@@ -188,7 +205,7 @@
               <p>04</p>
               <h3>Satin Bonnet</h3>
               <span>A polished silhouette with a secure satin band for overnight protection.</span>
-              <strong>$15.99</strong>
+              <strong><span class="price-row"><span class="price-market">$17.99</span><span class="price-current">$13.99</span></span><span class="sale-badge">Summer Sale</span></strong>
               <div class="colorway-line" aria-label="Satin Bonnet colorways">
                 <span class="swatch-light-pink" title="Light Pink"></span>
                 <span class="swatch-black" title="Black"></span>
@@ -207,7 +224,7 @@
               <p>05</p>
               <h3>Satin Scrunchie</h3>
               <span>Low tension, high gloss, made for all-day wear and low-crease styling.</span>
-              <strong>$7.99</strong>
+              <strong><span class="price-row"><span class="price-market">$7.99</span><span class="price-current">$4.99</span></span><span class="sale-badge">Summer Sale</span></strong>
               <div class="colorway-line" aria-label="Satin Scrunchie colorways">
                 <span class="swatch-navy" title="Navy"></span>
                 <span class="swatch-black" title="Black"></span>
@@ -225,7 +242,7 @@
               <p>06</p>
               <h3>Luxury Slippers</h3>
               <span>Soft house slippers made to complete the DRIFT evening ritual.</span>
-              <strong>$35.99</strong>
+              <strong><span class="price-row"><span class="price-market">$34.99</span><span class="price-current">$29.99</span></span><span class="sale-badge">Summer Sale</span></strong>
               <div class="colorway-line" aria-label="Luxury Slippers colorways">
                 <span class="swatch-red" title="Red"></span>
                 <span class="swatch-black" title="Black"></span>
@@ -453,6 +470,16 @@
             </div>
             <button class="product-detail-add" type="button">Add to bag</button>
             <p class="product-detail-note">Your selections are saved in your DRIFT bag.</p>
+            <div class="product-offers" aria-label="Current DRIFT offers">
+              <div>
+                <span>Summer Sale Applied</span>
+                <p>Limited-time DRIFT pricing is reflected above.</p>
+              </div>
+              <div>
+                <span>Free shipping over $45</span>
+                <p>Build your satin routine and unlock shipping savings.</p>
+              </div>
+            </div>
             <details class="product-detail-reviews"></details>
             <div class="product-detail-trust">
               <a href="/shipping">Tracked shipping</a>

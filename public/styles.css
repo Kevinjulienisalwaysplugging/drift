@@ -76,6 +76,35 @@ a {
   backdrop-filter: blur(18px);
 }
 
+.sale-marquee {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 250, 244, 0.16);
+  border-bottom: 1px solid rgba(255, 250, 244, 0.16);
+  background: rgba(42, 33, 29, 0.9);
+  color: var(--ivory);
+}
+
+.sale-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: saleMarquee 26s linear infinite;
+}
+
+.sale-marquee span {
+  padding: 9px 18px;
+  color: rgba(255, 250, 244, 0.86);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .brand-mark {
   display: inline-flex;
   align-items: center;
@@ -149,29 +178,20 @@ a {
   gap: 18px;
 }
 
-.auth-status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 38px;
+.profile-menu {
+  position: relative;
+}
+
+.profile-trigger {
+  display: inline-grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
   border: 0;
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-size: 0.68rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.auth-status[hidden] {
-  display: none;
-}
-
-.auth-status-email {
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding: 0;
 }
 
 .profile-icon {
@@ -193,16 +213,76 @@ a {
   stroke-width: 1.7;
 }
 
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: min(260px, calc(100vw - 28px));
+  padding: 14px;
+  border: 1px solid rgba(75, 56, 43, 0.16);
+  background: rgba(255, 250, 244, 0.96);
+  color: var(--ink);
+  box-shadow: 0 22px 52px rgba(32, 25, 21, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.profile-dropdown[hidden] {
+  display: none;
+}
+
+.profile-dropdown-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.auth-status-email {
+  color: var(--espresso);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.profile-menu-close,
+.profile-menu-auth,
+.profile-menu-profile,
+.profile-menu-orders,
 .auth-logout {
-  min-height: 34px;
-  border: 1px solid currentColor;
+  width: 100%;
+  min-height: 38px;
+  border: 0;
   background: transparent;
   color: inherit;
   cursor: pointer;
   font: inherit;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 900;
+  text-align: left;
   text-transform: uppercase;
+}
+
+.profile-menu-close {
+  width: auto;
+  min-width: 34px;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+.profile-menu-auth,
+.profile-menu-profile,
+.profile-menu-orders,
+.auth-logout {
+  margin-top: 8px;
+  padding: 0 10px;
+  border: 1px solid rgba(75, 56, 43, 0.14);
+}
+
+.profile-menu-auth {
+  background: var(--espresso);
+  color: var(--ivory);
 }
 
 .bag-trigger {
@@ -238,7 +318,7 @@ a {
   align-items: center;
   overflow: hidden;
   color: var(--ivory);
-  padding: 110px clamp(22px, 7vw, 96px) 96px;
+  padding: 150px clamp(22px, 7vw, 96px) 96px;
 }
 
 .hero-image,
@@ -983,6 +1063,40 @@ h3 {
   text-transform: uppercase;
 }
 
+.price-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.price-market {
+  color: rgba(32, 25, 21, 0.45);
+  font-weight: 800;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.price-current {
+  color: var(--espresso);
+  font-weight: 950;
+}
+
+.sale-badge {
+  display: inline-flex !important;
+  width: max-content;
+  margin-top: 9px;
+  padding: 5px 8px;
+  border: 1px solid rgba(157, 118, 76, 0.28);
+  background: rgba(246, 238, 229, 0.72);
+  color: var(--bronze) !important;
+  font-size: 0.62rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .colorway-names {
   margin-top: 10px;
   color: rgba(32, 25, 21, 0.54);
@@ -1399,6 +1513,20 @@ h3 {
   font-size: 2rem;
 }
 
+.product-detail-price .price-row {
+  gap: 13px;
+}
+
+.product-detail-price .price-market {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05rem;
+}
+
+.product-detail-price .sale-badge {
+  margin-top: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .product-detail-purchase label {
   display: grid;
   gap: 8px;
@@ -1449,6 +1577,35 @@ h3 {
   color: rgba(32, 25, 21, 0.56);
   font-size: 0.78rem;
   line-height: 1.6;
+}
+
+.product-offers {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.product-offers div {
+  padding: 13px 14px;
+  border: 1px solid rgba(157, 118, 76, 0.22);
+  background: linear-gradient(135deg, rgba(255, 250, 244, 0.92), rgba(246, 238, 229, 0.72));
+}
+
+.product-offers span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--espresso);
+  font-size: 0.7rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-offers p {
+  margin: 0;
+  color: rgba(32, 25, 21, 0.62);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .product-detail-promises {
@@ -2566,6 +2723,15 @@ body.has-name-popup {
   }
 }
 
+@keyframes saleMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (max-width: 920px) {
   .site-header {
     grid-template-columns: 1fr auto;
@@ -2666,7 +2832,8 @@ body.has-name-popup {
 
 @media (max-width: 620px) {
   .site-header {
-    padding: 14px 18px;
+    gap: 10px;
+    padding: 12px 14px;
   }
 
   .brand-word {
@@ -2676,15 +2843,20 @@ body.has-name-popup {
   }
 
   .header-action {
-    font-size: 0.72rem;
+    display: none;
   }
 
   .header-actions {
-    gap: 12px;
+    gap: 8px;
   }
 
-  .auth-status-email {
-    display: none;
+  .sale-marquee {
+    top: 68px;
+  }
+
+  .sale-marquee span {
+    padding: 8px 14px;
+    font-size: 0.62rem;
   }
 
   .profile-icon {
@@ -2692,15 +2864,13 @@ body.has-name-popup {
     height: 28px;
   }
 
-  .auth-logout {
-    min-height: 30px;
-    padding: 0 8px;
-    font-size: 0.62rem;
+  .profile-dropdown {
+    right: -64px;
   }
 
   .hero {
     min-height: 90vh;
-    padding: 92px 18px 82px;
+    padding: 126px 18px 82px;
   }
 
   .hero-clean {

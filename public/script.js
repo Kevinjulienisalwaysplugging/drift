@@ -46,6 +46,12 @@ const joinPopupCompletedKey = "driftJoinAuthCompleted";
 const authStatus = document.querySelector(".auth-status");
 const authStatusEmail = document.querySelector(".auth-status-email");
 const authLogout = document.querySelector(".auth-logout");
+const profileTrigger = document.querySelector(".profile-trigger");
+const profileDropdown = document.querySelector(".profile-dropdown");
+const profileMenuClose = document.querySelector(".profile-menu-close");
+const profileMenuAuth = document.querySelector(".profile-menu-auth");
+const profileMenuProfile = document.querySelector(".profile-menu-profile");
+const profileMenuOrders = document.querySelector(".profile-menu-orders");
 const namePopup = document.querySelector(".name-popup");
 const namePopupClose = document.querySelector(".name-popup-close");
 const namePopupBackdrop = document.querySelector(".name-popup-backdrop");
@@ -76,22 +82,49 @@ const colorClassByName = {
 };
 
 // Edit displayed storefront prices here. Shopify checkout prices still come from Shopify.
-const productPrices = {
-  "Satin Pillowcase": "$29.99",
-  "Satin Eyemask": "$10.99",
+const productMarketPrices = {
+  "Satin Pillowcase": "$19.99",
+  "Satin Eyemask": "$14.99",
   "Satin Scrunchie": "$7.99",
-  "Satin Bonnet": "$15.99",
+  "Satin Bonnet": "$17.99",
+  "Luxury Slippers": "$34.99",
+  "Satin Nightgown": "$44.99",
+};
+
+const productPrices = {
+  "Satin Pillowcase": "$12.99",
+  "Satin Eyemask": "$9.99",
+  "Satin Scrunchie": "$4.99",
+  "Satin Bonnet": "$13.99",
   "Satin Twin Bedding Set": "$30.99",
   "Satin Full Bedding Set": "$49.99",
   "Satin Queen Bedding Set": "$69.99",
   "Satin King Bedding Set": "$75.99",
   "Satin Blanket": "$89.99",
-  "Luxury Slippers": "$35.99",
-  "Satin Nightgown": "Price loading",
+  "Luxury Slippers": "$29.99",
+  "Satin Nightgown": "$32.99",
   "The Nightstand Essentials Trio": "$39.99",
   "The Ultimate Hair Care Duo": "$19.99",
   "The Beauty Sleep Bundle": "$44.99",
   "The College / Dorm Starter": "$64.99",
+};
+
+const hasSalePrice = (productName) => Boolean(productMarketPrices[productName]);
+
+const getPriceMarkup = (productName, salePrice = productPrices[productName]) => {
+  const marketPrice = productMarketPrices[productName];
+
+  if (!marketPrice) {
+    return `<span class="price-current">${salePrice || ""}</span>`;
+  }
+
+  return `
+    <span class="price-row">
+      <span class="price-market">${marketPrice}</span>
+      <span class="price-current">${salePrice}</span>
+    </span>
+    <span class="sale-badge">Summer Sale</span>
+  `;
 };
 
 const productDetails = {
@@ -437,7 +470,7 @@ const syncProductCardPrices = () => {
     const priceElement = card.querySelector("strong");
 
     if (price && priceElement) {
-      priceElement.textContent = price;
+      priceElement.innerHTML = getPriceMarkup(productName, price);
     }
   });
 };
@@ -487,7 +520,7 @@ const applyShopifyCatalogAudit = (audit) => {
       product.cardImage;
 
     const firstVariant = shopifyProduct.variants?.find((variant) => variant.price);
-    if (firstVariant?.price) {
+    if (firstVariant?.price && !hasSalePrice(productName)) {
       product.price = firstVariant.price;
       productPrices[productName] = firstVariant.price;
     }
@@ -686,7 +719,7 @@ const openProductDetail = (productName) => {
   productDetailTitle.textContent = productName;
   productDetailDescription.textContent = product.description;
   productDetailFeatures.innerHTML = "";
-  productDetailPrice.textContent = product.price;
+  productDetailPrice.innerHTML = getPriceMarkup(productName, product.price);
   productDetailSwatches.innerHTML = "";
   productDetailSizes.innerHTML = "";
   productDetailSizeSelection.textContent = "";
@@ -1042,14 +1075,29 @@ const setJoinPopupMessage = (message = "", mode = "") => {
 const setAuthLoading = (isLoading) => {
   joinAuthSignup.disabled = isLoading;
   joinAuthLogin.disabled = isLoading;
-  authLogout.disabled = isLoading;
+  if (authLogout) authLogout.disabled = isLoading;
+};
+
+const openProfileDropdown = () => {
+  if (!profileDropdown) return;
+  profileDropdown.hidden = false;
+  profileTrigger?.setAttribute("aria-expanded", "true");
+};
+
+const closeProfileDropdown = () => {
+  if (!profileDropdown) return;
+  profileDropdown.hidden = true;
+  profileTrigger?.setAttribute("aria-expanded", "false");
 };
 
 const updateAuthStatus = (user) => {
   currentAuthUser = user;
   authStatus.classList.toggle("is-logged-in", Boolean(user));
-  authStatusEmail.textContent = getCustomerDisplayName(user);
+  authStatusEmail.textContent = user ? getCustomerDisplayName(user) : "Sign in";
   authLogout.hidden = !user;
+  profileMenuProfile.hidden = !user;
+  profileMenuOrders.hidden = !user;
+  profileMenuAuth.hidden = Boolean(user);
 
   if (user) {
     window.localStorage.setItem(joinPopupCompletedKey, "true");
@@ -1249,19 +1297,40 @@ authLogout.addEventListener("click", async () => {
     await client.auth.signOut();
     window.localStorage.removeItem(joinPopupCompletedKey);
     updateAuthStatus(null);
+    closeProfileDropdown();
   } catch (error) {
     console.info("[DRIFT Auth] Logout failed", error.message);
   } finally {
     setAuthLoading(false);
   }
 });
-authStatus.addEventListener("click", (event) => {
-  if (event.target.closest(".auth-logout") || currentAuthUser) {
-    return;
+profileTrigger?.addEventListener("click", () => {
+  if (profileDropdown?.hidden) {
+    openProfileDropdown();
+  } else {
+    closeProfileDropdown();
   }
-
+});
+profileMenuClose?.addEventListener("click", closeProfileDropdown);
+profileMenuAuth?.addEventListener("click", () => {
+  closeProfileDropdown();
   joinPopupHasOpened = false;
   openJoinPopup();
+});
+profileMenuProfile?.addEventListener("click", () => {
+  closeProfileDropdown();
+  if (currentAuthUser) {
+    openNamePopup();
+  } else {
+    joinPopupHasOpened = false;
+    openJoinPopup();
+  }
+});
+profileMenuOrders?.addEventListener("click", () => {
+  profileMenuOrders.textContent = "Orders will appear here";
+  window.setTimeout(() => {
+    profileMenuOrders.textContent = "Orders";
+  }, 1800);
 });
 namePopupClose?.addEventListener("click", closeNamePopup);
 namePopupBackdrop?.addEventListener("click", closeNamePopup);
@@ -1305,7 +1374,16 @@ document.addEventListener("keydown", (event) => {
     closeJoinPopup();
   } else if (event.key === "Escape" && namePopup && !namePopup.hidden) {
     closeNamePopup();
+  } else if (event.key === "Escape" && profileDropdown && !profileDropdown.hidden) {
+    closeProfileDropdown();
   }
+});
+document.addEventListener("click", (event) => {
+  if (profileDropdown?.hidden || event.target.closest(".profile-menu")) {
+    return;
+  }
+
+  closeProfileDropdown();
 });
 refreshAuthSession();
 
