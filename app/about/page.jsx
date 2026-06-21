@@ -37,9 +37,8 @@ export default function AboutPage() {
         <div>
           <h2>Material Language</h2>
           <p>
-            DRIFT uses satin for its soft sheen, fluid drape, and smooth hand feel. The material is
-            chosen to make everyday sleep pieces feel calm, polished, and easy to return to night
-            after night.
+            DRIFT uses premium satin and silk blends to deliver the luxury feel you expect, while
+            keeping our products accessible and affordable.
           </p>
         </div>
         <figure>
