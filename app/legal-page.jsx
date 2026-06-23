@@ -14,6 +14,7 @@ export function LegalShell({ eyebrow, title, intro, heroImage, heroImageAlt, chi
           <a href="/reviews">Reviews</a>
           <a href="/bundles">Bundles</a>
           <a href="/products">Products</a>
+          <a href="/account">Account</a>
           <a href="/privacy">Privacy</a>
           <a href="/storefront.html">Shop</a>
         </nav>

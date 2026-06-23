@@ -37,7 +37,9 @@ const joinPopup = document.querySelector(".join-popup");
 const joinPopupClose = document.querySelector(".join-popup-close");
 const joinPopupBackdrop = document.querySelector(".join-popup-backdrop");
 const joinAuthForm = document.querySelector(".join-auth-form");
+const joinAuthName = document.querySelector("#join-popup-name");
 const joinAuthEmail = document.querySelector("#join-popup-email");
+const joinAuthPassword = document.querySelector("#join-popup-password");
 const joinAuthSignup = document.querySelector('[data-auth-action="signup"]');
 const joinAuthLogin = document.querySelector('[data-auth-action="login"]');
 const joinPopupMessage = document.querySelector(".join-popup-message");
@@ -1038,7 +1040,6 @@ syncProductCardAvailability();
 hydrateShopifyCatalog();
 
 let joinPopupHasOpened = false;
-let supabaseAuthClient = null;
 let currentAuthUser = null;
 let authSessionChecked = false;
 
@@ -1046,24 +1047,22 @@ const isJoinPopupDismissed = () => window.sessionStorage.getItem(joinPopupSessio
 const hasCompletedJoinAuth = () => window.localStorage.getItem(joinPopupCompletedKey) === "true";
 
 const getCustomerDisplayName = (user) => {
-  const metadata = user?.user_metadata || {};
   const savedName = window.localStorage.getItem(profileNameStorageKey);
-  const name = metadata.full_name || metadata.name || metadata.first_name || savedName;
+  const name = user?.name || savedName;
 
   if (name) {
-    return `[${String(name).trim().split(/\s+/)[0]}]`;
+    return String(name).trim().split(/\s+/)[0];
   }
 
   if (user?.email) {
-    return `[${user.email.split("@")[0]}]`;
+    return user.email.split("@")[0];
   }
 
   return "Login";
 };
 
 const userHasProfileName = (user) => {
-  const metadata = user?.user_metadata || {};
-  return Boolean(metadata.full_name || metadata.name || metadata.first_name || window.localStorage.getItem(profileNameStorageKey));
+  return Boolean(user?.name || window.localStorage.getItem(profileNameStorageKey));
 };
 
 const setJoinPopupMessage = (message = "", mode = "") => {
@@ -1075,6 +1074,9 @@ const setJoinPopupMessage = (message = "", mode = "") => {
 const setAuthLoading = (isLoading) => {
   joinAuthSignup.disabled = isLoading;
   joinAuthLogin.disabled = isLoading;
+  joinAuthPassword.disabled = isLoading;
+  joinAuthName.disabled = isLoading;
+  joinAuthEmail.disabled = isLoading;
   if (authLogout) authLogout.disabled = isLoading;
 };
 
@@ -1150,54 +1152,31 @@ const maybeOpenNamePopup = (user) => {
   window.setTimeout(openNamePopup, 500);
 };
 
-const loadSupabaseAuthClient = async () => {
-  if (supabaseAuthClient) {
-    return supabaseAuthClient;
-  }
-
-  if (!window.supabase?.createClient) {
-    throw new Error("Supabase Auth is still loading. Please try again.");
-  }
-
-  const response = await fetch("/api/supabase/config", { cache: "no-store" });
-  const config = await response.json();
-
-  if (!response.ok || !config.url || !config.anonKey) {
-    throw new Error("Supabase Auth is not configured yet.");
-  }
-
-  supabaseConfig = { ...supabaseConfig, url: config.url, anonKey: config.anonKey };
-  supabaseAuthClient = window.supabase.createClient(config.url, config.anonKey);
-  return supabaseAuthClient;
-};
-
 const refreshAuthSession = async () => {
   try {
-    const client = await loadSupabaseAuthClient();
-    const { data, error } = await client.auth.getSession();
+    const response = await fetch("/api/auth/me", { cache: "no-store" });
+    const data = await response.json();
 
-    if (error) {
-      throw error;
+    if (!response.ok || data.configured === false) {
+      throw new Error(data.error || "DRIFT accounts are not configured yet.");
     }
 
-    updateAuthStatus(data.session?.user || null);
-    client.auth.onAuthStateChange((_event, session) => {
-      updateAuthStatus(session?.user || null);
-    });
+    updateAuthStatus(data.user || null);
   } catch (error) {
-    console.info("[DRIFT Auth] Supabase Auth unavailable", error.message);
+    console.info("[DRIFT Auth] Account session unavailable", error.message);
+    updateAuthStatus(null);
   } finally {
     authSessionChecked = true;
   }
 };
 
-const openJoinPopup = () => {
+const openJoinPopup = (force = false) => {
   if (
-    !authSessionChecked ||
-    joinPopupHasOpened ||
-    isJoinPopupDismissed() ||
-    hasCompletedJoinAuth() ||
-    currentAuthUser ||
+    (!force && !authSessionChecked) ||
+    (!force && joinPopupHasOpened) ||
+    (!force && isJoinPopupDismissed()) ||
+    (!force && hasCompletedJoinAuth()) ||
+    (!force && currentAuthUser) ||
     !bagPanel.hidden ||
     !productDetail.hidden
   ) {
@@ -1226,42 +1205,55 @@ const closeJoinPopup = () => {
 };
 
 const handleJoinAuth = async (mode) => {
+  const name = joinAuthName.value.trim();
   const email = joinAuthEmail.value.trim();
+  const password = joinAuthPassword.value;
+
+  if (mode === "signup" && !name) {
+    setJoinPopupMessage("Add your name to create your DRIFT account.", "error");
+    return;
+  }
 
   if (!email) {
     setJoinPopupMessage("Enter your email to continue.", "error");
     return;
   }
 
+  if (!password) {
+    setJoinPopupMessage("Enter your password to continue.", "error");
+    return;
+  }
+
+  if (password.length < 8) {
+    setJoinPopupMessage("Password must be at least 8 characters.", "error");
+    return;
+  }
+
   setAuthLoading(true);
-  setJoinPopupMessage(mode === "signup" ? "Creating your DRIFT access..." : "Sending your login link...");
+  setJoinPopupMessage(mode === "signup" ? "Creating your DRIFT account..." : "Signing you in...");
 
   try {
-    const client = await loadSupabaseAuthClient();
-    const redirectTo = `${window.location.origin}${window.location.pathname}`;
-    const { data, error } = await client.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: redirectTo,
-        shouldCreateUser: mode === "signup",
-      },
+    const response = await fetch(`/api/auth/${mode}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
     });
+    const data = await response.json();
 
-    if (error) {
-      throw error;
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to connect right now. Please try again.");
     }
 
-    if (data.user && data.session) {
-      window.localStorage.setItem(joinPopupCompletedKey, "true");
-      updateAuthStatus(data.user);
-      setJoinPopupMessage("You are signed in to DRIFT.", "success");
-      window.setTimeout(closeJoinPopup, 900);
+    if (data.requiresEmailConfirmation) {
+      setJoinPopupMessage(data.message || "Check your email to confirm your DRIFT account.", "success");
+      window.sessionStorage.setItem(joinPopupSessionKey, "true");
       return;
     }
 
-    setJoinPopupMessage("Check your email for the DRIFT confirmation link.", "success");
     window.localStorage.setItem(joinPopupCompletedKey, "true");
-    window.sessionStorage.setItem(joinPopupSessionKey, "true");
+    updateAuthStatus(data.user);
+    setJoinPopupMessage(data.message || "You are signed in to DRIFT.", "success");
+    window.setTimeout(closeJoinPopup, 900);
   } catch (error) {
     setJoinPopupMessage(error.message || "Unable to connect right now. Please try again.", "error");
   } finally {
@@ -1293,8 +1285,7 @@ authLogout.addEventListener("click", async () => {
   setAuthLoading(true);
 
   try {
-    const client = await loadSupabaseAuthClient();
-    await client.auth.signOut();
+    await fetch("/api/auth/logout", { method: "POST" });
     window.localStorage.removeItem(joinPopupCompletedKey);
     updateAuthStatus(null);
     closeProfileDropdown();
@@ -1305,6 +1296,12 @@ authLogout.addEventListener("click", async () => {
   }
 });
 profileTrigger?.addEventListener("click", () => {
+  if (!currentAuthUser) {
+    joinPopupHasOpened = false;
+    openJoinPopup(true);
+    return;
+  }
+
   if (profileDropdown?.hidden) {
     openProfileDropdown();
   } else {
@@ -1315,22 +1312,20 @@ profileMenuClose?.addEventListener("click", closeProfileDropdown);
 profileMenuAuth?.addEventListener("click", () => {
   closeProfileDropdown();
   joinPopupHasOpened = false;
-  openJoinPopup();
+  openJoinPopup(true);
 });
 profileMenuProfile?.addEventListener("click", () => {
   closeProfileDropdown();
   if (currentAuthUser) {
-    openNamePopup();
+    window.location.href = "/account";
   } else {
     joinPopupHasOpened = false;
-    openJoinPopup();
+    openJoinPopup(true);
   }
 });
 profileMenuOrders?.addEventListener("click", () => {
-  profileMenuOrders.textContent = "Orders will appear here";
-  window.setTimeout(() => {
-    profileMenuOrders.textContent = "Orders";
-  }, 1800);
+  closeProfileDropdown();
+  window.location.href = currentAuthUser ? "/account/orders" : "/storefront.html#drift-list";
 });
 namePopupClose?.addEventListener("click", closeNamePopup);
 namePopupBackdrop?.addEventListener("click", closeNamePopup);
@@ -1349,22 +1344,24 @@ profileNameForm?.addEventListener("submit", async (event) => {
   profileNameMessage.classList.remove("is-error");
 
   try {
-    const client = await loadSupabaseAuthClient();
-    const { data, error } = await client.auth.updateUser({ data: { name, first_name: name } });
+    const response = await fetch("/api/auth/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+    const data = await response.json();
 
-    if (error) {
-      throw error;
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to save your profile.");
     }
 
     window.localStorage.setItem(profileNameStorageKey, name);
-    updateAuthStatus(data.user || currentAuthUser);
+    updateAuthStatus(data.user || { ...currentAuthUser, name });
     profileNameMessage.textContent = "Saved.";
     window.setTimeout(closeNamePopup, 600);
   } catch (error) {
-    window.localStorage.setItem(profileNameStorageKey, name);
-    updateAuthStatus(currentAuthUser);
-    profileNameMessage.textContent = "Saved on this device.";
-    window.setTimeout(closeNamePopup, 800);
+    profileNameMessage.textContent = error.message || "Unable to save your profile.";
+    profileNameMessage.classList.add("is-error");
   } finally {
     profileNameForm.querySelector("button").disabled = false;
   }

@@ -540,12 +540,17 @@
             Soft satin essentials designed for better rest, everyday luxury, and a calmer night routine.
           </p>
           <form class="join-auth-form">
+            <label for="join-popup-name">Full name</label>
+            <input id="join-popup-name" name="name" type="text" placeholder="Your name" autocomplete="name" maxlength="80">
             <label for="join-popup-email">Email address</label>
             <input id="join-popup-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            <label for="join-popup-password">Password</label>
+            <input id="join-popup-password" name="password" type="password" placeholder="At least 8 characters" autocomplete="current-password" minlength="8" required>
             <div class="join-popup-actions">
               <button class="join-popup-action" type="submit" data-auth-action="signup">Sign up</button>
               <button class="join-popup-secondary" type="button" data-auth-action="login">Log in</button>
             </div>
+            <p class="join-popup-hint">Create an account with your name, email, and password. Login uses the same email and password.</p>
             <p class="join-popup-message" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -724,6 +729,7 @@
         <a href="/returns">Returns</a>
         <a href="/reviews">Reviews</a>
         <a href="/bundles">Bundles</a>
+        <a href="/account">Account</a>
         <a href="#drift-list">Updates</a>
         <a href="/privacy">Privacy</a>
         <a href="/data-deletion">Data deletion</a>

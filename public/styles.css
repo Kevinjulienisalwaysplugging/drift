@@ -2018,6 +2018,13 @@ body.has-bag {
   line-height: 1.55;
 }
 
+.join-popup-hint {
+  margin: -2px 0 0 !important;
+  color: rgba(32, 25, 21, 0.52) !important;
+  font-size: 0.74rem !important;
+  line-height: 1.5 !important;
+}
+
 .join-popup-message.is-success {
   color: #536b45;
 }
