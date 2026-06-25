@@ -791,10 +791,11 @@ h3 {
 .comparison-slider {
   --split: 50%;
   position: relative;
-  min-height: clamp(360px, 48vw, 640px);
+  aspect-ratio: 16 / 9;
+  min-height: 0;
   overflow: hidden;
   border: 1px solid rgba(75, 56, 43, 0.16);
-  background: var(--pearl);
+  background: #fff;
   box-shadow: 0 30px 80px rgba(32, 25, 21, 0.12);
   cursor: ew-resize;
   touch-action: none;
@@ -812,7 +813,8 @@ h3 {
   display: grid;
   place-items: center;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .comparison-before {
@@ -3158,7 +3160,8 @@ body.has-name-popup {
   }
 
   .comparison-slider {
-    min-height: 430px;
+    aspect-ratio: 16 / 9;
+    min-height: 0;
   }
 
   .comparison-label {
