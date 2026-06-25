@@ -1,5 +1,7 @@
 import { LegalShell } from "../../legal-page";
 import OrdersClient from "./orders-client";
+import { getAuthSession } from "../../../lib/auth-session";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Previous Purchases | DRIFT Account",
@@ -9,7 +11,13 @@ export const metadata = {
   },
 };
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const { user } = await getAuthSession();
+
+  if (!user) {
+    redirect("/storefront.html");
+  }
+
   return (
     <LegalShell
       eyebrow="Previous purchases"

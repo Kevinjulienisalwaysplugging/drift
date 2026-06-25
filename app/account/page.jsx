@@ -1,5 +1,7 @@
 import { LegalShell } from "../legal-page";
 import AccountClient from "./account-client";
+import { getAuthSession } from "../../lib/auth-session";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Your DRIFT Profile | Account",
@@ -9,7 +11,13 @@ export const metadata = {
   },
 };
 
-export default function AccountPage() {
+export default async function AccountPage() {
+  const { user } = await getAuthSession();
+
+  if (!user) {
+    redirect("/storefront.html");
+  }
+
   return (
     <LegalShell
       eyebrow="Account"
