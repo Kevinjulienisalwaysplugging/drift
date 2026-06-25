@@ -991,6 +991,80 @@ document.querySelectorAll(".bundle-add").forEach((button) => {
   });
 });
 
+document.querySelectorAll(".comparison-slider").forEach((slider) => {
+  const beforeImage = slider.querySelector(".comparison-before");
+  const afterImage = slider.querySelector(".comparison-after");
+  const beforeImageUrl = slider.dataset.beforeImage;
+  const afterImageUrl = slider.dataset.afterImage;
+  let isDraggingComparison = false;
+
+  if (beforeImageUrl) {
+    beforeImage.style.backgroundImage = `url("${beforeImageUrl}")`;
+    beforeImage.querySelector("span")?.remove();
+  }
+
+  if (afterImageUrl) {
+    afterImage.style.backgroundImage = `url("${afterImageUrl}")`;
+    afterImage.querySelector("span")?.remove();
+  }
+
+  const setComparisonSplit = (clientX) => {
+    const bounds = slider.getBoundingClientRect();
+    const rawPercent = ((clientX - bounds.left) / bounds.width) * 100;
+    const percent = Math.min(92, Math.max(8, rawPercent));
+    slider.style.setProperty("--split", `${percent}%`);
+    slider.setAttribute("aria-valuenow", Math.round(percent));
+  };
+
+  slider.setAttribute("role", "slider");
+  slider.setAttribute("aria-valuemin", "8");
+  slider.setAttribute("aria-valuemax", "92");
+  slider.setAttribute("aria-valuenow", "50");
+  slider.setAttribute("aria-valuetext", "Cotton and DRIFT satin comparison");
+
+  slider.addEventListener("pointerdown", (event) => {
+    isDraggingComparison = true;
+    slider.classList.add("is-dragging");
+    slider.setPointerCapture?.(event.pointerId);
+    setComparisonSplit(event.clientX);
+  });
+
+  slider.addEventListener("pointermove", (event) => {
+    if (!isDraggingComparison) {
+      return;
+    }
+
+    setComparisonSplit(event.clientX);
+  });
+
+  const stopComparisonDrag = (event) => {
+    isDraggingComparison = false;
+    slider.classList.remove("is-dragging");
+    slider.releasePointerCapture?.(event.pointerId);
+  };
+
+  slider.addEventListener("pointerup", stopComparisonDrag);
+  slider.addEventListener("pointercancel", stopComparisonDrag);
+  slider.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+      return;
+    }
+
+    event.preventDefault();
+    const current = Number.parseFloat(slider.style.getPropertyValue("--split")) || 50;
+    let next = current;
+
+    if (event.key === "ArrowLeft") next = current - 4;
+    if (event.key === "ArrowRight") next = current + 4;
+    if (event.key === "Home") next = 8;
+    if (event.key === "End") next = 92;
+
+    const percent = Math.min(92, Math.max(8, next));
+    slider.style.setProperty("--split", `${percent}%`);
+    slider.setAttribute("aria-valuenow", Math.round(percent));
+  });
+});
+
 bagTrigger.addEventListener("click", openBag);
 bagClose.addEventListener("click", closeBag);
 bagBackdrop.addEventListener("click", closeBag);
