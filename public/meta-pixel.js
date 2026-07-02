@@ -7,7 +7,7 @@
   let catalogAudit = null;
   let catalogAuditRequest = null;
   let pendingAddToCart = null;
-  let lastBagCount = getBagCount();
+  let lastBagCount = 0;
   let lastViewedProductKey = "";
 
   const safeFbq = (eventName, params) => {
@@ -253,6 +253,7 @@
   );
 
   document.addEventListener("DOMContentLoaded", () => {
+    lastBagCount = getBagCount();
     loadCatalogAudit();
     observeProductDetail();
     observeBagCount();
