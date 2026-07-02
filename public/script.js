@@ -7,8 +7,10 @@ let supabaseConfig = window.DRIFT_SUPABASE || {};
 const productDetail = document.querySelector(".product-detail");
 const productDetailClose = document.querySelector(".product-detail-close");
 const productDetailGallery = document.querySelector(".product-detail-gallery");
+const productDetailImageWrap = document.querySelector(".product-detail-image-wrap");
 const productDetailImage = document.querySelector(".product-detail-image");
 const productDetailTitle = document.querySelector(".product-detail-title");
+const productDetailRating = document.querySelector(".product-detail-rating");
 const productDetailDescription = document.querySelector(".product-detail-description");
 const productDetailFeatures = document.querySelector(".product-detail-features");
 const productDetailPrice = document.querySelector(".product-detail-price");
@@ -21,8 +23,25 @@ const productDetailSizeSelection = document.querySelector(".product-detail-size-
 const productDetailThumbnails = document.querySelector(".product-detail-thumbnails");
 const productDetailQuantity = document.querySelector(".product-detail-quantity");
 const productDetailAdd = document.querySelector(".product-detail-add");
+const productDetailBuy = document.querySelector(".product-detail-buy");
 const productDetailNote = document.querySelector(".product-detail-note");
 const productDetailReviews = document.querySelector(".product-detail-reviews");
+const productDetailEditorialDescription = document.querySelector(".product-detail-editorial-description");
+const productDetailMaterials = document.querySelector(".product-detail-materials");
+const productDetailCare = document.querySelector(".product-detail-care");
+const productDetailFaqs = document.querySelector(".product-detail-faqs");
+const productRelatedList = document.querySelector(".product-related-list");
+const productRecentList = document.querySelector(".product-recent-list");
+const productLightbox = document.querySelector(".product-lightbox");
+const productLightboxImage = document.querySelector(".product-lightbox-image");
+const productLightboxClose = document.querySelector(".product-lightbox-close");
+const productLightboxBackdrop = document.querySelector(".product-lightbox-backdrop");
+const customerGalleryPrev = document.querySelector(".customer-gallery-prev");
+const customerGalleryNext = document.querySelector(".customer-gallery-next");
+const mobileStickyCart = document.querySelector(".mobile-sticky-cart");
+const mobileStickyTitle = document.querySelector(".mobile-sticky-title");
+const mobileStickyPrice = document.querySelector(".mobile-sticky-price");
+const mobileStickyAdd = document.querySelector(".mobile-sticky-add");
 const bagTrigger = document.querySelector(".bag-trigger");
 const bagCount = document.querySelector(".bag-count");
 const bagPanel = document.querySelector(".bag-panel");
@@ -42,6 +61,7 @@ const joinAuthEmail = document.querySelector("#join-popup-email");
 const joinAuthPassword = document.querySelector("#join-popup-password");
 const joinAuthSignup = document.querySelector('[data-auth-action="signup"]');
 const joinAuthLogin = document.querySelector('[data-auth-action="login"]');
+const joinAuthReset = document.querySelector(".join-popup-reset");
 const joinPopupMessage = document.querySelector(".join-popup-message");
 const joinPopupSessionKey = "driftJoinPopupClosed";
 const joinPopupCompletedKey = "driftJoinAuthCompleted";
@@ -316,86 +336,7 @@ const productDetails = {
   },
 };
 
-const productReviews = {
-  "Satin Pillowcase": [
-    { rating: "5.0", text: "Super soft and smooth. My hair feels way less tangled in the morning compared to my old cotton pillowcase." },
-    { rating: "4.8", text: "The champagne color looks really nice on my bed, and the fabric feels cool and gentle. Definitely makes my night routine feel more luxurious." },
-    { rating: "4.7", text: "I bought this because my hair was always frizzy when I woke up. It feels much smoother now, and the pillowcase looks beautiful." },
-    { rating: "5.0", text: "Feels way more expensive than I expected. It is soft, shiny, and makes my bed look so much cleaner." },
-  ],
-  "Satin Bonnet": [
-    { rating: "5.0", text: "This bonnet is comfortable and stays on better than others I have tried. My hair feels more protected overnight." },
-    { rating: "4.8", text: "Really soft inside and not too tight. I like wearing it with the pillowcase for extra hair protection." },
-    { rating: "4.7", text: "My curls look less messy in the morning. It feels gentle and looks cute too." },
-    { rating: "5.0", text: "Perfect for sleeping. It is lightweight, soft, and does not feel annoying while I'm trying to relax." },
-  ],
-  "Satin Eyemask": [
-    { rating: "5.0", text: "Very soft and comfortable. It blocks enough light for me and feels much nicer than cheaper eye masks." },
-    { rating: "4.8", text: "I love how smooth this feels on my face. It does not pull at my skin, and the color looks really pretty." },
-    { rating: "4.7", text: "Great for naps and sleeping in later. It feels soft, lightweight, and not too tight." },
-    { rating: "5.0", text: "This makes my bedtime routine feel so much more relaxing. Simple product, but it feels premium." },
-  ],
-  "Satin Scrunchie": [
-    { rating: "5.0", text: "Way gentler than regular hair ties. It does not pull my hair as much, and it looks cute on my wrist too." },
-    { rating: "4.8", text: "I use this at night and during the day. It holds my hair without leaving a harsh dent." },
-    { rating: "4.7", text: "Soft, pretty, and easy to wear. I like that it matches the pillowcase and bonnet." },
-    { rating: "5.0", text: "Exactly what I wanted. Gentle hold, nice shine, and feels better than normal elastics." },
-  ],
-  "Satin Blanket": [
-    { rating: "5.0", text: "This blanket feels so smooth and cozy. It instantly makes my bed look more expensive." },
-    { rating: "4.8", text: "Soft, lightweight, and really pretty. I like using it while watching TV or relaxing before bed." },
-    { rating: "4.7", text: "The fabric feels luxurious and cool. It is not too heavy, which I like." },
-    { rating: "5.0", text: "Beautiful blanket. The color matches my room perfectly, and it feels very soft." },
-  ],
-  "Satin Twin Bedding Set": [
-    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
-    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
-    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
-    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
-  ],
-  "Satin Queen Bedding Set": [
-    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
-    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
-    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
-    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
-  ],
-  "Satin King Bedding Set": [
-    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
-    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
-    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
-    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
-  ],
-  "Satin Full Bedding Set": [
-    { rating: "5.0", text: "This set completely changed the look of my bed. It feels soft, smooth, and very premium." },
-    { rating: "4.8", text: "The bedding looks beautiful in person. It gives my room that clean hotel-bed feeling." },
-    { rating: "4.7", text: "I love the smooth feel. It makes getting into bed feel so much better." },
-    { rating: "5.0", text: "Really pretty and comfortable. The silk-like finish makes the whole room look more put together." },
-  ],
-  "The Nightstand Essentials Trio": [
-    { rating: "5.0", text: "This bundle is perfect if you want to upgrade your sleep routine without buying a full bedding set." },
-    { rating: "4.8", text: "The pillowcase and eye mask feel really soft together. It is a simple upgrade but feels luxurious." },
-    { rating: "4.7", text: "Great value for the two items. The eye mask is comfortable and the pillowcase feels smooth on my hair." },
-    { rating: "5.0", text: "Bought this as a self-care gift for myself. It looks pretty and feels amazing." },
-  ],
-  "The Ultimate Hair Care Duo": [
-    { rating: "5.0", text: "This is the best bundle for hair care. Everything feels gentle, and my hair is less messy in the morning." },
-    { rating: "4.8", text: "I like that all three products match. The pillowcase, bonnet, and scrunchie make my night routine feel complete." },
-    { rating: "4.7", text: "Good bundle if you care about frizz and breakage. Everything feels soft and comfortable." },
-    { rating: "5.0", text: "This is the bundle I would recommend first. It feels like a full overnight hair protection set." },
-  ],
-  "The Beauty Sleep Bundle": [
-    { rating: "5.0", text: "This bundle feels like a full sleep upgrade. The pillowcase is smooth, the eye mask is soft, and the bonnet is comfortable." },
-    { rating: "4.8", text: "Really good for a self-care night routine. Everything feels premium and looks beautiful together." },
-    { rating: "4.7", text: "I bought this because I wanted matching sleep accessories. It looks cute and feels very soft." },
-    { rating: "5.0", text: "Perfect set. It makes bedtime feel more relaxing and put together." },
-  ],
-  "The College / Dorm Starter": [
-    { rating: "5.0", text: "This bundle makes the whole bed feel upgraded. Everything matches and looks really clean." },
-    { rating: "4.8", text: "Great if you want the full Drift setup. The colors are beautiful and the fabric feels smooth." },
-    { rating: "4.7", text: "I like having the pillowcase, mask, bonnet, and accessories all together. It feels premium without being too much." },
-    { rating: "5.0", text: "Honestly my favorite purchase for my room. It makes my bed look more luxurious and feels really comfortable." },
-  ],
-};
+const productReviewState = new Map();
 
 const bundleDetails = [
   {
@@ -464,6 +405,11 @@ let bag = JSON.parse(window.localStorage.getItem("driftBag") || "[]")
   });
 
 document.body.classList.add("reveal-ready");
+
+document.querySelectorAll(".product-photo").forEach((image) => {
+  image.loading = "lazy";
+  image.decoding = "async";
+});
 
 const syncProductCardPrices = () => {
   document.querySelectorAll(".product-card").forEach((card) => {
@@ -572,25 +518,536 @@ const hydrateShopifyCatalog = async () => {
   }
 };
 
-const getReviewMarkup = (productName, compact = false) => {
-  const reviews = productReviews[productName] || [];
+const starRow = (rating) => {
+  const count = Math.max(0, Math.min(5, Number(rating) || 0));
+  return `${"\u2605".repeat(count)}${"\u2606".repeat(5 - count)}`;
+};
 
-  if (reviews.length === 0) {
-    return '<p class="review-empty">No reviews yet.</p>';
+const getReviewState = (productName) =>
+  productReviewState.get(productName) || {
+    reviews: [],
+    summary: { average: 0, count: 0, breakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } },
+    pagination: { page: 1, pageSize: 8, total: 0, hasMore: false },
+    sort: "recent",
+    isLoading: false,
+    message: "",
+  };
+
+const setReviewState = (productName, nextState) => {
+  productReviewState.set(productName, { ...getReviewState(productName), ...nextState });
+};
+
+const getReviewHelpfulKey = () => {
+  let key = window.localStorage.getItem("driftReviewHelpfulKey");
+  if (!key) {
+    key = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`;
+    window.localStorage.setItem("driftReviewHelpfulKey", key);
+  }
+  return key;
+};
+
+const formatReviewDate = (date) => {
+  if (!date) return "";
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(new Date(date));
+};
+
+const getReviewInitials = (name = "DRIFT Customer") =>
+  String(name)
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase() || "D";
+
+const getProductReviewPhotos = (productName) =>
+  getReviewState(productName).reviews.flatMap((review) =>
+    (review.photos || []).map((photo) => ({
+      ...photo,
+      reviewId: review.id,
+      caption: `${review.displayName} on ${productName}`,
+    }))
+  );
+
+const renderReviewPlatform = (productName) => {
+  const state = getReviewState(productName);
+  const { summary } = state;
+  const maxBreakdown = Math.max(1, ...Object.values(summary.breakdown || {}));
+  const photos = getProductReviewPhotos(productName);
+  const userName = currentAuthUser?.name || window.localStorage.getItem(profileNameStorageKey) || "";
+  const userEmail = currentAuthUser?.email || "";
+
+  productDetailReviews.innerHTML = `
+    <summary>Reviews</summary>
+    <div class="review-platform" data-product="${productName}">
+      <div class="review-summary">
+        <div>
+          <div class="review-summary-stars" aria-label="${summary.average || 0} out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <strong>${summary.average ? summary.average.toFixed(1) : "0.0"}</strong>
+          <span>${summary.count} ${summary.count === 1 ? "review" : "reviews"}</span>
+        </div>
+        <div class="review-breakdown">
+          ${[5, 4, 3, 2, 1]
+            .map((rating) => {
+              const count = summary.breakdown?.[rating] || 0;
+              const width = `${Math.round((count / maxBreakdown) * 100)}%`;
+              return `
+                <div class="review-breakdown-row">
+                  <span>${starRow(rating)}</span>
+                  <div><i style="width: ${width}"></i></div>
+                  <strong>(${count})</strong>
+                </div>
+              `;
+            })
+            .join("")}
+        </div>
+      </div>
+
+      <div class="review-controls">
+        <label>
+          <span>Sort reviews</span>
+          <select class="review-sort">
+            <option value="recent"${state.sort === "recent" ? " selected" : ""}>Most Recent</option>
+            <option value="highest"${state.sort === "highest" ? " selected" : ""}>Highest Rating</option>
+            <option value="lowest"${state.sort === "lowest" ? " selected" : ""}>Lowest Rating</option>
+            <option value="helpful"${state.sort === "helpful" ? " selected" : ""}>Most Helpful</option>
+            <option value="verified"${state.sort === "verified" ? " selected" : ""}>Verified Buyers</option>
+            <option value="photos"${state.sort === "photos" ? " selected" : ""}>Newest Photos</option>
+          </select>
+        </label>
+      </div>
+
+      <section class="customer-gallery" aria-label="Customer photo gallery">
+        <div class="customer-gallery-heading">
+          <h4>Customer Gallery</h4>
+          <span>${photos.length} ${photos.length === 1 ? "photo" : "photos"}</span>
+        </div>
+        ${
+          photos.length
+            ? `<div class="customer-gallery-grid">${photos
+                .map(
+                  (photo, index) => `
+                    <button class="customer-photo" type="button" data-photo-index="${index}" aria-label="Open customer photo">
+                      <img src="${photo.url}" alt="${photo.alt || photo.caption}" loading="lazy" decoding="async">
+                    </button>
+                  `
+                )
+                .join("")}</div>`
+            : '<p class="review-empty">Customer photos will appear here once shoppers add them.</p>'
+        }
+      </section>
+
+      <form class="review-form" enctype="multipart/form-data">
+        <h4>Write a review</h4>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="review-form-grid">
+          <label>Name<input name="name" value="${userName}" required></label>
+          <label>Email<input name="email" type="email" value="${userEmail}" required></label>
+          <label>Country
+            <select name="country" required>
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="United Kingdom">United Kingdom</option>
+            </select>
+          </label>
+          <label>Rating
+            <select name="rating" required>
+              <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+              <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734;</option>
+              <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
+              <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
+              <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734;</option>
+            </select>
+          </label>
+        </div>
+        <label>Review Title<input name="title" maxlength="120" required></label>
+        <label>Review Body<textarea name="body" rows="4" maxlength="1500" required></textarea></label>
+        <label>Optional Photos<input name="photos" type="file" accept="image/png,image/jpeg,image/webp" multiple></label>
+        <button type="submit">Submit Review</button>
+        <p class="review-form-message">${state.message || ""}</p>
+      </form>
+
+      <section class="review-list-section" aria-label="Individual product reviews">
+        <div class="review-list-heading">
+          <h4>Individual Reviews</h4>
+          <span>${state.pagination?.total || summary.count} total</span>
+        </div>
+        <div class="review-list">
+          ${
+            state.isLoading
+              ? '<p class="review-empty">Loading reviews...</p>'
+              : state.reviews.length
+                ? state.reviews.map(renderReviewCard).join("")
+                : '<p class="review-empty">No reviews yet. Be the first to review this DRIFT piece.</p>'
+          }
+        </div>
+
+        ${
+          state.pagination?.hasMore
+            ? `<button class="review-load-more" type="button">Load more reviews</button>`
+            : ""
+        }
+      </section>
+    </div>
+  `;
+
+  bindReviewPlatform(productName);
+};
+
+const renderReviewCard = (review) => {
+  const photoCount = review.photos?.length || 0;
+
+  return `
+    <article class="product-review" data-review-id="${review.id}">
+      <div class="product-review-header">
+        <div class="reviewer-avatar" aria-hidden="true">${getReviewInitials(review.displayName)}</div>
+        <div class="reviewer-identity">
+          <div class="reviewer-name-line">
+            <strong>${review.displayName}</strong>
+            ${review.verifiedBuyer ? '<span class="verified-buyer">&#10003; Verified Buyer</span>' : ""}
+          </div>
+          <span class="review-country">${review.countryFlag ? `${review.countryFlag} ` : ""}${review.country}</span>
+        </div>
+        <time class="review-date" datetime="${review.createdAt || ""}">${formatReviewDate(review.createdAt)}</time>
+      </div>
+      <div class="review-card-body">
+        <div class="review-stars" aria-label="${review.rating} out of 5 stars">${starRow(review.rating)}</div>
+        <h4>${review.title}</h4>
+        <p>${review.body}</p>
+      </div>
+      <div class="review-card-footer">
+        ${
+          photoCount
+            ? `<button class="review-photo-count" type="button" data-review-id="${review.id}">&#128247; ${photoCount} ${photoCount === 1 ? "Photo" : "Photos"}</button>`
+            : "<span></span>"
+        }
+        <button class="review-helpful" type="button" data-review-id="${review.id}">&#128077; Helpful <span>${review.helpfulCount || 0}</span></button>
+      </div>
+    </article>
+  `;
+};
+
+let activeCustomerGallery = [];
+let activeCustomerGalleryIndex = 0;
+
+const openCustomerGalleryLightbox = (photos, index) => {
+  if (!photos.length) return;
+
+  activeCustomerGallery = photos;
+  activeCustomerGalleryIndex = index;
+  productLightboxImage.src = photos[index].url;
+  productLightboxImage.alt = photos[index].alt || photos[index].caption || "DRIFT customer photo";
+  productLightbox.hidden = false;
+  productLightbox.classList.add("is-customer-gallery");
+  document.body.classList.add("has-product-lightbox");
+  productLightboxClose.focus();
+};
+
+const showCustomerGalleryPhoto = (direction) => {
+  if (!activeCustomerGallery.length || productLightbox.hidden) return;
+
+  activeCustomerGalleryIndex =
+    (activeCustomerGalleryIndex + direction + activeCustomerGallery.length) % activeCustomerGallery.length;
+  const photo = activeCustomerGallery[activeCustomerGalleryIndex];
+  productLightboxImage.src = photo.url;
+  productLightboxImage.alt = photo.alt || photo.caption || "DRIFT customer photo";
+};
+
+const loadProductReviews = async (productName, sort = getReviewState(productName).sort || "recent", page = 1, append = false) => {
+  setReviewState(productName, { isLoading: true, sort, message: "" });
+  renderReviewPlatform(productName);
+
+  if (window.location.protocol === "file:") {
+    setReviewState(productName, { isLoading: false, message: "Reviews load when the storefront is served from the app." });
+    renderReviewPlatform(productName);
+    return;
   }
 
-  const visibleReviews = compact ? reviews.slice(0, 2) : reviews;
-  return visibleReviews
+  try {
+    const response = await fetch(
+      `/api/reviews?product=${encodeURIComponent(productName)}&sort=${encodeURIComponent(sort)}&page=${page}`,
+      { cache: "no-store" }
+    );
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to load reviews.");
+    }
+
+    setReviewState(productName, {
+      reviews: append ? [...getReviewState(productName).reviews, ...(data.reviews || [])] : data.reviews || [],
+      summary: data.summary || getReviewState(productName).summary,
+      pagination: data.pagination || getReviewState(productName).pagination,
+      sort,
+      isLoading: false,
+      message: data.message || "",
+    });
+  } catch (error) {
+    setReviewState(productName, { isLoading: false, message: error.message || "Unable to load reviews." });
+  }
+
+  if (activeProductName === productName) {
+    renderProductRatingHeader(productName);
+  }
+  renderReviewPlatform(productName);
+};
+
+const uploadReviewPhotos = async (productName, files) => {
+  if (!files?.length) return [];
+
+  const formData = new FormData();
+  formData.append("productName", productName);
+  [...files].slice(0, 6).forEach((file) => formData.append("photos", file));
+
+  const response = await fetch("/api/reviews/upload", {
+    method: "POST",
+    body: formData,
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Unable to upload photos.");
+  }
+
+  return data.photos || [];
+};
+
+const submitReviewForm = async (productName, form) => {
+  const message = form.querySelector(".review-form-message");
+  const submitButton = form.querySelector('button[type="submit"]');
+  const formData = new FormData(form);
+
+  submitButton.disabled = true;
+  message.textContent = "Submitting review...";
+
+  try {
+    const photos = await uploadReviewPhotos(productName, formData.getAll("photos"));
+    const payload = {
+      productName,
+      name: formData.get("name"),
+      email: formData.get("email"),
+      rating: formData.get("rating"),
+      title: formData.get("title"),
+      body: formData.get("body"),
+      country: formData.get("country"),
+      website: formData.get("website"),
+      photos,
+    };
+    const response = await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to submit review.");
+    }
+
+    form.reset();
+    setReviewState(productName, { message: "Thank you. Your review has been added." });
+    await loadProductReviews(productName);
+  } catch (error) {
+    message.textContent = error.message || "Unable to submit review.";
+  } finally {
+    submitButton.disabled = false;
+  }
+};
+
+const bindReviewPlatform = (productName) => {
+  const platform = productDetailReviews.querySelector(".review-platform");
+  if (!platform) return;
+
+  platform.querySelector(".review-sort")?.addEventListener("change", (event) => {
+    loadProductReviews(productName, event.target.value);
+  });
+
+  platform.querySelector(".review-load-more")?.addEventListener("click", () => {
+    const state = getReviewState(productName);
+    loadProductReviews(productName, state.sort, (state.pagination?.page || 1) + 1, true);
+  });
+
+  platform.querySelector(".review-form")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    submitReviewForm(productName, event.currentTarget);
+  });
+
+  platform.querySelectorAll(".review-helpful").forEach((button) => {
+    const reviewId = button.dataset.reviewId;
+    const voteKey = `driftHelpfulReview:${reviewId}`;
+    if (window.localStorage.getItem(voteKey)) button.disabled = true;
+
+    button.addEventListener("click", async () => {
+      if (window.localStorage.getItem(voteKey)) return;
+      button.disabled = true;
+
+      try {
+        const response = await fetch("/api/reviews/helpful", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reviewId, voterKey: getReviewHelpfulKey() }),
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Unable to record helpful vote.");
+        }
+
+        button.querySelector("span").textContent = data.helpfulCount;
+        window.localStorage.setItem(voteKey, "true");
+      } catch {
+        button.disabled = false;
+      }
+    });
+  });
+
+  const photos = getProductReviewPhotos(productName);
+  platform.querySelectorAll(".customer-photo").forEach((button) => {
+    button.addEventListener("click", () => openCustomerGalleryLightbox(photos, Number(button.dataset.photoIndex) || 0));
+  });
+
+  platform.querySelectorAll(".review-photo-count").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Math.max(0, photos.findIndex((photo) => photo.reviewId === button.dataset.reviewId));
+      openCustomerGalleryLightbox(photos, index);
+    });
+  });
+};
+
+const recentlyViewedKey = "driftRecentlyViewed";
+
+const productMaterialCopy = {
+  "Luxury Slippers": "Soft satin uppers with a cushioned lounge sole, selected for a polished at-home finish.",
+  "Satin Nightgown": "Premium satin and silk blends chosen for smooth drape, soft sheen, and comfortable evening wear.",
+  "Satin Blanket": "Premium satin and silk blends selected for a smooth, cool hand feel and an elevated bed layer.",
+};
+
+const productCareCopy = {
+  "Luxury Slippers": "Spot clean gently and air dry. Keep away from direct heat to preserve the satin finish.",
+  "Satin Nightgown": "Machine wash cold on delicate or hand wash, then hang dry. Avoid bleach and high heat.",
+  "Satin Blanket": "Machine wash cold with like colors, use mild detergent, and tumble dry low or air dry.",
+};
+
+const defaultMaterialCopy =
+  "DRIFT uses premium satin and silk blends to deliver the luxury feel you expect, while keeping our products accessible and affordable.";
+
+const defaultCareCopy =
+  "Machine wash cold with like colors, use mild detergent, avoid bleach, and air dry or tumble dry low. Store folded away from direct sunlight.";
+
+const productFaqs = [
+  {
+    question: "Why satin?",
+    answer: "Satin creates a smoother surface than cotton, helping reduce friction against hair and skin while you rest.",
+  },
+  {
+    question: "How does checkout work?",
+    answer: "Your DRIFT bag moves into Shopify's secure checkout for payment and order completion.",
+  },
+  {
+    question: "Can I return it?",
+    answer: "Eligible unused items can be reviewed through the returns page, with support details kept easy to find.",
+  },
+];
+
+const getProductRatingSummary = (productName) => {
+  const { summary } = getReviewState(productName);
+
+  if (!summary.count) {
+    return { average: "New", count: 0 };
+  }
+
+  return {
+    average: Number(summary.average).toFixed(1),
+    count: summary.count,
+  };
+};
+
+const renderProductRatingHeader = (productName) => {
+  const ratingSummary = getProductRatingSummary(productName);
+
+  productDetailRating.innerHTML = ratingSummary.count
+    ? `<span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><strong>${ratingSummary.average}</strong><a href="/reviews">${ratingSummary.count} reviews</a>`
+    : `<span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><strong>New</strong><a href="/reviews">No reviews yet</a>`;
+};
+
+const getProductMaterials = (productName) => productMaterialCopy[productName] || defaultMaterialCopy;
+
+const getProductCare = (productName) => productCareCopy[productName] || defaultCareCopy;
+
+const renderProductFaqs = () =>
+  productFaqs
     .map(
-      (review) => `
-        <article class="product-review">
-          <div class="review-stars" aria-label="${review.rating} out of 5 stars">★★★★★ <span>${review.rating}</span></div>
-          <p>"${review.text}"</p>
-          <span>Verified Customer</span>
+      (faq) => `
+        <article class="product-detail-faq">
+          <h4>${faq.question}</h4>
+          <p>${faq.answer}</p>
         </article>
       `
     )
     .join("");
+
+const getRecentlyViewedProducts = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem(recentlyViewedKey) || "[]");
+  } catch {
+    return [];
+  }
+};
+
+const saveRecentlyViewedProduct = (productName) => {
+  const nextProducts = [productName, ...getRecentlyViewedProducts().filter((name) => name !== productName)].slice(0, 6);
+  window.localStorage.setItem(recentlyViewedKey, JSON.stringify(nextProducts));
+};
+
+const createMiniProductButton = (productName) => {
+  const product = productDetails[productName];
+  const button = document.createElement("button");
+  const image = document.createElement("img");
+  const copy = document.createElement("span");
+  const title = document.createElement("strong");
+  const price = document.createElement("small");
+
+  button.type = "button";
+  button.className = "product-mini-card";
+  button.setAttribute("aria-label", `View ${productName}`);
+  image.src = product.cardImage || getProductImage(product, product.colors[0]);
+  image.alt = "";
+  image.loading = "lazy";
+  image.decoding = "async";
+  title.textContent = productName;
+  price.innerHTML = getPriceMarkup(productName, product.price);
+  copy.append(title, price);
+  button.append(image, copy);
+  button.addEventListener("click", () => openProductDetail(productName));
+
+  return button;
+};
+
+const renderRelatedProducts = (productName) => {
+  if (!productRelatedList) return;
+
+  productRelatedList.innerHTML = "";
+  Object.keys(productDetails)
+    .filter((name) => name !== productName && productDetails[name]?.shopifyAvailable !== false)
+    .slice(0, 3)
+    .forEach((name) => productRelatedList.append(createMiniProductButton(name)));
+};
+
+const renderRecentlyViewedProducts = (productName) => {
+  if (!productRecentList) return;
+
+  productRecentList.innerHTML = "";
+  const recentProducts = getRecentlyViewedProducts().filter((name) => name !== productName && productDetails[name]).slice(0, 3);
+
+  if (!recentProducts.length) {
+    const empty = document.createElement("p");
+    empty.className = "product-recent-empty";
+    empty.textContent = "Recently viewed products will appear here as you explore DRIFT.";
+    productRecentList.append(empty);
+    return;
+  }
+
+  recentProducts.forEach((name) => productRecentList.append(createMiniProductButton(name)));
 };
 
 const setHeaderState = () => {
@@ -691,10 +1148,16 @@ const setProductDetailImage = (product, color) => {
 
   productDetailImage.src = image;
   productDetailImage.alt = `${activeProductName} in ${getDisplayColor(color)}`;
+  productDetailImage.loading = "eager";
+  productDetailImage.decoding = "async";
   productDetailSelection.textContent = getDisplayColor(color);
   activeColor = color;
   productDetailAdd.disabled = !canCheckoutVariant;
   productDetailAdd.textContent = canCheckoutVariant ? "Add to bag" : "Unavailable";
+  productDetailBuy.disabled = !canCheckoutVariant;
+  productDetailBuy.textContent = canCheckoutVariant ? "Buy Now" : "Unavailable";
+  mobileStickyAdd.disabled = !canCheckoutVariant;
+  mobileStickyAdd.textContent = canCheckoutVariant ? "Add to Cart" : "Unavailable";
   productDetailNote.textContent =
     product.shopifyAvailable === false
       ? product.unavailableMessage || "This product is not available for checkout yet."
@@ -711,6 +1174,27 @@ const setProductDetailImage = (product, color) => {
   });
 };
 
+const openProductLightbox = () => {
+  if (!activeProductName || !productLightbox || !productLightboxImage) return;
+
+  activeCustomerGallery = [];
+  productLightboxImage.src = productDetailImage.src;
+  productLightboxImage.alt = productDetailImage.alt;
+  productLightbox.hidden = false;
+  productLightbox.classList.remove("is-customer-gallery");
+  document.body.classList.add("has-product-lightbox");
+  productLightboxClose.focus();
+};
+
+const closeProductLightbox = () => {
+  if (!productLightbox) return;
+
+  productLightbox.hidden = true;
+  productLightbox.classList.remove("is-customer-gallery");
+  activeCustomerGallery = [];
+  document.body.classList.remove("has-product-lightbox");
+};
+
 const openProductDetail = (productName) => {
   const product = productDetails[productName];
   const uniqueImages = getUniqueProductImages(product);
@@ -719,9 +1203,17 @@ const openProductDetail = (productName) => {
   activeProductName = productName;
   activeSize = product.sizes?.[0] || "";
   productDetailTitle.textContent = productName;
+  renderProductRatingHeader(productName);
   productDetailDescription.textContent = product.description;
   productDetailFeatures.innerHTML = "";
   productDetailPrice.innerHTML = getPriceMarkup(productName, product.price);
+  productDetailEditorialDescription.textContent = product.description;
+  productDetailMaterials.textContent = getProductMaterials(productName);
+  productDetailCare.textContent = getProductCare(productName);
+  productDetailFaqs.innerHTML = renderProductFaqs();
+  mobileStickyTitle.textContent = productName;
+  mobileStickyPrice.innerHTML = getPriceMarkup(productName, product.price);
+  mobileStickyCart.hidden = false;
   productDetailSwatches.innerHTML = "";
   productDetailSizes.innerHTML = "";
   productDetailSizeSelection.textContent = "";
@@ -733,10 +1225,8 @@ const openProductDetail = (productName) => {
   productDetailNote.textContent = isAvailable
     ? "Your selections are saved in your DRIFT bag."
     : product.unavailableMessage || "This product is not available for checkout yet.";
-  productDetailReviews.innerHTML = `
-    <summary>Reviews</summary>
-    <div class="product-detail-review-list">${getReviewMarkup(productName)}</div>
-  `;
+  renderReviewPlatform(productName);
+  loadProductReviews(productName);
   productDetailOptions.hidden = product.colors.length === 1 && product.colors[0] === "Default Title";
   productDetailSizeOptions.hidden = !product.sizes?.length;
 
@@ -795,11 +1285,16 @@ const openProductDetail = (productName) => {
     const image = document.createElement("img");
     image.src = imageSrc;
     image.alt = "";
+    image.loading = "lazy";
+    image.decoding = "async";
     thumbnail.append(image);
     thumbnail.addEventListener("click", () => setProductDetailImage(product, color));
     productDetailThumbnails.append(thumbnail);
   });
 
+  renderRelatedProducts(productName);
+  renderRecentlyViewedProducts(productName);
+  saveRecentlyViewedProduct(productName);
   setProductDetailImage(product, product.colors[0]);
   productDetail.hidden = false;
   document.body.classList.add("has-product-detail");
@@ -808,6 +1303,7 @@ const openProductDetail = (productName) => {
 
 const closeProductDetail = () => {
   productDetail.hidden = true;
+  mobileStickyCart.hidden = true;
   document.body.classList.remove("has-product-detail");
 };
 
@@ -953,7 +1449,9 @@ productDetail.addEventListener("click", (event) => {
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    if (!bagPanel.hidden) {
+    if (productLightbox && !productLightbox.hidden) {
+      closeProductLightbox();
+    } else if (!bagPanel.hidden) {
       closeBag();
     } else if (!productDetail.hidden) {
       closeProductDetail();
@@ -961,13 +1459,41 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-productDetailAdd.addEventListener("click", () => {
+const addActiveProductSelectionToBag = () => {
   const quantity = Number(productDetailQuantity.value);
 
   if (addProductToBag(activeProductName, activeColor, quantity, activeSize)) {
     productDetailAdd.textContent = `Added ${quantity} to bag`;
+    mobileStickyAdd.textContent = "Added";
+    window.setTimeout(() => {
+      if (!productDetail.hidden) {
+        productDetailAdd.textContent = "Add to bag";
+        mobileStickyAdd.textContent = "Add to Cart";
+      }
+    }, 1500);
+    return true;
+  }
+
+  return false;
+};
+
+productDetailAdd.addEventListener("click", addActiveProductSelectionToBag);
+
+productDetailBuy.addEventListener("click", () => {
+  if (addActiveProductSelectionToBag()) {
+    closeProductDetail();
+    openBag();
+    bagCheckout.focus();
   }
 });
+
+mobileStickyAdd.addEventListener("click", addActiveProductSelectionToBag);
+
+productDetailImageWrap.addEventListener("click", openProductLightbox);
+productLightboxClose.addEventListener("click", closeProductLightbox);
+productLightboxBackdrop.addEventListener("click", closeProductLightbox);
+customerGalleryPrev.addEventListener("click", () => showCustomerGalleryPhoto(-1));
+customerGalleryNext.addEventListener("click", () => showCustomerGalleryPhoto(1));
 
 document.querySelectorAll(".bundle-add").forEach((button) => {
   const productName = button.dataset.bundleProduct;
@@ -994,17 +1520,21 @@ document.querySelectorAll(".bundle-add").forEach((button) => {
 document.querySelectorAll(".comparison-slider").forEach((slider) => {
   const beforeImage = slider.querySelector(".comparison-before");
   const afterImage = slider.querySelector(".comparison-after");
+  const beforeImg = beforeImage.querySelector("img");
+  const afterImg = afterImage.querySelector("img");
   const beforeImageUrl = slider.dataset.beforeImage;
   const afterImageUrl = slider.dataset.afterImage;
   let isDraggingComparison = false;
 
-  if (beforeImageUrl) {
-    beforeImage.style.backgroundImage = `url("${beforeImageUrl}")`;
+  if (beforeImageUrl && beforeImg) {
+    beforeImg.src = beforeImageUrl;
+    beforeImg.decoding = "async";
     beforeImage.querySelector("span")?.remove();
   }
 
-  if (afterImageUrl) {
-    afterImage.style.backgroundImage = `url("${afterImageUrl}")`;
+  if (afterImageUrl && afterImg) {
+    afterImg.src = afterImageUrl;
+    afterImg.decoding = "async";
     afterImage.querySelector("span")?.remove();
   }
 
@@ -1151,6 +1681,7 @@ const setAuthLoading = (isLoading) => {
   joinAuthPassword.disabled = isLoading;
   joinAuthName.disabled = isLoading;
   joinAuthEmail.disabled = isLoading;
+  if (joinAuthReset) joinAuthReset.disabled = isLoading;
   if (authLogout) authLogout.disabled = isLoading;
 };
 
@@ -1376,11 +1907,7 @@ profileTrigger?.addEventListener("click", () => {
     return;
   }
 
-  if (profileDropdown?.hidden) {
-    openProfileDropdown();
-  } else {
-    closeProfileDropdown();
-  }
+  window.location.href = "/account";
 });
 profileMenuClose?.addEventListener("click", closeProfileDropdown);
 profileMenuAuth?.addEventListener("click", () => {
@@ -1400,6 +1927,36 @@ profileMenuProfile?.addEventListener("click", () => {
 profileMenuOrders?.addEventListener("click", () => {
   closeProfileDropdown();
   window.location.href = currentAuthUser ? "/account/orders" : "/storefront.html#drift-list";
+});
+joinAuthReset?.addEventListener("click", async () => {
+  const email = joinAuthEmail.value.trim();
+
+  if (!email) {
+    setJoinPopupMessage("Enter your email first, then request a reset link.", "error");
+    return;
+  }
+
+  setAuthLoading(true);
+  setJoinPopupMessage("Sending reset link...");
+
+  try {
+    const response = await fetch("/api/auth/password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to send reset link.");
+    }
+
+    setJoinPopupMessage(data.message || "Check your email for a reset link.", "success");
+  } catch (error) {
+    setJoinPopupMessage(error.message || "Unable to send reset link.", "error");
+  } finally {
+    setAuthLoading(false);
+  }
 });
 namePopupClose?.addEventListener("click", closeNamePopup);
 namePopupBackdrop?.addEventListener("click", closeNamePopup);
@@ -1481,4 +2038,6 @@ form.addEventListener("submit", async (event) => {
     submitButton.textContent = "Join the list";
   }
 });
+
+
 

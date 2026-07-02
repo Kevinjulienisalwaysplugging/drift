@@ -444,9 +444,11 @@
         >
           <!-- Replace data-before-image and data-after-image here when the final comparison photos change. -->
           <div class="comparison-image comparison-before" aria-hidden="true">
+            <img alt="" loading="lazy">
             <span>Cotton placeholder</span>
           </div>
           <div class="comparison-image comparison-after" aria-hidden="true">
+            <img alt="" loading="lazy">
             <span>DRIFT satin placeholder</span>
           </div>
           <span class="comparison-label comparison-label-left">Cotton</span>
@@ -475,6 +477,7 @@
           <div class="product-detail-copy">
             <p class="product-detail-kicker">DRIFT / The collection</p>
             <h2 class="product-detail-title"></h2>
+            <div class="product-detail-rating" aria-label="Product rating"></div>
             <p class="product-detail-description"></p>
             <ul class="product-detail-features"></ul>
             <div class="product-detail-divider"></div>
@@ -503,7 +506,10 @@
                 </select>
               </label>
             </div>
-            <button class="product-detail-add" type="button">Add to bag</button>
+            <div class="product-detail-actions">
+              <button class="product-detail-add" type="button">Add to Cart</button>
+              <button class="product-detail-buy" type="button">Buy Now</button>
+            </div>
             <p class="product-detail-note">Your selections are saved in your DRIFT bag.</p>
             <div class="product-offers" aria-label="Current DRIFT offers">
               <div>
@@ -516,10 +522,28 @@
               </div>
             </div>
             <details class="product-detail-reviews"></details>
-            <div class="product-detail-trust">
-              <a href="/shipping">Tracked shipping</a>
-              <a href="/returns">Easy returns</a>
-              <a href="/reviews">Customer reviews</a>
+            <div class="product-detail-trust" aria-label="DRIFT trust badges">
+              <a href="/shipping"><span>Tracked Shipping</span><small>Updates from checkout to delivery</small></a>
+              <a href="/returns"><span>Easy Returns</span><small>Clear support for eligible items</small></a>
+              <a href="/reviews"><span>Customer Reviews</span><small>Real feedback, no fake names</small></a>
+            </div>
+            <div class="product-detail-editorial">
+              <details open>
+                <summary>Description</summary>
+                <p class="product-detail-editorial-description"></p>
+              </details>
+              <details>
+                <summary>Materials</summary>
+                <p class="product-detail-materials"></p>
+              </details>
+              <details>
+                <summary>Care Instructions</summary>
+                <p class="product-detail-care"></p>
+              </details>
+              <details>
+                <summary>FAQs</summary>
+                <div class="product-detail-faqs"></div>
+              </details>
             </div>
             <dl class="product-detail-promises">
               <div>
@@ -535,7 +559,32 @@
                 <dd>Tracked delivery updates</dd>
               </div>
             </dl>
+            <div class="product-detail-related">
+              <h3>Related products</h3>
+              <div class="product-related-list" aria-label="Related DRIFT products"></div>
+            </div>
+            <div class="product-detail-related">
+              <h3>Recently viewed</h3>
+              <div class="product-recent-list" aria-label="Recently viewed DRIFT products"></div>
+            </div>
           </div>
+        </div>
+        <div class="mobile-sticky-cart" hidden>
+          <div>
+            <span class="mobile-sticky-title"></span>
+            <strong class="mobile-sticky-price"></strong>
+          </div>
+          <button class="mobile-sticky-add" type="button">Add to Cart</button>
+        </div>
+      </section>
+
+      <section class="product-lightbox" aria-label="Product image preview" hidden>
+        <button class="product-lightbox-backdrop" type="button" aria-label="Close image preview"></button>
+        <div class="product-lightbox-frame">
+          <button class="product-lightbox-close" type="button" aria-label="Close image preview">&times;</button>
+          <button class="customer-gallery-nav customer-gallery-prev" type="button" aria-label="Previous customer photo">‹</button>
+          <img class="product-lightbox-image" src="assets/product-pillowcase-new.png" alt="">
+          <button class="customer-gallery-nav customer-gallery-next" type="button" aria-label="Next customer photo">›</button>
         </div>
       </section>
 
@@ -586,6 +635,7 @@
               <button class="join-popup-secondary" type="button" data-auth-action="login">Log in</button>
             </div>
             <p class="join-popup-hint">Create an account with your name, email, and password. Login uses the same email and password.</p>
+            <button class="join-popup-reset" type="button">Forgot password?</button>
             <p class="join-popup-message" role="status" aria-live="polite"></p>
           </form>
         </div>

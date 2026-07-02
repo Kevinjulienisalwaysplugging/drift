@@ -141,6 +141,9 @@ export default function AccountClient() {
             <p className="eyebrow">Profile</p>
             <h2>{user.name || "DRIFT customer"}</h2>
             <p>{user.email}</p>
+            <a className="account-inline-link" href="#edit-profile">
+              Edit Profile
+            </a>
           </div>
         </div>
       </section>
@@ -167,7 +170,7 @@ export default function AccountClient() {
         </dl>
       </section>
 
-      <section className="account-card account-edit-grid">
+      <section className="account-card account-edit-grid" id="edit-profile">
         <form className="account-form" onSubmit={saveProfile}>
           <h2>Edit Profile</h2>
           <label htmlFor="account-name">Full name</label>
