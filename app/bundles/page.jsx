@@ -1,4 +1,4 @@
-import { LegalShell } from "../legal-page";
+﻿import { LegalShell } from "../legal-page";
 
 export const metadata = {
   title: "Bundles | DRIFT",
@@ -44,10 +44,11 @@ export default function BundlesPage() {
           <p>{bundle.items}</p>
           <p>{bundle.purpose}</p>
           <p>
-            <a className="legal-button" href="/storefront.html#collection">Shop the collection</a>
+            <a className="legal-button" href="/#collection">Shop the collection</a>
           </p>
         </article>
       ))}
     </LegalShell>
   );
 }
+

@@ -1,4 +1,4 @@
-import { LegalShell } from "../legal-page";
+﻿import { LegalShell } from "../legal-page";
 import { productPricing } from "../../lib/product-prices";
 import { shopifyProducts } from "../../lib/shopify-products";
 
@@ -37,7 +37,7 @@ export default function ProductsPage() {
                   {pricing?.marketPrice ? <span>{pricing.marketPrice}</span> : null}
                   <strong>{pricing?.salePrice || product.priceLabel}</strong>
                 </div>
-                <a className="legal-button" href="/storefront.html#collection">
+                <a className="legal-button" href="/#collection">
                   Shop this item
                 </a>
               </div>
@@ -48,3 +48,4 @@ export default function ProductsPage() {
     </LegalShell>
   );
 }
+

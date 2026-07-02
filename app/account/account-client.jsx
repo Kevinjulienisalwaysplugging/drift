@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -34,7 +34,7 @@ export default function AccountClient() {
     const payload = await response.json();
 
     if (!response.ok) {
-      window.location.href = "/storefront.html";
+      window.location.href = "/";
       return;
     }
 
@@ -123,7 +123,7 @@ export default function AccountClient() {
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    window.location.href = "/storefront.html";
+    window.location.href = "/";
   };
 
   if (status === "loading") {
@@ -245,3 +245,4 @@ export default function AccountClient() {
     </div>
   );
 }
+

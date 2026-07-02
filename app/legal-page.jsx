@@ -1,10 +1,10 @@
-const contactEmail = "privacy@drift-sleepwear.com";
+﻿const contactEmail = "privacy@drift-sleepwear.com";
 
 export function LegalShell({ eyebrow, title, intro, heroImage, heroImageAlt, children }) {
   return (
     <main className="legal-page">
       <header className="legal-header">
-        <a className="legal-brand" href="/storefront.html" aria-label="Back to DRIFT storefront">
+        <a className="legal-brand" href="/" aria-label="Back to DRIFT storefront">
           DRIFT
         </a>
         <nav className="legal-nav" aria-label="Legal navigation">
@@ -16,7 +16,7 @@ export function LegalShell({ eyebrow, title, intro, heroImage, heroImageAlt, chi
           <a href="/products">Products</a>
           <a href="/account">Account</a>
           <a href="/privacy">Privacy</a>
-          <a href="/storefront.html">Shop</a>
+          <a href="/">Shop</a>
         </nav>
       </header>
 
@@ -48,3 +48,4 @@ export function LegalShell({ eyebrow, title, intro, heroImage, heroImageAlt, chi
 }
 
 export { contactEmail };
+

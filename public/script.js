@@ -1943,7 +1943,7 @@ profileMenuProfile?.addEventListener("click", () => {
 });
 profileMenuOrders?.addEventListener("click", () => {
   closeProfileDropdown();
-  window.location.href = currentAuthUser ? "/account/orders" : "/storefront.html#drift-list";
+  window.location.href = currentAuthUser ? "/account/orders" : "/#drift-list";
 });
 joinAuthReset?.addEventListener("click", async () => {
   const email = joinAuthEmail.value.trim();
@@ -2055,6 +2055,7 @@ form.addEventListener("submit", async (event) => {
     submitButton.textContent = "Join the list";
   }
 });
+
 
 
 

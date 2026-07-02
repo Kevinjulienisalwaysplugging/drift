@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { LegalShell } from "../legal-page";
 
 export const metadata = {
@@ -23,9 +23,10 @@ export default function ReviewsPage() {
           customer photos, and review sorting.
         </p>
         <p>
-          <Link href="/storefront.html#collection">Shop the collection</Link>
+          <Link href="/#collection">Shop the collection</Link>
         </p>
       </article>
     </LegalShell>
   );
 }
+

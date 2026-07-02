@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ export default function OrdersClient() {
       const payload = await response.json();
 
       if (!response.ok) {
-        window.location.href = "/storefront.html";
+        window.location.href = "/";
         return;
       }
 
@@ -36,7 +36,7 @@ export default function OrdersClient() {
         <h2>No orders yet.</h2>
         <p>No orders yet. Your DRIFT purchases will appear here.</p>
         <p className="account-note">{message}</p>
-        <a className="legal-button" href="/storefront.html#collection">
+        <a className="legal-button" href="/#collection">
           Shop DRIFT
         </a>
       </div>
@@ -92,3 +92,4 @@ export default function OrdersClient() {
     </div>
   );
 }
+

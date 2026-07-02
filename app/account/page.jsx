@@ -1,4 +1,4 @@
-import { LegalShell } from "../legal-page";
+﻿import { LegalShell } from "../legal-page";
 import AccountClient from "./account-client";
 import { getAuthSession } from "../../lib/auth-session";
 import { redirect } from "next/navigation";
@@ -15,7 +15,7 @@ export default async function AccountPage() {
   const { user } = await getAuthSession();
 
   if (!user) {
-    redirect("/storefront.html");
+    redirect("/");
   }
 
   return (
@@ -28,3 +28,4 @@ export default async function AccountPage() {
     </LegalShell>
   );
 }
+
