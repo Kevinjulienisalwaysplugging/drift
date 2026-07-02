@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../../../../lib/auth-session";
-import { createReviewsClient, isReviewsConfigured, sanitizeText } from "../../../../lib/reviews";
+import { createReviewsWriteClient, isReviewsWriteConfigured, sanitizeText } from "../../../../lib/reviews";
 
 function isAdmin(user) {
   const admins = String(process.env.DRIFT_ADMIN_EMAILS || "")
@@ -18,7 +18,7 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ error: "Admin access required." }, { status: 403 });
   }
 
-  if (!isReviewsConfigured) {
+  if (!isReviewsWriteConfigured) {
     return NextResponse.json({ error: "Reviews database is not configured yet." }, { status: 503 });
   }
 
@@ -30,7 +30,7 @@ export async function PATCH(request, { params }) {
   if (body.rating !== undefined) updates.rating = Math.min(5, Math.max(1, Number(body.rating)));
   if (body.verifiedBuyer !== undefined) updates.verified_buyer = Boolean(body.verifiedBuyer);
 
-  const supabase = createReviewsClient();
+  const supabase = createReviewsWriteClient();
   const { data, error } = await supabase.from("drift_reviews").update(updates).eq("id", params.id).select("*").single();
 
   if (error) {
@@ -47,11 +47,11 @@ export async function DELETE(_request, { params }) {
     return NextResponse.json({ error: "Admin access required." }, { status: 403 });
   }
 
-  if (!isReviewsConfigured) {
+  if (!isReviewsWriteConfigured) {
     return NextResponse.json({ error: "Reviews database is not configured yet." }, { status: 503 });
   }
 
-  const supabase = createReviewsClient();
+  const supabase = createReviewsWriteClient();
   await supabase.from("drift_review_photos").delete().eq("review_id", params.id);
   await supabase.from("drift_review_helpful_votes").delete().eq("review_id", params.id);
   const { error } = await supabase.from("drift_reviews").delete().eq("id", params.id);
@@ -62,4 +62,3 @@ export async function DELETE(_request, { params }) {
 
   return NextResponse.json({ ok: true });
 }
-

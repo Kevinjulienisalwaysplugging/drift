@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
-import { createReviewsClient, isReviewsConfigured, reviewPhotoBucket, sanitizeText } from "../../../../lib/reviews";
+import { createReviewsWriteClient, isReviewsWriteConfigured, reviewPhotoBucket, sanitizeText } from "../../../../lib/reviews";
 
 const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const maxBytes = 4 * 1024 * 1024;
 
 export async function POST(request) {
-  if (!isReviewsConfigured) {
+  if (!isReviewsWriteConfigured) {
     return NextResponse.json({ error: "Review photo storage is not configured yet." }, { status: 503 });
   }
 
@@ -22,7 +22,7 @@ export async function POST(request) {
     return NextResponse.json({ photos: [] });
   }
 
-  const supabase = createReviewsClient();
+  const supabase = createReviewsWriteClient();
   const photos = [];
 
   for (const file of files) {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuthSession } from "../../../../lib/auth-session";
-import { createReviewsClient, emailHash, isReviewsConfigured, sanitizeText } from "../../../../lib/reviews";
+import { createReviewsWriteClient, emailHash, isReviewsWriteConfigured, sanitizeText } from "../../../../lib/reviews";
 
 export async function POST(request) {
   const { user } = await getAuthSession();
@@ -12,7 +12,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Review is required." }, { status: 400 });
   }
 
-  if (!isReviewsConfigured) {
+  if (!isReviewsWriteConfigured) {
     return NextResponse.json({ error: "Reviews database is not configured yet." }, { status: 503 });
   }
 
@@ -22,7 +22,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Unable to record vote." }, { status: 400 });
   }
 
-  const supabase = createReviewsClient();
+  const supabase = createReviewsWriteClient();
   const { error } = await supabase.from("drift_review_helpful_votes").insert({
     review_id: reviewId,
     user_id: user?.id || null,
@@ -39,4 +39,3 @@ export async function POST(request) {
 
   return NextResponse.json({ helpfulCount });
 }
-

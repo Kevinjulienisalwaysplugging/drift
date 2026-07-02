@@ -3,9 +3,11 @@ import { getAuthSession } from "../../../lib/auth-session";
 import {
   calculateSummary,
   createReviewsClient,
+  createReviewsWriteClient,
   displayNameFromName,
   emailHash,
   isReviewsConfigured,
+  isReviewsWriteConfigured,
   sanitizeText,
   serializeReview,
   validateReviewInput,
@@ -112,15 +114,15 @@ export async function POST(request) {
     return NextResponse.json({ error: errors[0], errors }, { status: 400 });
   }
 
-  if (!isReviewsConfigured) {
-    return NextResponse.json({ error: "Reviews database is not configured yet." }, { status: 503 });
+  if (!isReviewsWriteConfigured) {
+    return NextResponse.json({ error: "Review submissions are not configured yet." }, { status: 503 });
   }
 
   const productName = sanitizeText(body.productName, 120);
   const name = sanitizeText(body.name, 90);
   const email = String(body.email || user?.email || "").trim().toLowerCase();
   const verifiedBuyer = await verifyShopifyBuyer(email, productName);
-  const supabase = createReviewsClient();
+  const supabase = createReviewsWriteClient();
 
   const { data: review, error } = await supabase
     .from("drift_reviews")
@@ -161,4 +163,3 @@ export async function POST(request) {
 
   return NextResponse.json({ review: serializeReview({ ...review, photos }) }, { status: 201 });
 }
-

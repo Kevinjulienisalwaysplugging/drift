@@ -523,6 +523,14 @@ const starRow = (rating) => {
   return `${"\u2605".repeat(count)}${"\u2606".repeat(5 - count)}`;
 };
 
+const escapeHtml = (value = "") =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 const getReviewState = (productName) =>
   productReviewState.get(productName) || {
     reviews: [],
@@ -576,6 +584,8 @@ const renderReviewPlatform = (productName) => {
   const photos = getProductReviewPhotos(productName);
   const userName = currentAuthUser?.name || window.localStorage.getItem(profileNameStorageKey) || "";
   const userEmail = currentAuthUser?.email || "";
+  const safeUserName = escapeHtml(userName);
+  const safeUserEmail = escapeHtml(userEmail);
 
   productDetailReviews.innerHTML = `
     <summary>Reviews</summary>
@@ -628,7 +638,7 @@ const renderReviewPlatform = (productName) => {
                 .map(
                   (photo, index) => `
                     <button class="customer-photo" type="button" data-photo-index="${index}" aria-label="Open customer photo">
-                      <img src="${photo.url}" alt="${photo.alt || photo.caption}" loading="lazy" decoding="async">
+                      <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(photo.alt || photo.caption)}" loading="lazy" decoding="async">
                     </button>
                   `
                 )
@@ -641,8 +651,8 @@ const renderReviewPlatform = (productName) => {
         <h4>Write a review</h4>
         <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="review-form-grid">
-          <label>Name<input name="name" value="${userName}" required></label>
-          <label>Email<input name="email" type="email" value="${userEmail}" required></label>
+          <label>Name<input name="name" value="${safeUserName}" required></label>
+          <label>Email<input name="email" type="email" value="${safeUserEmail}" required></label>
           <label>Country
             <select name="country" required>
               <option value="United States">United States</option>
@@ -696,24 +706,30 @@ const renderReviewPlatform = (productName) => {
 
 const renderReviewCard = (review) => {
   const photoCount = review.photos?.length || 0;
+  const safeName = escapeHtml(review.displayName);
+  const safeCountry = escapeHtml(review.country);
+  const safeTitle = escapeHtml(review.title);
+  const safeBody = escapeHtml(review.body);
+  const safeCreatedAt = escapeHtml(review.createdAt || "");
+  const safeDate = escapeHtml(formatReviewDate(review.createdAt));
 
   return `
     <article class="product-review" data-review-id="${review.id}">
       <div class="product-review-header">
-        <div class="reviewer-avatar" aria-hidden="true">${getReviewInitials(review.displayName)}</div>
+        <div class="reviewer-avatar" aria-hidden="true">${escapeHtml(getReviewInitials(review.displayName))}</div>
         <div class="reviewer-identity">
           <div class="reviewer-name-line">
-            <strong>${review.displayName}</strong>
+            <strong>${safeName}</strong>
             ${review.verifiedBuyer ? '<span class="verified-buyer">&#10003; Verified Buyer</span>' : ""}
           </div>
-          <span class="review-country">${review.countryFlag ? `${review.countryFlag} ` : ""}${review.country}</span>
+          <span class="review-country">${review.countryFlag ? `${review.countryFlag} ` : ""}${safeCountry}</span>
         </div>
-        <time class="review-date" datetime="${review.createdAt || ""}">${formatReviewDate(review.createdAt)}</time>
+        <time class="review-date" datetime="${safeCreatedAt}">${safeDate}</time>
       </div>
       <div class="review-card-body">
         <div class="review-stars" aria-label="${review.rating} out of 5 stars">${starRow(review.rating)}</div>
-        <h4>${review.title}</h4>
-        <p>${review.body}</p>
+        <h4>${safeTitle}</h4>
+        <p>${safeBody}</p>
       </div>
       <div class="review-card-footer">
         ${
@@ -845,8 +861,9 @@ const submitReviewForm = async (productName, form) => {
     }
 
     form.reset();
-    setReviewState(productName, { message: "Thank you. Your review has been added." });
     await loadProductReviews(productName);
+    setReviewState(productName, { message: "Thank you. Your review has been added." });
+    renderReviewPlatform(productName);
   } catch (error) {
     message.textContent = error.message || "Unable to submit review.";
   } finally {
